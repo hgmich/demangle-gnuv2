@@ -151,6 +151,7 @@ jobs:
         with:
           command: sdist
           args: --out dist
+          working-directory: ./demangle-gnuv2-py
       - name: Upload sdist
         uses: actions/upload-artifact@v4
         with:
@@ -183,3 +184,4 @@ jobs:
         with:
           command: upload
           args: --non-interactive --skip-existing wheels-*/*
+          working-directory: ./demangle-gnuv2-py
