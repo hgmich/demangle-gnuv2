@@ -1,0 +1,26 @@
+__vt_25CBabelShortUserDataObject
+CBabelShortUserDataObject virtual table
+
+_3foo$varname
+foo::varname
+
+DSFetchRandomUser__12DSNetManagerRb
+DSNetManager::DSFetchRandomUser(bool &)
+
+_15CBabelAsyncCore.add_channels_to_delete_cs
+CBabelAsyncCore::add_channels_to_delete_cs
+
+__thunk_96_Read__17CBabelDConnectionPvi
+virtual function thunk (delta:-96) for CBabelDConnection::Read(void *, int)
+
+_Q22rs2tu$vw
+rs::tu::vw
+
+__ti25CBabelShortUserDataObject
+CBabelShortUserDataObject type_info node
+
+__tit27MemberFunctionQueuedMessage1Z12DSNetManager
+MemberFunctionQueuedMessage<DSNetManager> type_info node
+
+_._Q212AgentManager14DeferredScript
+AgentManager::DeferredScript::~DeferredScript(void)
