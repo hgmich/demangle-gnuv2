@@ -16,4 +16,4 @@ of `libiberty` as included in [rz-libdemangle][rz-libdemangle-gh]. As such:
 
 **NOTE:** Currently under development and not fully usable.
 
-[rz-demangle-gh]: https://github.com/rizinorg/rz-libdemangle
+[rz-libdemangle-gh]: https://github.com/rizinorg/rz-libdemangle
