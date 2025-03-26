@@ -11,7 +11,7 @@ description = "A structured demangler for the GNU v2 C++ mangling scheme"
 bitfield-struct = { workspace = true }
 env_logger = "0.11.7"
 log = "0.4.27"
-memx = "0.1.32"
+memchr = "2.7.4"
 thiserror = { workspace = true }
 
 [workspace]

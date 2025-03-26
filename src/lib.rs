@@ -1,5 +1,5 @@
 use bitfield_struct::bitfield;
-use memx::memmem;
+use memchr::memmem;
 
 #[bitfield(u32)]
 pub struct DemangleOpts {
@@ -956,7 +956,7 @@ fn arm_pt(
 
     if style.arm() || style.hp() {
         log::debug!("arm_pt: arm/hp style");
-        if let Some(anchor_pos) = memmem(mangled, b"__pt__") {
+        if let Some(anchor_pos) = memmem::find(mangled, b"__pt__") {
             let anchor = &mangled[anchor_pos + 6..];
             let len = {
                 let (len, mangled2) = consume_count(mangled)?;
