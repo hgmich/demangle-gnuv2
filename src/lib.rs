@@ -376,6 +376,16 @@ struct DemanglerState {
     symbol_kind: StateSymbolKind,
 }
 
+trait VecExt<T> {
+    fn prepend<'a>(&mut self, prepend_with: &'a [T]);
+}
+
+impl<T: Clone> VecExt<T> for Vec<T> {
+    fn prepend<'a>(&mut self, prepend_with: &'a [T]) {
+        self.splice(0..0, prepend_with.into_iter().cloned());
+    }
+}
+
 pub fn cplus_demangle_v2(mangled: &[u8], opts: DemangleOpts) -> Result<DemangledSymbol> {
     let opts = {
         let style = match opts.style().into_bits() {
@@ -828,7 +838,7 @@ impl DemanglerState {
                     log::debug!("do_type: pointer");
                     mangled = &mangled[1..];
                     if !self.opts.java() {
-                        decl.splice(0..0, b"*".iter().cloned());
+                        decl.prepend(b"*");
                     }
                     if ty_k == TypeKind::None {
                         ty_k = TypeKind::Pointer;
@@ -838,7 +848,7 @@ impl DemanglerState {
                     // reference types
                     log::debug!("do_type: reference");
                     mangled = &mangled[1..];
-                    decl.splice(0..0, b"&".iter().cloned());
+                    decl.prepend(b"&");
                     if ty_k == TypeKind::None {
                         ty_k = TypeKind::Reference;
                     }
@@ -848,7 +858,7 @@ impl DemanglerState {
                     log::debug!("do_type: array");
                     mangled = &mangled[1..];
                     if !decl.is_empty() && (decl[0] == b'*' || decl[0] == b'&') {
-                        decl.splice(0..0, b"(".iter().cloned());
+                        decl.prepend(b"(");
                         decl.push(b')');
                     }
                     decl.push(b'[');
@@ -878,10 +888,10 @@ impl DemanglerState {
                     log::debug!("do_type: fundamental type qualifier");
                     if self.opts.ansi() {
                         if !decl.is_empty() {
-                            decl.splice(0..0, b" ".iter().cloned());
+                            decl.prepend(b" ");
                         }
 
-                        decl.splice(0..0, demangle_qualifier(mangled[0]).iter().cloned());
+                        decl.prepend(demangle_qualifier(mangled[0]));
                     }
                     mangled = &mangled[1..];
                 }
@@ -974,9 +984,9 @@ impl DemanglerState {
                     log::debug!("fundamental type: ansi modifier");
                     if self.opts.ansi() {
                         if !result.is_empty() {
-                            result.splice(0..0, b" "[..].into_iter().cloned());
+                            result.prepend(b" ");
                         }
-                        result.splice(0..0, demangle_qualifier(mangled[0]).into_iter().cloned());
+                        result.prepend(demangle_qualifier(mangled[0]));
                     }
                 }
                 b'U' => {
