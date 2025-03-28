@@ -1,6 +1,7 @@
 use bitfield_struct::bitfield;
 use memchr::memmem;
 
+/// Options for controlling demangling.
 #[bitfield(u32)]
 pub struct DemangleOpts {
     /// Demangle function arguments as well as symbol name.
@@ -26,6 +27,8 @@ pub struct DemangleOpts {
     __1: u16,
 }
 
+/// Options specifically concerning which demangling convention
+/// should be used.
 #[bitfield(u8)]
 pub struct DemangleStyle {
     /// Automatically detect the mangling style used by the mangled symbols.
@@ -305,28 +308,41 @@ pub enum DemangledType {
     Void,
 }
 
+/// What kind of symbol this is.
 #[non_exhaustive]
 #[derive(Debug, Clone)]
 pub enum SymbolKind {
+    /// Symbol refers to the vtable of a specified class.
     VTable,
+    /// Symbol refers to a function entry point.
     Function {
         args: Vec<DemangledType>,
         return_type: DemangledType,
     },
+    /// Symbol refers to the static member of a container type.
     StaticMember,
+    /// Symbol is type reflection information.
     TypeInfo(TypeInfoKind),
 }
 
+/// Specifies what variety of type info this is.
 #[non_exhaustive]
 #[derive(Debug, Clone, Copy)]
 pub enum TypeInfoKind {
+    /// typeinfo is for a type node (class, struct, etc).
     Node,
+    /// typeinfo is for a function or method.
     Function,
 }
 
+/// Information on a demangled symbol.
 #[derive(Debug, Clone)]
 pub struct DemangledSymbol {
+    /// The qualified name of the demangled symbol.
+    /// Includes namespaces, and class names for member functions.
     pub qualified_name: String,
+
+    /// Structured information on the demangled symbol.
     pub kind: SymbolKind,
 }
 
@@ -336,6 +352,7 @@ pub enum DemangleError {
     DemangleFailed,
 }
 
+/// Result type for all demangle operations.
 pub type Result<T> = std::result::Result<T, DemangleError>;
 
 const DEFAULT_DEMANGLE_STYLE: DemangleStyle = DemangleStyle::new().with_gnu(true);
