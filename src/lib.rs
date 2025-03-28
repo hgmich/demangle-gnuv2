@@ -413,6 +413,15 @@ enum GnuMangleCase {
     TypeInfo,
 }
 
+/// Internal type used to indicate functions which consume the mangled symbol.
+///
+/// `mangled` indicates the unconsumed part of the mangled symbol.
+/// `value` indicates the value produced by consuming part of the mangled symbol.
+struct ConsumeVal<'a, Inner> {
+    mangled: &'a [u8],
+    value: Inner,
+}
+
 impl DemanglerState {
     fn extract_symbol_info(&self) -> Result<SymbolKind> {
         match &self.symbol_kind {
@@ -452,7 +461,11 @@ impl DemanglerState {
         declp
     }
 
-    fn gnu_special<'a, 'b>(&mut self, mangled: &'a [u8], declp: &mut Vec<u8>) -> Option<&'a [u8]> {
+    fn gnu_special<'a, 'b>(
+        &mut self,
+        mangled: &'a [u8],
+        declp: &mut Vec<u8>,
+    ) -> Option<ConsumeVal<'a, ()>> {
         let (mangled, case) = match mangled {
             // GNU style destructor (_$_ or other markers)
             &[b'_', c, b'_', ref rest @ ..] if CPLUS_MARKERS.contains(&c) => {
@@ -508,17 +521,18 @@ impl DemanglerState {
                 while mangled != b"" {
                     match mangled[0] {
                         b'Q' | b'K' => {
-                            mangled = self.demangle_qualified(mangled, declp, false, true)?;
+                            ConsumeVal { mangled, .. } =
+                                self.demangle_qualified(mangled, declp, false, true)?;
                         }
                         b't' => {
-                            (_, mangled) =
+                            ConsumeVal { mangled, .. } =
                                 self.demangle_template(mangled, declp, None, true, true)?;
                         }
                         c => {
                             let mut is_count = true;
                             let n = if c.is_ascii_digit() {
                                 let n;
-                                (n, mangled) = consume_count(mangled)?;
+                                ConsumeVal { value: n, mangled } = consume_count(mangled)?;
                                 if n > mangled.len() {
                                     is_count = false;
                                 }
@@ -564,14 +578,17 @@ impl DemanglerState {
 
                 match mangled[0] {
                     b'Q' | b'K' => {
-                        mangled = self.demangle_qualified(mangled, declp, false, true)?;
+                        ConsumeVal { mangled, .. } =
+                            self.demangle_qualified(mangled, declp, false, true)?;
                     }
                     b't' => {
-                        (_, mangled) = self.demangle_template(mangled, declp, None, true, true)?;
+                        ConsumeVal { mangled, .. } =
+                            self.demangle_template(mangled, declp, None, true, true)?;
                     }
                     _ => {
                         let n;
-                        (n, mangled) = consume_count(mangled)?;
+
+                        ConsumeVal { value: n, mangled } = consume_count(mangled)?;
 
                         if n > mangled.len() {
                             success = false;
@@ -609,15 +626,17 @@ impl DemanglerState {
                 match mangled[0] {
                     b'Q' | b'K' => {
                         log::debug!("typeinfo: qualified");
-                        mangled = self.demangle_qualified(mangled, declp, false, true)?;
+                        ConsumeVal { mangled, .. } =
+                            self.demangle_qualified(mangled, declp, false, true)?;
                     }
                     b't' => {
                         log::debug!("typeinfo: template");
-                        (_, mangled) = self.demangle_template(mangled, declp, None, true, true)?;
+                        ConsumeVal { mangled, .. } =
+                            self.demangle_template(mangled, declp, None, true, true)?;
                     }
                     _ => {
                         log::debug!("typeinfo: fundamental type");
-                        (_, mangled) = self.demangle_fund_type(mangled, declp)?;
+                        ConsumeVal { mangled, .. } = self.demangle_fund_type(mangled, declp)?;
                         if log::log_enabled!(log::Level::Debug) {
                             let declp_s =
                                 std::str::from_utf8(&*declp).expect("failed to deserialize declp");
@@ -647,7 +666,7 @@ impl DemanglerState {
             _ => mangled,
         };
 
-        Some(mangled)
+        Some(ConsumeVal { value: (), mangled })
     }
 
     fn demangle_qualified<'a>(
@@ -656,7 +675,7 @@ impl DemanglerState {
         result: &'_ mut Vec<u8>,
         isfuncname: bool,
         append: bool,
-    ) -> Option<&'a [u8]> {
+    ) -> Option<ConsumeVal<'a, ()>> {
         todo!("implement demangle_qualified")
     }
 
@@ -667,7 +686,7 @@ impl DemanglerState {
         trawname: Option<&'_ mut Vec<u8>>,
         is_type: bool,
         remember: bool,
-    ) -> Option<(TypeKind, &'a [u8])> {
+    ) -> Option<ConsumeVal<'a, TypeKind>> {
         let mut mangled = &mangled[1..];
         let mut is_java_array = false;
         let mut need_comma = false;
@@ -682,14 +701,17 @@ impl DemanglerState {
                 mangled = &mangled[2..];
 
                 let idx;
-                (idx, mangled) = consume_count_with_underscores(mangled)?;
+                ConsumeVal {
+                    value: idx,
+                    mangled,
+                } = consume_count_with_underscores(mangled)?;
 
                 todo!("implement demangle_template/z");
             } else {
                 log::debug!("demangle template: is type, NOT template param");
 
                 let r;
-                (r, mangled) = consume_count(mangled)?;
+                ConsumeVal { value: r, mangled } = consume_count(mangled)?;
 
                 if r > mangled.len() {
                     return None;
@@ -710,7 +732,7 @@ impl DemanglerState {
         }
 
         let r;
-        (r, mangled) = get_count(mangled)?;
+        ConsumeVal { value: r, mangled } = get_count(mangled)?;
 
         log::debug!("{r} template param(s)");
 
@@ -741,7 +763,10 @@ impl DemanglerState {
                 log::debug!("demangle_template: type parameter");
                 mangled = &mangled[1..];
 
-                (ty_k, mangled) = self.do_type(mangled, &mut temp)?;
+                ConsumeVal {
+                    value: ty_k,
+                    mangled,
+                } = self.do_type(mangled, &mut temp)?;
 
                 tname.extend(&temp);
 
@@ -755,7 +780,10 @@ impl DemanglerState {
             } else {
                 // value parameter
                 let mut temp: Vec<u8> = vec![];
-                (ty_k, mangled) = self.do_type(mangled, &mut temp)?;
+                ConsumeVal {
+                    value: ty_k,
+                    mangled,
+                } = self.do_type(mangled, &mut temp)?;
 
                 todo!("implement value parameter demangle");
             }
@@ -774,14 +802,17 @@ impl DemanglerState {
 
         log::debug!("demangle_template: done");
 
-        Some((ty_k, mangled))
+        Some(ConsumeVal {
+            value: ty_k,
+            mangled,
+        })
     }
 
     fn do_type<'a>(
         &mut self,
         mangled: &'a [u8],
         result: &'_ mut Vec<u8>,
-    ) -> Option<(TypeKind, &'a [u8])> {
+    ) -> Option<ConsumeVal<'a, TypeKind>> {
         let mut mangled = mangled;
         let mut done = false;
         let mut ty_k = TypeKind::None;
@@ -868,7 +899,7 @@ impl DemanglerState {
             b'B' => {
                 log::debug!("do_type: backref");
                 let n;
-                (n, mangled) = get_count(&mangled[1..])?;
+                ConsumeVal { value: n, mangled } = get_count(&mangled[1..])?;
 
                 if n >= self.btypevec.len() {
                     return None;
@@ -879,13 +910,16 @@ impl DemanglerState {
                 log::debug!("do_type: template param");
                 mangled = &mangled[1..];
                 let idx;
-                (idx, mangled) = consume_count_with_underscores(mangled)?;
+                ConsumeVal {
+                    value: idx,
+                    mangled,
+                } = consume_count_with_underscores(mangled)?;
 
                 if idx >= self.tmpl_argvec.len() {
                     return None;
                 }
 
-                (_, mangled) = consume_count_with_underscores(mangled)?;
+                ConsumeVal { mangled, .. } = consume_count_with_underscores(mangled)?;
 
                 if !self.tmpl_argvec.is_empty() {
                     result.extend(&self.tmpl_argvec[idx]);
@@ -896,7 +930,10 @@ impl DemanglerState {
             }
             _ => {
                 log::debug!("do_type: fallthrough (assumed fundamental type)");
-                (ty_k, mangled) = self.demangle_fund_type(mangled, result)?;
+                ConsumeVal {
+                    value: ty_k,
+                    mangled,
+                } = self.demangle_fund_type(mangled, result)?;
             }
         }
 
@@ -913,14 +950,17 @@ impl DemanglerState {
 
         log::debug!("do_type: done");
 
-        Some((ty_k, mangled))
+        Some(ConsumeVal {
+            value: ty_k,
+            mangled,
+        })
     }
 
     fn demangle_fund_type<'a>(
         &mut self,
         mangled: &'a [u8],
         result: &'_ mut Vec<u8>,
-    ) -> Option<(TypeKind, &'a [u8])> {
+    ) -> Option<ConsumeVal<'a, TypeKind>> {
         let mut mangled = mangled;
         let mut ty_kind = TypeKind::Integral;
 
@@ -1077,7 +1117,7 @@ impl DemanglerState {
                 c if c.is_ascii_digit() => {
                     log::debug!("fundamental type: class");
                     let mut btype = vec![];
-                    mangled = self.demangle_class_name(mangled, &mut btype)?;
+                    ConsumeVal { mangled, .. } = self.demangle_class_name(mangled, &mut btype)?;
                     append_blank(result);
                     result.extend(&btype);
                     self.btypevec.push(btype);
@@ -1085,7 +1125,8 @@ impl DemanglerState {
                 b't' => {
                     log::debug!("fundamental type: template");
                     let mut btype = vec![];
-                    (_, mangled) = self.demangle_template(mangled, &mut btype, None, true, true)?;
+                    ConsumeVal { mangled, .. } =
+                        self.demangle_template(mangled, &mut btype, None, true, true)?;
                     result.extend(&btype);
                 }
                 _ => return None,
@@ -1093,24 +1134,27 @@ impl DemanglerState {
         }
 
         log::debug!("fundamental type demangled");
-        Some((ty_kind, mangled))
+        Some(ConsumeVal {
+            value: ty_kind,
+            mangled,
+        })
     }
 
     fn demangle_class_name<'a>(
         &mut self,
         mangled: &'a [u8],
         declp: &mut Vec<u8>,
-    ) -> Option<&'a [u8]> {
+    ) -> Option<ConsumeVal<'a, ()>> {
         let mut mangled = mangled;
         log::debug!("demangle class type");
 
         let n;
-        (n, mangled) = consume_count(mangled)?;
+        ConsumeVal { value: n, mangled } = consume_count(mangled)?;
 
         if mangled.len() >= n {
             log::debug!("parse class name");
-            mangled = self.demangle_arm_hp_template(mangled, n, declp)?;
-            Some(mangled)
+            ConsumeVal { mangled, .. } = self.demangle_arm_hp_template(mangled, n, declp)?;
+            Some(ConsumeVal { value: (), mangled })
         } else {
             log::debug!("malformed class type slug");
             None
@@ -1122,7 +1166,7 @@ impl DemanglerState {
         mangled: &'a [u8],
         n: usize,
         declp: &'_ mut Vec<u8>,
-    ) -> Option<&'a [u8]> {
+    ) -> Option<ConsumeVal<'a, ()>> {
         let mut p = vec![];
         let mut args = vec![];
         let mut mangled = mangled;
@@ -1130,7 +1174,7 @@ impl DemanglerState {
         if self.opts.style().hp() && mangled[n] == b'X' {
             log::debug!("demangle template as HP cfront style");
             todo!("implement hp cfront demangling");
-        } else if let Some(()) = self.arm_pt(mangled, n, &mut p, &mut args) {
+        } else if let Some(_) = self.arm_pt(mangled, n, &mut p, &mut args) {
             log::debug!("demangle template as arm/extended HP cfront style");
             todo!("implement arm_pt demangling");
         } else if n > 10
@@ -1153,16 +1197,16 @@ impl DemanglerState {
         }
 
         mangled = &mangled[n..];
-        Some(mangled)
+        Some(ConsumeVal { value: (), mangled })
     }
 
-    fn arm_pt(
-        &mut self,
-        mangled: &[u8],
+    fn arm_pt<'a>(
+        &'_ mut self,
+        mangled: &'a [u8],
         n: usize,
-        anchor: &mut Vec<u8>,
-        args: &mut Vec<u8>,
-    ) -> Option<()> {
+        anchor: &'_ mut Vec<u8>,
+        args: &'_ mut Vec<u8>,
+    ) -> Option<ConsumeVal<'a, ()>> {
         let style = self.opts.style();
         let mut mangled = mangled;
 
@@ -1173,10 +1217,13 @@ impl DemanglerState {
             if let Some(anchor_pos) = memmem::find(mangled, b"__pt__") {
                 let anchor = &mangled[anchor_pos + 6..];
                 let len;
-                (len, mangled) = consume_count(mangled)?;
+                ConsumeVal {
+                    value: len,
+                    mangled,
+                } = consume_count(mangled)?;
                 if &args[len..] == &mangled[n..] && args[0] == b'_' {
                     args.splice(0..1, b"".iter().cloned());
-                    return Some(());
+                    return Some(ConsumeVal { value: (), mangled });
                 }
             }
         }
@@ -1205,16 +1252,19 @@ fn demangle_qualifier(qualifier: u8) -> &'static [u8] {
     }
 }
 
-fn consume_count(mangled: &[u8]) -> Option<(usize, &[u8])> {
+fn consume_count<'a>(mangled: &'a [u8]) -> Option<ConsumeVal<'a, usize>> {
     let digit_count = mangled.iter().take_while(|&b| b.is_ascii_digit()).count();
 
     let (digits, mangled) = mangled.split_at(digit_count);
     let count = std::str::from_utf8(digits).ok()?.parse().ok()?;
 
-    Some((count, mangled))
+    Some(ConsumeVal {
+        value: count,
+        mangled,
+    })
 }
 
-fn consume_count_with_underscores(mangled: &[u8]) -> Option<(usize, &[u8])> {
+fn consume_count_with_underscores<'a>(mangled: &'a [u8]) -> Option<ConsumeVal<'a, usize>> {
     if mangled.starts_with(b"_") && mangled.ends_with(b"_") && mangled.len() > 1 {
         let end = 0.max(mangled.len() - 1);
 
@@ -1224,16 +1274,25 @@ fn consume_count_with_underscores(mangled: &[u8]) -> Option<(usize, &[u8])> {
     }
 }
 
-fn get_count(mangled: &[u8]) -> Option<(usize, &[u8])> {
+fn get_count<'a>(mangled: &'a [u8]) -> Option<ConsumeVal<'a, usize>> {
     let digit = mangled[0];
 
-    let (count, mangled_post_count) = consume_count(mangled)?;
+    let ConsumeVal {
+        value: count,
+        mangled: mangled_post_count,
+    } = consume_count(mangled)?;
     if mangled_post_count.len() > 0 && mangled_post_count[0] == b'_' {
         // Treat count like consume_count if followed by _
-        Some((count, mangled_post_count))
+        Some(ConsumeVal {
+            value: count,
+            mangled: mangled_post_count,
+        })
     } else {
         // Only count first digit otherwise
-        Some(((digit - b'0') as usize, &mangled[1..]))
+        Some(ConsumeVal {
+            value: (digit - b'0') as usize,
+            mangled: &mangled[1..],
+        })
     }
 }
 
