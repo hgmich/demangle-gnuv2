@@ -512,19 +512,16 @@ fn gnu_special<'a, 'b>(
             while mangled != b"" {
                 match mangled[0] {
                     b'Q' | b'K' => {
-                        let mangled2 = demangle_qualified(state, mangled, declp, false, true)?;
-                        mangled = mangled2;
+                        mangled = demangle_qualified(state, mangled, declp, false, true)?;
                     }
                     b't' => {
-                        let (_, mangled2) =
-                            demangle_template(state, mangled, declp, None, true, true)?;
-                        mangled = mangled2;
+                        (_, mangled) = demangle_template(state, mangled, declp, None, true, true)?;
                     }
                     c => {
                         let mut is_count = true;
                         let n = if c.is_ascii_digit() {
-                            let (n, mangled2) = consume_count(mangled)?;
-                            mangled = mangled2;
+                            let n;
+                            (n, mangled) = consume_count(mangled)?;
                             if n > mangled.len() {
                                 is_count = false;
                             }
@@ -570,16 +567,14 @@ fn gnu_special<'a, 'b>(
 
             match mangled[0] {
                 b'Q' | b'K' => {
-                    let mangled2 = demangle_qualified(state, mangled, declp, false, true)?;
-                    mangled = mangled2;
+                    mangled = demangle_qualified(state, mangled, declp, false, true)?;
                 }
                 b't' => {
-                    let (_, mangled2) = demangle_template(state, mangled, declp, None, true, true)?;
-                    mangled = mangled2;
+                    (_, mangled) = demangle_template(state, mangled, declp, None, true, true)?;
                 }
                 _ => {
-                    let (n, mangled2) = consume_count(mangled)?;
-                    mangled = mangled2;
+                    let n;
+                    (n, mangled) = consume_count(mangled)?;
 
                     if n > mangled.len() {
                         success = false;
@@ -617,24 +612,20 @@ fn gnu_special<'a, 'b>(
             match mangled[0] {
                 b'Q' | b'K' => {
                     log::debug!("typeinfo: qualified");
-                    let mangled2 = demangle_qualified(state, mangled, declp, false, true)?;
-                    mangled = mangled2;
+                    mangled = demangle_qualified(state, mangled, declp, false, true)?;
                 }
                 b't' => {
                     log::debug!("typeinfo: template");
-                    let (_, mangled2) = demangle_template(state, mangled, declp, None, true, true)?;
-                    mangled = mangled2;
+                    (_, mangled) = demangle_template(state, mangled, declp, None, true, true)?;
                 }
                 _ => {
                     log::debug!("typeinfo: fundamental type");
-                    let (_, mangled2) = demangle_fund_type(state, mangled, declp)?;
+                    (_, mangled) = demangle_fund_type(state, mangled, declp)?;
                     if log::log_enabled!(log::Level::Debug) {
                         let declp_s =
                             std::str::from_utf8(&*declp).expect("failed to deserialize declp");
                         log::debug!("Declp after fund type: {declp_s}");
                     }
-
-                    mangled = mangled2;
                 }
             }
 
@@ -693,20 +684,16 @@ fn demangle_template<'a>(
             log::debug!("demangle template: is type, template param");
             mangled = &mangled[2..];
 
-            let idx = {
-                let (idx, mangled2) = consume_count_with_underscores(mangled)?;
-                mangled = mangled2;
-                idx
-            };
+            let idx;
+            (idx, mangled) = consume_count_with_underscores(mangled)?;
 
             todo!("implement demangle_template/z");
         } else {
             log::debug!("demangle template: is type, NOT template param");
-            let r = {
-                let (r, mangled2) = consume_count(mangled)?;
-                mangled = mangled2;
-                r
-            };
+
+            let r;
+            (r, mangled) = consume_count(mangled)?;
+
             if r > mangled.len() {
                 return None;
             }
@@ -725,11 +712,8 @@ fn demangle_template<'a>(
         tname.extend(b"<");
     }
 
-    let r = {
-        let (r, mangled2) = get_count(mangled)?;
-        mangled = mangled2;
-        r
-    };
+    let r;
+    (r, mangled) = get_count(mangled)?;
 
     log::debug!("{r} template param(s)");
 
@@ -774,9 +758,7 @@ fn demangle_template<'a>(
         } else {
             // value parameter
             let mut temp: Vec<u8> = vec![];
-            let (ty_k2, mangled2) = do_type(state, mangled, &mut temp)?;
-            ty_k = ty_k2;
-            mangled = mangled2;
+            (ty_k, mangled) = do_type(state, mangled, &mut temp)?;
 
             todo!("implement value parameter demangle");
         }
@@ -888,12 +870,8 @@ fn do_type<'a>(
         }
         b'B' => {
             log::debug!("do_type: backref");
-            let n = {
-                let (n, mangled2) = get_count(&mangled[1..])?;
-
-                mangled = mangled2;
-                n
-            };
+            let n;
+            (n, mangled) = get_count(&mangled[1..])?;
 
             if n >= state.btypevec.len() {
                 return None;
@@ -903,18 +881,14 @@ fn do_type<'a>(
         b'X' | b'Y' => {
             log::debug!("do_type: template param");
             mangled = &mangled[1..];
-            let idx = {
-                let (idx, mangled2) = consume_count_with_underscores(mangled)?;
-                mangled = mangled2;
-                idx
-            };
+            let idx;
+            (idx, mangled) = consume_count_with_underscores(mangled)?;
 
             if idx >= state.tmpl_argvec.len() {
                 return None;
             }
 
-            let (_, mangled2) = consume_count_with_underscores(mangled)?;
-            mangled = mangled2;
+            (_, mangled) = consume_count_with_underscores(mangled)?;
 
             if !state.tmpl_argvec.is_empty() {
                 result.extend(&state.tmpl_argvec[idx]);
@@ -925,11 +899,7 @@ fn do_type<'a>(
         }
         _ => {
             log::debug!("do_type: fallthrough (assumed fundamental type)");
-            ty_k = {
-                let (ty_k, mangled2) = demangle_fund_type(state, mangled, result)?;
-                mangled = mangled2;
-                ty_k
-            };
+            (ty_k, mangled) = demangle_fund_type(state, mangled, result)?;
         }
     }
 
@@ -1094,18 +1064,15 @@ fn demangle_fund_type<'a>(
                 let buf = if mangled[0] == b'_' {
                     mangled = &mangled[1..];
                     let n = mangled.iter().take(9).take_while(|&&c| c != b'_').count();
-                    let buf = {
-                        let (buf, mangled2) = mangled.split_at(n);
-                        mangled = mangled2;
-                        buf
-                    };
+                    let buf;
+                    (buf, mangled) = mangled.split_at(n);
                     if mangled.is_empty() || mangled[0] != b'_' {
                         return None;
                     }
                     buf
                 } else {
-                    let (buf, mangled2) = mangled.split_at(2);
-                    mangled = mangled2;
+                    let buf;
+                    (buf, mangled) = mangled.split_at(2);
                     buf
                 };
                 let buf_s = std::str::from_utf8(buf).ok()?;
@@ -1119,23 +1086,15 @@ fn demangle_fund_type<'a>(
             c if c.is_ascii_digit() => {
                 log::debug!("fundamental type: class");
                 let mut btype = vec![];
-                if let Some(mangled2) = demangle_class_name(state, mangled, &mut btype) {
-                    mangled = mangled2;
-                    append_blank(result);
-                    result.extend(&btype);
-                    state.btypevec.push(btype);
-                } else {
-                    return None;
-                }
+                mangled = demangle_class_name(state, mangled, &mut btype)?;
+                append_blank(result);
+                result.extend(&btype);
+                state.btypevec.push(btype);
             }
             b't' => {
                 log::debug!("fundamental type: template");
                 let mut btype = vec![];
-                mangled = {
-                    let (_, mangled2) =
-                        demangle_template(state, mangled, &mut btype, None, true, true)?;
-                    mangled2
-                };
+                (_, mangled) = demangle_template(state, mangled, &mut btype, None, true, true)?;
                 result.extend(&btype);
             }
             _ => return None,
@@ -1163,11 +1122,8 @@ fn demangle_class_name<'a>(
     let mut mangled = mangled;
     log::debug!("demangle class type");
 
-    let n = {
-        let (n, mangled2) = consume_count(mangled)?;
-        mangled = mangled2;
-        n
-    };
+    let n;
+    (n, mangled) = consume_count(mangled)?;
 
     if mangled.len() >= n {
         log::debug!("parse class name");
@@ -1234,11 +1190,8 @@ fn arm_pt(
         log::debug!("arm_pt: arm/hp style");
         if let Some(anchor_pos) = memmem::find(mangled, b"__pt__") {
             let anchor = &mangled[anchor_pos + 6..];
-            let len = {
-                let (len, mangled2) = consume_count(mangled)?;
-                mangled = mangled2;
-                len
-            };
+            let len;
+            (len, mangled) = consume_count(mangled)?;
             if &args[len..] == &mangled[n..] && args[0] == b'_' {
                 args.splice(0..1, b"".iter().cloned());
                 return Some(());
@@ -1274,10 +1227,10 @@ fn consume_count_with_underscores(mangled: &[u8]) -> Option<(usize, &[u8])> {
 fn get_count(mangled: &[u8]) -> Option<(usize, &[u8])> {
     let digit = mangled[0];
 
-    let (count, mangled2) = consume_count(mangled)?;
-    if mangled2.len() > 0 && mangled2[0] == b'_' {
+    let (count, mangled_post_count) = consume_count(mangled)?;
+    if mangled_post_count.len() > 0 && mangled_post_count[0] == b'_' {
         // Treat count like consume_count if followed by _
-        Some((count, mangled2))
+        Some((count, mangled_post_count))
     } else {
         // Only count first digit otherwise
         Some(((digit - b'0') as usize, &mangled[1..]))
