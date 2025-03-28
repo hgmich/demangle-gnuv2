@@ -52,7 +52,7 @@ pub struct DemangleStyle {
 }
 
 /// Types that can be encoded in the signatures of mangled functions.
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 enum TypeKind {
     None,
     Pointer,
@@ -368,7 +368,7 @@ struct DemanglerState {
     static_type: i32,
     temp_start: i32,
     dllimported: i32,
-    tmpl_argvec: Vec<String>,
+    tmpl_argvec: Vec<Vec<u8>>,
     ntmpl_args: i32,
     forgetting_types: i32,
     previous_argument: String,
@@ -516,7 +516,8 @@ fn gnu_special<'a, 'b>(
                         mangled = mangled2;
                     }
                     b't' => {
-                        let mangled2 = demangle_template(state, mangled, declp, false, true, true)?;
+                        let (_, mangled2) =
+                            demangle_template(state, mangled, declp, None, true, true)?;
                         mangled = mangled2;
                     }
                     c => {
@@ -573,7 +574,7 @@ fn gnu_special<'a, 'b>(
                     mangled = mangled2;
                 }
                 b't' => {
-                    let mangled2 = demangle_template(state, mangled, declp, false, true, true)?;
+                    let (_, mangled2) = demangle_template(state, mangled, declp, None, true, true)?;
                     mangled = mangled2;
                 }
                 _ => {
@@ -621,12 +622,12 @@ fn gnu_special<'a, 'b>(
                 }
                 b't' => {
                     log::debug!("typeinfo: template");
-                    let mangled2 = demangle_template(state, mangled, declp, false, true, true)?;
+                    let (_, mangled2) = demangle_template(state, mangled, declp, None, true, true)?;
                     mangled = mangled2;
                 }
                 _ => {
                     log::debug!("typeinfo: fundamental type");
-                    let mangled2 = demangle_fund_type(state, mangled, declp)?;
+                    let (_, mangled2) = demangle_fund_type(state, mangled, declp)?;
                     if log::log_enabled!(log::Level::Debug) {
                         let declp_s =
                             std::str::from_utf8(&*declp).expect("failed to deserialize declp");
@@ -635,6 +636,12 @@ fn gnu_special<'a, 'b>(
 
                     mangled = mangled2;
                 }
+            }
+
+            if log::log_enabled!(log::Level::Debug) {
+                let mangled_s =
+                    std::str::from_utf8(&*mangled).expect("failed to deserialize mangled");
+                log::debug!("mangled after fund type: {mangled_s}");
             }
 
             if success && mangled != b"" {
@@ -669,12 +676,277 @@ fn demangle_template<'a>(
     state: &'_ mut DemanglerState,
     mangled: &'a [u8],
     tname: &'_ mut Vec<u8>,
-    trawname: bool,
+    trawname: Option<&'_ mut Vec<u8>>,
     is_type: bool,
     remember: bool,
-) -> Option<&'a [u8]> {
+) -> Option<(TypeKind, &'a [u8])> {
+    let mut mangled = &mangled[1..];
+    let mut is_java_array = false;
+    let mut need_comma = false;
+    let mut ty_k = TypeKind::None;
+
     log::debug!("demangle template");
-    todo!("implement demangle_template")
+
+    if is_type {
+        // Get template name
+        if mangled[0] == b'z' {
+            log::debug!("demangle template: is type, template param");
+            mangled = &mangled[2..];
+
+            let idx = {
+                let (idx, mangled2) = consume_count_with_underscores(mangled)?;
+                mangled = mangled2;
+                idx
+            };
+
+            todo!("implement demangle_template/z");
+        } else {
+            log::debug!("demangle template: is type, NOT template param");
+            let r = {
+                let (r, mangled2) = consume_count(mangled)?;
+                mangled = mangled2;
+                r
+            };
+            if r > mangled.len() {
+                return None;
+            }
+            is_java_array = state.opts.java() && mangled.starts_with(b"JArray1Z");
+            if !is_java_array {
+                tname.extend(&mangled[..r]);
+            }
+            if let Some(t) = trawname {
+                t.extend(&mangled[..r]);
+            }
+            mangled = &mangled[r..];
+        }
+    }
+
+    if !is_java_array {
+        tname.extend(b"<");
+    }
+
+    let r = {
+        let (r, mangled2) = get_count(mangled)?;
+        mangled = mangled2;
+        r
+    };
+
+    log::debug!("{r} template param(s)");
+
+    if !is_type {
+        let mut v = vec![];
+        v.resize_with(r, Vec::new);
+        state.tmpl_argvec = v;
+        state.ntmpl_args = r as i32;
+    }
+
+    if log::log_enabled!(log::Level::Debug) {
+        let tname_s = std::str::from_utf8(&*tname).expect("failed to deserialize tname");
+        log::debug!("tname: {tname_s}");
+    }
+
+    if log::log_enabled!(log::Level::Debug) {
+        let mangled_s = std::str::from_utf8(&*mangled).expect("failed to deserialize mangled");
+        log::debug!("mangled: {mangled_s}");
+    }
+
+    for i in 0..r {
+        log::debug!("demangle template: param {i}");
+        if need_comma {
+            tname.extend(b", ");
+        }
+        if mangled[0] == b'Z' {
+            let mut temp: Vec<u8> = vec![];
+            log::debug!("demangle_template: type parameter");
+            mangled = &mangled[1..];
+
+            (ty_k, mangled) = do_type(state, mangled, &mut temp)?;
+
+            tname.extend(&temp);
+
+            if !is_type {
+                log::debug!("demangle_template: add to argvec");
+                state.tmpl_argvec.get_mut(i)?.extend(&temp);
+            }
+        } else if mangled[0] == b'z' {
+            mangled = &mangled[1..];
+            todo!("implement template parameter demangle");
+        } else {
+            // value parameter
+            let mut temp: Vec<u8> = vec![];
+            let (ty_k2, mangled2) = do_type(state, mangled, &mut temp)?;
+            ty_k = ty_k2;
+            mangled = mangled2;
+
+            todo!("implement value parameter demangle");
+        }
+        need_comma = true;
+    }
+
+    if is_java_array {
+        tname.extend(b"[]");
+    } else {
+        tname.push(b'>');
+    }
+
+    if is_type && remember {
+        state.btypevec.push(tname.clone());
+    }
+
+    log::debug!("demangle_template: done");
+
+    Some((ty_k, mangled))
+}
+
+fn do_type<'a>(
+    state: &'_ mut DemanglerState,
+    mangled: &'a [u8],
+    result: &'_ mut Vec<u8>,
+) -> Option<(TypeKind, &'a [u8])> {
+    let mut mangled = mangled;
+    let mut done = false;
+    let mut ty_k = TypeKind::None;
+    let mut btype: Vec<u8> = vec![];
+    let mut decl: Vec<u8> = vec![];
+    result.clear();
+    log::debug!("do_type: enter");
+
+    while !done {
+        match mangled[0] {
+            // pointer types
+            b'p' | b'P' => {
+                log::debug!("do_type: pointer");
+                mangled = &mangled[1..];
+                if !state.opts.java() {
+                    decl.splice(0..0, b"*".iter().cloned());
+                }
+                if ty_k == TypeKind::None {
+                    ty_k = TypeKind::Pointer;
+                }
+            }
+            b'R' => {
+                // reference types
+                log::debug!("do_type: reference");
+                mangled = &mangled[1..];
+                decl.splice(0..0, b"&".iter().cloned());
+                if ty_k == TypeKind::None {
+                    ty_k = TypeKind::Reference;
+                }
+            }
+            b'A' => {
+                // array types
+                log::debug!("do_type: array");
+                mangled = &mangled[1..];
+                if !decl.is_empty() && (decl[0] == b'*' || decl[0] == b'&') {
+                    decl.splice(0..0, b"(".iter().cloned());
+                    decl.push(b')');
+                }
+                decl.push(b'[');
+                todo!("finish implementing array type");
+            }
+            b'T' => {
+                log::debug!("do_type: backref");
+                todo!("finish implementing backref type");
+            }
+            b'F' => {
+                log::debug!("do_type: function");
+                todo!("finish implementing function type");
+            }
+            b'O' => {
+                log::debug!("do_type: rvalue reference");
+                todo!("finish implementing rvalue type");
+            }
+            b'M' => {
+                log::debug!("do_type: member");
+                todo!("finish implementing member type");
+            }
+            b'G' => {
+                log::debug!("do_type: ?");
+                mangled = &mangled[1..];
+            }
+            b'C' | b'V' | b'u' => {
+                log::debug!("do_type: fundamental type qualifier");
+                if state.opts.ansi() {
+                    if !decl.is_empty() {
+                        decl.splice(0..0, b" ".iter().cloned());
+                    }
+
+                    decl.splice(0..0, demangle_qualifier(mangled[0]).iter().cloned());
+                }
+                mangled = &mangled[1..];
+            }
+            _ => {
+                done = true;
+            }
+        }
+    }
+
+    match mangled[0] {
+        b'Q' | b'K' => {
+            log::debug!("do_type: qualified type");
+            demangle_qualified(state, mangled, result, false, true)?;
+        }
+        b'B' => {
+            log::debug!("do_type: backref");
+            let n = {
+                let (n, mangled2) = get_count(&mangled[1..])?;
+
+                mangled = mangled2;
+                n
+            };
+
+            if n >= state.btypevec.len() {
+                return None;
+            }
+            result.extend(&state.btypevec[n]);
+        }
+        b'X' | b'Y' => {
+            log::debug!("do_type: template param");
+            mangled = &mangled[1..];
+            let idx = {
+                let (idx, mangled2) = consume_count_with_underscores(mangled)?;
+                mangled = mangled2;
+                idx
+            };
+
+            if idx >= state.tmpl_argvec.len() {
+                return None;
+            }
+
+            let (_, mangled2) = consume_count_with_underscores(mangled)?;
+            mangled = mangled2;
+
+            if !state.tmpl_argvec.is_empty() {
+                result.extend(&state.tmpl_argvec[idx]);
+            } else {
+                let buf = format!("T{idx}");
+                result.extend(buf.as_bytes());
+            }
+        }
+        _ => {
+            log::debug!("do_type: fallthrough (assumed fundamental type)");
+            ty_k = {
+                let (ty_k, mangled2) = demangle_fund_type(state, mangled, result)?;
+                mangled = mangled2;
+                ty_k
+            };
+        }
+    }
+
+    if !decl.is_empty() {
+        result.push(b' ');
+        result.extend(&decl);
+    }
+
+    if ty_k == TypeKind::None {
+        log::debug!("do_type: no type sepcified, assuming integral");
+        // If unknown, assume integral
+        ty_k = TypeKind::Integral;
+    }
+
+    log::debug!("do_type: done");
+
+    Some((ty_k, mangled))
 }
 
 fn append_blank(v: &mut Vec<u8>) {
@@ -687,7 +959,7 @@ fn demangle_fund_type<'a>(
     state: &'_ mut DemanglerState,
     mangled: &'a [u8],
     result: &'_ mut Vec<u8>,
-) -> Option<&'a [u8]> {
+) -> Option<(TypeKind, &'a [u8])> {
     let mut mangled = mangled;
     let mut ty_kind = TypeKind::Integral;
 
@@ -859,7 +1131,11 @@ fn demangle_fund_type<'a>(
             b't' => {
                 log::debug!("fundamental type: template");
                 let mut btype = vec![];
-                mangled = demangle_template(state, mangled, &mut btype, false, true, true)?;
+                mangled = {
+                    let (_, mangled2) =
+                        demangle_template(state, mangled, &mut btype, None, true, true)?;
+                    mangled2
+                };
                 result.extend(&btype);
             }
             _ => return None,
@@ -867,7 +1143,7 @@ fn demangle_fund_type<'a>(
     }
 
     log::debug!("fundamental type demangled");
-    Some(mangled)
+    Some((ty_kind, mangled))
 }
 
 fn demangle_qualifier(qualifier: u8) -> &'static [u8] {
@@ -983,6 +1259,29 @@ fn consume_count(mangled: &[u8]) -> Option<(usize, &[u8])> {
     let count = std::str::from_utf8(digits).ok()?.parse().ok()?;
 
     Some((count, mangled))
+}
+
+fn consume_count_with_underscores(mangled: &[u8]) -> Option<(usize, &[u8])> {
+    if mangled.starts_with(b"_") && mangled.ends_with(b"_") && mangled.len() > 1 {
+        let end = 0.max(mangled.len() - 1);
+
+        consume_count(&mangled[1..end])
+    } else {
+        None
+    }
+}
+
+fn get_count(mangled: &[u8]) -> Option<(usize, &[u8])> {
+    let digit = mangled[0];
+
+    let (count, mangled2) = consume_count(mangled)?;
+    if mangled2.len() > 0 && mangled2[0] == b'_' {
+        // Treat count like consume_count if followed by _
+        Some((count, mangled2))
+    } else {
+        // Only count first digit otherwise
+        Some(((digit - b'0') as usize, &mangled[1..]))
+    }
 }
 
 fn strpbrk<'a, 'b>(s: &'a [u8], accept: &'b [u8]) -> Option<&'a [u8]> {
