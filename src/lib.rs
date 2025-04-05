@@ -5,13 +5,13 @@ use memchr::memmem;
 #[bitfield(u32)]
 pub struct DemangleOpts {
     /// Demangle function arguments as well as symbol name.
-    params: bool,
+    pub params: bool,
 
     /// Include ANSI language features such as const, volatile, etc.
-    ansi: bool,
+    pub ansi: bool,
 
     /// Demangle as Java instead of as C++.
-    java: bool,
+    pub java: bool,
 
     /// Reserved space for future options.
     #[bits(5)]
@@ -20,7 +20,7 @@ pub struct DemangleOpts {
     /// Which demangling style(s) to apply.
     /// If none are set, defaults are loaded from (X)
     #[bits(8)]
-    style: DemangleStyle,
+    pub style: DemangleStyle,
 
     /// Padding/reserved space.
     #[bits(16)]
@@ -32,22 +32,22 @@ pub struct DemangleOpts {
 #[bitfield(u8)]
 pub struct DemangleStyle {
     /// Automatically detect the mangling style used by the mangled symbols.
-    auto: bool,
+    pub auto: bool,
 
     /// GNU-style symbol mangling.
-    gnu: bool,
+    pub gnu: bool,
 
     /// Lucid compiler symbol mangling.
-    lucid: bool,
+    pub lucid: bool,
 
     /// arm-gcc symbol mangling.
-    arm: bool,
+    pub arm: bool,
 
     /// HP aCC compiler symbol mangling.
-    hp: bool,
+    pub hp: bool,
 
     /// EDG compiler symbol mangling.
-    edg: bool,
+    pub edg: bool,
 
     /// Padding
     #[bits(2)]
