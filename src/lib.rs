@@ -373,10 +373,8 @@ enum StateSymbolKind {
 struct DemanglerState {
     opts: DemangleOpts,
     btypes: BTypeStore,
-    typevec: Vec<Vec<u8>>,
+    types: Vec<Vec<u8>>,
     ktypes: Vec<Vec<u8>>,
-    ntypes: i32,
-    typevec_size: i32,
     constructor: i32,
     destructor: i32,
     static_type: bool,
@@ -1545,14 +1543,15 @@ impl DemanglerState {
         let mut expect_func = false;
         let mut expect_return_type = false;
         let mut func_done = false;
+        let mut oldmangled = None;
 
         while success && mangled.len() > 0 {
             match mangled[0] {
                 b'Q' => {
-                    let oldmangled = mangled;
+                    oldmangled = Some(mangled);
 
                     self.demangle_qualified(mangled, declp, true, false)?;
-                    // self.typevec.push(value);
+                    // self.types.push(value);
                     if style.auto() || style.gnu() {
                         expect_func = true;
                     }
@@ -1575,9 +1574,23 @@ impl DemanglerState {
                 }
                 c if c.is_ascii_digit() => {
                     log::debug!("demangle signature: param class name");
-                    self.temp_start = -1;
-                    ConsumeVal { mangled, .. } = self.demangle_class(mangled, declp)?;
-                    todo!("implement demangle class");
+                    {
+                        let oldmangled = if let Some(bs) = oldmangled {
+                            bs
+                        } else {
+                            mangled
+                        };
+                        self.temp_start = -1; // Top of demangle_class
+                        ConsumeVal { mangled, .. } = self.demangle_class(mangled, declp)?;
+                        self.types.push(oldmangled.into());
+
+                        if style.auto() || style.gnu() || style.edg() {
+                            if mangled[0] == b'F' {
+                                expect_func = true;
+                            }
+                        }
+                    }
+                    oldmangled = None;
                 }
                 b'B' => {
                     log::debug!("demangle signature: param B");
@@ -1608,7 +1621,7 @@ impl DemanglerState {
             if success && expect_func {
                 func_done = true;
                 if style.lucid() || style.arm() || style.edg() {
-                    self.typevec.clear();
+                    self.types.clear();
                 }
                 ConsumeVal { mangled, .. } = self.demangle_args(mangled, declp)?;
                 // Since template include the mangling of their return types,
@@ -1646,11 +1659,11 @@ impl DemanglerState {
 
     fn demangle_class<'a>(
         &mut self,
-        mangled: &'a [u8],
+        mut mangled: &'a [u8],
         declp: &'_ mut Vec<u8>,
     ) -> Option<ConsumeVal<'a, ()>> {
         let mut class_name = vec![];
-        self.demangle_class_name(mangled, &mut class_name)?;
+        ConsumeVal { mangled, .. } = self.demangle_class_name(mangled, &mut class_name)?;
         let bindex = self.btypes.register();
         let mut class_name_sliced = &class_name[..];
         if ((self.constructor & 1) == 1) || ((self.destructor & 1) == 1) {
