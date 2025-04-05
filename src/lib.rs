@@ -540,11 +540,10 @@ impl DemanglerState {
 
     fn demangle_prefix<'a>(
         &mut self,
-        mangled: &'a [u8],
+        mut mangled: &'a [u8],
         declp: &mut Vec<u8>,
     ) -> Option<ConsumeVal<'a, ()>> {
         let mut success = true;
-        let mut mangled = mangled;
         let style = self.opts.style();
 
         if mangled.starts_with(b"__imp_") || mangled.starts_with(b"_imp__") {
@@ -669,10 +668,11 @@ impl DemanglerState {
 
     fn gnu_special<'a>(
         &mut self,
-        mangled: &'a [u8],
+        mut mangled: &'a [u8],
         declp: &mut Vec<u8>,
     ) -> Option<ConsumeVal<'a, ()>> {
-        let (mangled, case) = match mangled {
+        let case: GnuMangleCase;
+        (mangled, case) = match mangled {
             // GNU style destructor (_$_ or other markers)
             &[b'_', c, b'_', ref rest @ ..] if CPLUS_MARKERS.contains(&c) => {
                 log::debug!("GNU demangler: destructor");
@@ -726,7 +726,6 @@ impl DemanglerState {
                 mangled
             }
             GnuMangleCase::Vtable => {
-                let mut mangled = mangled;
                 while mangled != b"" {
                     match mangled[0] {
                         b'Q' | b'K' => {
@@ -1026,10 +1025,9 @@ impl DemanglerState {
 
     fn do_type<'a>(
         &mut self,
-        mangled: &'a [u8],
+        mut mangled: &'a [u8],
         result: &'_ mut Vec<u8>,
     ) -> Option<ConsumeVal<'a, TypeKind>> {
-        let mut mangled = mangled;
         let mut done = false;
         let mut ty_k = TypeKind::None;
         let mut btype: Vec<u8> = vec![];
@@ -1176,10 +1174,9 @@ impl DemanglerState {
 
     fn demangle_fund_type<'a>(
         &mut self,
-        mangled: &'a [u8],
+        mut mangled: &'a [u8],
         result: &'_ mut Vec<u8>,
     ) -> Option<ConsumeVal<'a, TypeKind>> {
-        let mut mangled = mangled;
         let mut ty_kind = TypeKind::Integral;
 
         // Collect any applicable type qualifiers
@@ -1361,10 +1358,9 @@ impl DemanglerState {
 
     fn demangle_class_name<'a>(
         &mut self,
-        mangled: &'a [u8],
+        mut mangled: &'a [u8],
         declp: &mut Vec<u8>,
     ) -> Option<ConsumeVal<'a, ()>> {
-        let mut mangled = mangled;
         log::debug!("demangle class type");
 
         let n;
@@ -1382,13 +1378,12 @@ impl DemanglerState {
 
     fn demangle_arm_hp_template<'a>(
         &mut self,
-        mangled: &'a [u8],
+        mut mangled: &'a [u8],
         n: usize,
         declp: &'_ mut Vec<u8>,
     ) -> Option<ConsumeVal<'a, ()>> {
         let mut p = vec![];
         let mut args = vec![];
-        let mut mangled = mangled;
 
         if self.opts.style().hp() && mangled[n] == b'X' {
             log::debug!("demangle template as HP cfront style");
@@ -1421,13 +1416,12 @@ impl DemanglerState {
 
     fn arm_pt<'a>(
         &'_ mut self,
-        mangled: &'a [u8],
+        mut mangled: &'a [u8],
         n: usize,
         anchor: &'_ mut Vec<u8>,
         args: &'_ mut Vec<u8>,
     ) -> Option<ConsumeVal<'a, ()>> {
         let style = self.opts.style();
-        let mut mangled = mangled;
 
         log::debug!("arm_pt");
 
@@ -1455,11 +1449,10 @@ impl DemanglerState {
 
     fn demangle_function_name<'a>(
         &mut self,
-        mangled: &'a [u8],
+        mut mangled: &'a [u8],
         declp: &mut Vec<u8>,
         scan: &'_ [u8],
     ) -> Option<ConsumeVal<'a, ()>> {
-        let mut mangled = mangled;
         let style = self.opts.style();
         let scan_idx = memmem::find(mangled, scan)?;
         declp.extend(&mangled[..scan_idx]);
@@ -1534,11 +1527,10 @@ impl DemanglerState {
 
     fn demangle_signature<'a>(
         &mut self,
-        mangled: &'a [u8],
+        mut mangled: &'a [u8],
         declp: &mut Vec<u8>,
     ) -> Option<ConsumeVal<'a, ()>> {
         let style = self.opts.style();
-        let mut mangled = mangled;
         let mut success = true;
         let mut expect_func = false;
         let mut expect_return_type = false;
@@ -1764,9 +1756,8 @@ fn strpbrk<'a, 'b>(s: &'a [u8], accept: &'b [u8]) -> Option<&'a [u8]> {
 
 const ARM_VTABLE_STRING: &[u8] = b"__vtbl__";
 
-fn arm_special<'a>(mangled: &'a [u8], declp: &mut Vec<u8>) -> Option<ConsumeVal<'a, ()>> {
+fn arm_special<'a>(mut mangled: &'a [u8], declp: &mut Vec<u8>) -> Option<ConsumeVal<'a, ()>> {
     let mut n = 0;
-    let mut mangled = mangled;
 
     log::debug!("arm_special");
 
