@@ -383,7 +383,7 @@ struct DemanglerState {
     tmpl_argvec: Vec<Vec<u8>>,
     ntmpl_args: i32,
     forgetting_types: i32,
-    previous_argument: String,
+    previous_argument: Vec<u8>,
     nrepeats: i32,
     symbol_kind: StateSymbolKind,
 }
@@ -1605,8 +1605,17 @@ impl DemanglerState {
                     todo!("implement demangle g++ template function");
                 }
                 _ => {
-                    log::debug!("demangle signature: param other");
-                    todo!("implement demangle other");
+                    log::debug!("demangle signature: outermost function");
+                    if style.auto() || style.gnu() {
+                        func_done = true;
+                        ConsumeVal { mangled, .. } = self.demangle_args(mangled, declp)?;
+                    } else {
+                        // Non-GNU manglers use a specific token to mark the start
+                        // of the outermost function argument tokens.  Typically 'F',
+                        // for ARM/HP-demangling, for example.  So if we find something
+                        // we are not prepared for, it must be an error.
+                        return None;
+                    }
                 }
             }
 
@@ -1643,10 +1652,119 @@ impl DemanglerState {
 
     fn demangle_args<'a>(
         &mut self,
-        mangled: &[u8],
+        mut mangled: &'a [u8],
         declp: &mut Vec<u8>,
     ) -> Option<ConsumeVal<'a, ()>> {
-        todo!()
+        log::debug!("demangle args");
+        let style = self.opts.style();
+        let mut arg: Vec<u8> = vec![];
+        let mut need_comma = false;
+        let mut t = 0;
+        let mut r = 0;
+        let mut temptype: u8 = 0;
+
+        if self.opts.params() {
+            declp.push(b'(');
+            if mangled.len() < 1 {
+                declp.extend(b"void");
+            }
+        }
+
+        let premangled = mangled;
+        while !mangled.is_empty() {
+            let b = mangled[0];
+            if (b == b'_' || b == b'e') && self.nrepeats <= 0 {
+                break;
+            }
+
+            if b == b'N' || b == b'T' {
+                mangled = &mangled[1..];
+                log::debug!("demangle_args: type parameter");
+                temptype = *premangled.get(1)?;
+
+                if temptype == b'N' {
+                    ConsumeVal { mangled, value: r } = get_count(mangled)?;
+                } else {
+                    r = 1;
+                }
+
+                if style.hp() || style.arm() || style.edg() && self.types.len() >= 10 {
+                    // If we have 10 or more types we might have more than a 1 digit
+                    // index so we'll have to consume the whole count here. This
+                    // will lose if the next thing is a type name preceded by a
+                    // count but it's impossible to demangle that case properly
+                    // anyway. Eg if we already have 12 types is T12Pc "(..., type1,
+                    // Pc, ...)"  or "(..., type12, char *, ...)"
+                    ConsumeVal { mangled, value: t } = consume_count(mangled)?;
+                } else {
+                    ConsumeVal { mangled, value: t } = get_count(mangled)?;
+                }
+                if style.lucid() || style.arm() || style.hp() || style.edg() {
+                    t -= 1;
+                }
+                // Validate the type index. Protect against illegal indices from
+                // malformed type strings.
+                if t >= self.types.len() {
+                    log::error!("illegal type index {t} in type string");
+                    return None;
+                }
+                while self.nrepeats > 0 || r > 0 {
+                    r -= 1;
+                    if need_comma && self.opts.params() {
+                        declp.extend(b", ");
+                    }
+
+                    // Rust won't let us borrow a subfield while a mutable borrow occurs
+                    // and we need `do_arg` to be generic about the source of the bytes
+                    let tem = &*self.types[t].to_owned();
+                    let _ = self.do_arg(&tem, &mut arg)?;
+
+                    if self.opts.params() {
+                        declp.extend(&arg);
+                    }
+                    arg.clear();
+                    need_comma = true;
+                }
+            } else {
+                log::debug!("demangle_args: non-parameterised type");
+                if need_comma && self.opts.params() {
+                    declp.extend(b", ");
+                }
+
+                if log::log_enabled!(log::Level::Debug) {
+                    let mangled_s =
+                        std::str::from_utf8(&*mangled).expect("failed to deserialize mangled");
+                    log::debug!("mangled after fund type: {mangled_s}");
+                }
+
+                ConsumeVal { mangled, .. } = self.do_arg(mangled, &mut arg)?;
+
+                if self.opts.params() {
+                    declp.extend(&arg);
+                }
+                arg.clear();
+                need_comma = true;
+            }
+        }
+
+        // variable args
+        if let Some(b'e') = mangled.get(0) {
+            log::debug!("demangle_args: varargs");
+            mangled = &mangled[1..];
+
+            if self.opts.params() {
+                if need_comma {
+                    declp.extend(b", ");
+                }
+                declp.extend(b"...");
+            }
+        }
+
+        if self.opts.params() {
+            declp.push(b')');
+        }
+
+        Some(ConsumeVal { mangled, value: () })
     }
 
     fn demangle_class<'a>(
@@ -1685,6 +1803,73 @@ impl DemanglerState {
             true => b".",
             false => b"::",
         }
+    }
+
+    fn do_arg<'a>(
+        &mut self,
+        mut mangled: &'a [u8],
+        result: &mut Vec<u8>,
+    ) -> Option<ConsumeVal<'a, ()>> {
+        log::debug!("do_arg");
+        let start = mangled;
+
+        if self.nrepeats > 0 {
+            log::debug!("do_arg: repeated type (count: {})", self.nrepeats);
+            self.nrepeats -= 1;
+
+            if !self.previous_argument.is_empty() {
+                // We want to reissue the previous type in this argument list.
+                result.extend(&self.previous_argument);
+                return Some(ConsumeVal { mangled, value: () });
+            } else {
+                return None;
+            }
+        }
+
+        if mangled[0] == b'n' {
+            log::debug!("do_arg: squangling repeat");
+            // A squangling-style repeat.
+            let value;
+            ConsumeVal { mangled, value } = consume_count(&mangled[1..])?;
+            self.nrepeats = value as i32;
+
+            if self.nrepeats <= 0 {
+                // not a repeat after all.
+                log::warn!("do_arg: got malformed repeat arg count {value}");
+                return None;
+            }
+
+            if self.nrepeats > 9 {
+                if mangled[0] != b'_' {
+                    // multi char repeats should be followed with '_'
+                    log::warn!(
+                        "do_arg: got malformed repeat arg count (missing '_' after multi-char repeat)"
+                    );
+                    return None;
+                } else {
+                    mangled = &mangled[1..];
+                }
+            }
+
+            // implement first repeat by recursively calling self
+            return self.do_arg(mangled, result);
+        }
+
+        // Save the result in self.previous_argument so that we can find it
+        // if it's repeated.  Note that saving START is not good enough: we
+        // do not want to add additional types to the back-referenceable
+        // type vector when processing a repeated type.
+        self.previous_argument.clear();
+
+        let mut prev_arg = vec![];
+        ConsumeVal { mangled, .. } = self.do_type(mangled, &mut prev_arg)?;
+        self.previous_argument.extend(&prev_arg);
+        result.extend(&self.previous_argument);
+
+        let idx = memmem::find(start, mangled)?;
+        self.types.push(start[..idx].into());
+
+        return Some(ConsumeVal { mangled, value: () });
     }
 }
 
