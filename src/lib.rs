@@ -428,12 +428,12 @@ impl Default for BTypeStore {
 }
 
 trait VecExt<T> {
-    fn prepend<'a>(&mut self, prepend_with: &'a [T]);
+    fn prepend(&mut self, prepend_with: &[T]);
 }
 
 impl<T: Clone> VecExt<T> for Vec<T> {
-    fn prepend<'a>(&mut self, prepend_with: &'a [T]) {
-        self.splice(0..0, prepend_with.into_iter().cloned());
+    fn prepend(&mut self, prepend_with: &[T]) {
+        self.splice(0..0, prepend_with.iter().cloned());
     }
 }
 
@@ -486,7 +486,7 @@ struct ConsumeVal<'a, Inner> {
 impl DemanglerState {
     fn extract_symbol_info(&self) -> Result<SymbolKind> {
         match &self.symbol_kind {
-            StateSymbolKind::Unknown => return Err(DemangleError::DemangleFailed),
+            StateSymbolKind::Unknown => Err(DemangleError::DemangleFailed),
             StateSymbolKind::VTable => Ok(SymbolKind::VTable),
             StateSymbolKind::StaticMember => Ok(SymbolKind::StaticMember),
             StateSymbolKind::TypeInfoNode => Ok(SymbolKind::TypeInfo(TypeInfoKind::Node)),
@@ -498,10 +498,10 @@ impl DemanglerState {
 
     fn extract_function_info(&self) -> Result<SymbolKind> {
         // TODO: implement properly
-        return Ok(SymbolKind::Function {
+        Ok(SymbolKind::Function {
             args: vec![],
             return_type: DemangledType::Void,
-        });
+        })
     }
 
     fn internal_demangle(&mut self, mangled: &[u8]) -> Vec<u8> {
@@ -520,7 +520,7 @@ impl DemanglerState {
             None
         };
 
-        let result = if let None = result {
+        let result = if result.is_none() {
             log::debug!("prefix demangle");
             self.demangle_prefix(mangled, &mut declp)
         } else {
@@ -528,7 +528,7 @@ impl DemanglerState {
         };
 
         let result = match result {
-            Some(ConsumeVal { mangled, .. }) if mangled.len() > 0 => {
+            Some(ConsumeVal { mangled, .. }) if !mangled.is_empty() => {
                 log::debug!("signature demangle");
                 self.demangle_signature(mangled, &mut declp)
             }
@@ -559,18 +559,16 @@ impl DemanglerState {
                     // Global destructor called at exit
                     mangled = &mangled[11..];
                     self.destructor = 2;
-                    match self.gnu_special(mangled, declp) {
-                        res @ Some(_) => return res,
-                        _ => {}
+                    if let res @ Some(_) = self.gnu_special(mangled, declp) {
+                        return res;
                     }
                 }
                 (Some(&c), b'I') if c == mangled[10] => {
                     // Global constructor called at init
                     mangled = &mangled[11..];
                     self.constructor = 2;
-                    match self.gnu_special(mangled, declp) {
-                        res @ Some(_) => return res,
-                        _ => {}
+                    if let res @ Some(_) = self.gnu_special(mangled, declp) {
+                        return res;
                     }
                 }
                 _ => {}
@@ -637,10 +635,10 @@ impl DemanglerState {
         } else if scan_idx == 0 && scan.len() > 2 && !scan[2].is_ascii_digit() && scan[2] != b't' {
             log::debug!("demangle_prefix: arm name");
             // mangled name that starts with "__"
-            if !(style.arm() || style.lucid() || style.hp() || style.edg()) {
-                if let None = arm_special(mangled, declp) {
-                    log::debug!("Not arm special");
-                }
+            if !(style.arm() || style.lucid() || style.hp() || style.edg())
+                && arm_special(mangled, declp).is_none()
+            {
+                log::debug!("Not arm special");
             }
         } else if scan.len() > 2 {
             // Mangled name does not start with "__" but does have one somewhere
@@ -689,7 +687,7 @@ impl DemanglerState {
 
             // static data member
             &[b'_', ref rest @ ..]
-                if rest.len() > 0
+                if !rest.is_empty()
                     && b"0123456789Qt".contains(&rest[0])
                     && CPLUS_MARKERS.iter().any(|m| rest.contains(m)) =>
             {
@@ -705,7 +703,7 @@ impl DemanglerState {
 
             // type info
             &[b'_', b'_', b't', ref rest @ ..]
-                if rest.len() > 0 && rest[0] == b'i' || rest[0] == b'f' =>
+                if !rest.is_empty() && rest[0] == b'i' || rest[0] == b'f' =>
             {
                 log::debug!("GNU demangler: typeinfo");
 
@@ -781,7 +779,7 @@ impl DemanglerState {
                 mangled
             }
             GnuMangleCase::StaticMember => {
-                let mut mangled = &mangled[..];
+                let mut mangled = mangled;
                 let p = strpbrk(mangled, CPLUS_MARKERS);
 
                 match mangled[0] {
@@ -855,7 +853,7 @@ impl DemanglerState {
 
                 if log::log_enabled!(log::Level::Debug) {
                     let mangled_s =
-                        std::str::from_utf8(&*mangled).expect("failed to deserialize mangled");
+                        std::str::from_utf8(mangled).expect("failed to deserialize mangled");
                     log::debug!("mangled after fund type: {mangled_s}");
                 }
 
@@ -875,7 +873,7 @@ impl DemanglerState {
         };
 
         if log::log_enabled!(log::Level::Debug) {
-            let mangled_s = std::str::from_utf8(&*mangled).expect("failed to deserialize mangled");
+            let mangled_s = std::str::from_utf8(mangled).expect("failed to deserialize mangled");
             log::debug!("mangled after fund type: {mangled_s}");
         }
 
@@ -966,7 +964,7 @@ impl DemanglerState {
         }
 
         if log::log_enabled!(log::Level::Debug) {
-            let mangled_s = std::str::from_utf8(&*mangled).expect("failed to deserialize mangled");
+            let mangled_s = std::str::from_utf8(mangled).expect("failed to deserialize mangled");
             log::debug!("mangled: {mangled_s}");
         }
 
@@ -1030,7 +1028,7 @@ impl DemanglerState {
     ) -> Option<ConsumeVal<'a, TypeKind>> {
         let mut done = false;
         let mut ty_k = TypeKind::None;
-        let mut btype: Vec<u8> = vec![];
+        let btype: Vec<u8> = vec![];
         let mut decl: Vec<u8> = vec![];
         result.clear();
         log::debug!("do_type: enter");
@@ -1323,7 +1321,7 @@ impl DemanglerState {
                     };
                     let buf_s = std::str::from_utf8(buf).ok()?;
                     let dec = usize::from_str_radix(buf_s, 16).ok()?;
-                    if dec > 64 || dec < 8 {
+                    if !(8..=64).contains(&dec) {
                         return None;
                     }
                     append_blank(result);
@@ -1388,7 +1386,7 @@ impl DemanglerState {
         if self.opts.style().hp() && mangled[n] == b'X' {
             log::debug!("demangle template as HP cfront style");
             todo!("implement hp cfront demangling");
-        } else if let Some(_) = self.arm_pt(mangled, n, &mut p, &mut args) {
+        } else if self.arm_pt(mangled, n, &mut p, &mut args).is_some() {
             log::debug!("demangle template as arm/extended HP cfront style");
             todo!("implement arm_pt demangling");
         } else if n > 10
@@ -1434,7 +1432,7 @@ impl DemanglerState {
                     value: len,
                     mangled,
                 } = consume_count(mangled)?;
-                if &args[len..] == &mangled[n..] && args[0] == b'_' {
+                if args[len..] == mangled[n..] && args[0] == b'_' {
                     args.splice(0..1, b"".iter().cloned());
                     return Some(ConsumeVal { value: (), mangled });
                 }
@@ -1531,13 +1529,13 @@ impl DemanglerState {
         declp: &mut Vec<u8>,
     ) -> Option<ConsumeVal<'a, ()>> {
         let style = self.opts.style();
-        let mut success = true;
+        let success = true;
         let mut expect_func = false;
-        let mut expect_return_type = false;
+        let expect_return_type = false;
         let mut func_done = false;
         let mut oldmangled = None;
 
-        while success && mangled.len() > 0 {
+        while success && !mangled.is_empty() {
             match mangled[0] {
                 b'Q' => {
                     oldmangled = Some(mangled);
@@ -1576,10 +1574,8 @@ impl DemanglerState {
                         ConsumeVal { mangled, .. } = self.demangle_class(mangled, declp)?;
                         self.types.push(oldmangled.into());
 
-                        if style.auto() || style.gnu() || style.edg() {
-                            if mangled[0] == b'F' {
-                                expect_func = true;
-                            }
+                        if (style.auto() || style.gnu() || style.edg()) && mangled[0] == b'F' {
+                            expect_func = true;
                         }
                     }
                     oldmangled = None;
@@ -1647,7 +1643,7 @@ impl DemanglerState {
             }
         }
 
-        return Some(ConsumeVal { mangled, value: () });
+        Some(ConsumeVal { mangled, value: () })
     }
 
     fn demangle_args<'a>(
@@ -1665,7 +1661,7 @@ impl DemanglerState {
 
         if self.opts.params() {
             declp.push(b'(');
-            if mangled.len() < 1 {
+            if mangled.is_empty() {
                 declp.extend(b"void");
             }
         }
@@ -1717,7 +1713,7 @@ impl DemanglerState {
                     // Rust won't let us borrow a subfield while a mutable borrow occurs
                     // and we need `do_arg` to be generic about the source of the bytes
                     let tem = &*self.types[t].to_owned();
-                    let _ = self.do_arg(&tem, &mut arg)?;
+                    let _ = self.do_arg(tem, &mut arg)?;
 
                     if self.opts.params() {
                         declp.extend(&arg);
@@ -1733,7 +1729,7 @@ impl DemanglerState {
 
                 if log::log_enabled!(log::Level::Debug) {
                     let mangled_s =
-                        std::str::from_utf8(&*mangled).expect("failed to deserialize mangled");
+                        std::str::from_utf8(mangled).expect("failed to deserialize mangled");
                     log::debug!("mangled after fund type: {mangled_s}");
                 }
 
@@ -1748,7 +1744,7 @@ impl DemanglerState {
         }
 
         // variable args
-        if let Some(b'e') = mangled.get(0) {
+        if let Some(b'e') = mangled.first() {
             log::debug!("demangle_args: varargs");
             mangled = &mangled[1..];
 
@@ -1869,7 +1865,7 @@ impl DemanglerState {
         let idx = memmem::find(start, mangled)?;
         self.types.push(start[..idx].into());
 
-        return Some(ConsumeVal { mangled, value: () });
+        Some(ConsumeVal { mangled, value: () })
     }
 }
 
@@ -1890,7 +1886,7 @@ fn demangle_qualifier(qualifier: u8) -> &'static [u8] {
     }
 }
 
-fn consume_count<'a>(mangled: &'a [u8]) -> Option<ConsumeVal<'a, usize>> {
+fn consume_count(mangled: &[u8]) -> Option<ConsumeVal<'_, usize>> {
     let digit_count = mangled.iter().take_while(|&b| b.is_ascii_digit()).count();
 
     let (digits, mangled) = mangled.split_at(digit_count);
@@ -1902,7 +1898,7 @@ fn consume_count<'a>(mangled: &'a [u8]) -> Option<ConsumeVal<'a, usize>> {
     })
 }
 
-fn consume_count_with_underscores<'a>(mangled: &'a [u8]) -> Option<ConsumeVal<'a, usize>> {
+fn consume_count_with_underscores(mangled: &[u8]) -> Option<ConsumeVal<'_, usize>> {
     if mangled.starts_with(b"_") && mangled.ends_with(b"_") && mangled.len() > 1 {
         let end = 0.max(mangled.len() - 1);
 
@@ -1912,14 +1908,14 @@ fn consume_count_with_underscores<'a>(mangled: &'a [u8]) -> Option<ConsumeVal<'a
     }
 }
 
-fn get_count<'a>(mangled: &'a [u8]) -> Option<ConsumeVal<'a, usize>> {
+fn get_count(mangled: &[u8]) -> Option<ConsumeVal<'_, usize>> {
     let digit = mangled[0];
 
     let ConsumeVal {
         value: count,
         mangled: mangled_post_count,
     } = consume_count(mangled)?;
-    if mangled_post_count.len() > 0 && mangled_post_count[0] == b'_' {
+    if !mangled_post_count.is_empty() && mangled_post_count[0] == b'_' {
         // Treat count like consume_count if followed by _
         Some(ConsumeVal {
             value: count,
@@ -1934,7 +1930,7 @@ fn get_count<'a>(mangled: &'a [u8]) -> Option<ConsumeVal<'a, usize>> {
     }
 }
 
-fn strpbrk<'a, 'b>(s: &'a [u8], accept: &'b [u8]) -> Option<&'a [u8]> {
+fn strpbrk<'a>(s: &'a [u8], accept: &[u8]) -> Option<&'a [u8]> {
     let position = s.iter().position(|c| accept.contains(c))?;
     Some(&s[position..])
 }
@@ -1955,7 +1951,7 @@ fn arm_special<'a>(mut mangled: &'a [u8], declp: &mut Vec<u8>) -> Option<Consume
         let mut scan = &mangled[ARM_VTABLE_STRING.len()..];
 
         // Check if it can be demangled
-        while scan.len() > 0 {
+        while !scan.is_empty() {
             ConsumeVal {
                 value: n,
                 mangled: scan,
@@ -1966,7 +1962,7 @@ fn arm_special<'a>(mut mangled: &'a [u8], declp: &mut Vec<u8>) -> Option<Consume
             }
         }
         mangled = &mangled[ARM_VTABLE_STRING.len()..];
-        while mangled.len() > 0 {
+        while !mangled.is_empty() {
             ConsumeVal { value: n, mangled } = consume_count(scan)?;
             if n > mangled.len() {
                 return None;

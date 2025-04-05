@@ -1,4 +1,4 @@
-use pyo3::{exceptions, prelude::*, types::PyList};
+use pyo3::{exceptions, prelude::*};
 
 #[pyclass]
 #[derive(Debug)]
