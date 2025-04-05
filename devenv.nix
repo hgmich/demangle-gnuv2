@@ -22,6 +22,7 @@
   tasks = {
     "workspace:build".exec = "cargo build --workspace";
     "workspace:lint".exec = "cargo clippy --workspace --keep-going -- -D warnings";
+    "workspace:fix-lints".exec = "cargo clippy --workspace --keep-going --fix";
     "workspace:fmt".exec = "cargo fmt --workspace";
     "pyext:develop".exec = "cd demangle-gnuv2-py && maturin develop";
   };
