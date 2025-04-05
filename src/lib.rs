@@ -372,13 +372,9 @@ enum StateSymbolKind {
 #[derive(Default, Debug)]
 struct DemanglerState {
     opts: DemangleOpts,
+    btypes: BTypeStore,
     typevec: Vec<Vec<u8>>,
-    ktypevec: Vec<Vec<u8>>,
-    btypevec: Vec<Vec<u8>>,
-    numk: i32,
-    numb: i32,
-    ksize: i32,
-    bsize: i32,
+    ktypes: Vec<Vec<u8>>,
     ntypes: i32,
     typevec_size: i32,
     constructor: i32,
@@ -392,6 +388,45 @@ struct DemanglerState {
     previous_argument: String,
     nrepeats: i32,
     symbol_kind: StateSymbolKind,
+}
+
+#[derive(Debug)]
+struct BTypeStore {
+    next_idx: usize,
+    storage: Vec<Option<Vec<u8>>>,
+}
+
+impl BTypeStore {
+    fn new() -> Self {
+        Self {
+            next_idx: 0,
+            storage: vec![],
+        }
+    }
+
+    fn register(&mut self) -> usize {
+        let idx = self.next_idx;
+        self.storage.push(None);
+        self.next_idx += 1;
+        idx
+    }
+
+    fn remember(&mut self, idx: usize, btype: &[u8]) -> Option<()> {
+        let cell = self.storage.get_mut(idx)?;
+        *cell = Some(btype.to_owned());
+
+        Some(())
+    }
+
+    fn get(&self, idx: usize) -> Option<&[u8]> {
+        self.storage.get(idx)?.as_deref()
+    }
+}
+
+impl Default for BTypeStore {
+    fn default() -> Self {
+        Self::new()
+    }
 }
 
 trait VecExt<T> {
@@ -872,10 +907,14 @@ impl DemanglerState {
         let mut is_java_array = false;
         let mut need_comma = false;
         let mut ty_k = TypeKind::None;
+        let mut bindex = None;
 
         log::debug!("demangle template");
 
         if is_type {
+            if remember {
+                bindex = Some(self.btypes.register());
+            }
             // Get template name
             if mangled[0] == b'z' {
                 log::debug!("demangle template: is type, template param");
@@ -971,14 +1010,12 @@ impl DemanglerState {
             need_comma = true;
         }
 
-        if is_java_array {
-            tname.extend(b"[]");
-        } else {
-            tname.push(b'>');
-        }
+        tname.extend(if is_java_array { &b"[]"[..] } else { &b">"[..] });
 
         if is_type && remember {
-            self.btypevec.push(tname.clone());
+            if let Some(idx) = bindex {
+                self.btypes.remember(idx, tname);
+            }
         }
 
         log::debug!("demangle_template: done");
@@ -1082,10 +1119,12 @@ impl DemanglerState {
                 let n;
                 ConsumeVal { value: n, mangled } = get_count(&mangled[1..])?;
 
-                if n >= self.btypevec.len() {
+                if let Some(btype) = self.btypes.get(n) {
+                    result.extend(btype);
+                } else {
+                    log::error!("symbol has backref to uncaptured btype {n}");
                     return None;
                 }
-                result.extend(&self.btypevec[n]);
             }
             b'X' | b'Y' => {
                 log::debug!("do_type: template param");
@@ -1297,11 +1336,12 @@ impl DemanglerState {
                 }
                 c if c.is_ascii_digit() => {
                     log::debug!("fundamental type: class");
+                    let bindex = self.btypes.register();
                     let mut btype = vec![];
                     ConsumeVal { mangled, .. } = self.demangle_class_name(mangled, &mut btype)?;
                     append_blank(result);
                     result.extend(&btype);
-                    self.btypevec.push(btype);
+                    self.btypes.remember(bindex, &btype);
                 }
                 b't' => {
                     log::debug!("fundamental type: template");
@@ -1611,13 +1651,14 @@ impl DemanglerState {
     ) -> Option<ConsumeVal<'a, ()>> {
         let mut class_name = vec![];
         self.demangle_class_name(mangled, &mut class_name)?;
-        let save_class_name_end = &class_name;
+        let bindex = self.btypes.register();
+        let mut class_name_sliced = &class_name[..];
         if ((self.constructor & 1) == 1) || ((self.destructor & 1) == 1) {
             // Adjust so we don't include template args
             if self.temp_start > 0 {
-                class_name.truncate(self.temp_start as usize);
+                class_name_sliced = &class_name_sliced[..self.temp_start as usize];
             }
-            declp.prepend(&class_name);
+            declp.prepend(class_name_sliced);
             if (self.destructor & 1) == 1 {
                 declp.prepend(b"~");
                 self.destructor -= 1;
@@ -1625,6 +1666,11 @@ impl DemanglerState {
                 self.constructor -= 1;
             }
         }
+
+        self.ktypes.push(class_name.clone());
+        self.btypes.remember(bindex, &class_name);
+        declp.prepend(self.scope_str());
+        declp.prepend(&class_name);
 
         Some(ConsumeVal { mangled, value: () })
     }
