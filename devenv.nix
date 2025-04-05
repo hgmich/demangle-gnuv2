@@ -15,6 +15,10 @@
     maturin==1.8.3
   '';
 
+  scripts.demangle.exec = ''
+    exec cargo run -p demangle-gnuv2 --bin demangle "$@"
+  '';
+
   tasks = {
     "workspace:build".exec = "cargo build --workspace";
     "workspace:lint".exec = "cargo clippy --workspace --keep-going -- -D warnings";
