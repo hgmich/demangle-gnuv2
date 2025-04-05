@@ -1655,9 +1655,9 @@ impl DemanglerState {
         let style = self.opts.style();
         let mut arg: Vec<u8> = vec![];
         let mut need_comma = false;
-        let mut t = 0;
-        let mut r = 0;
-        let mut temptype: u8 = 0;
+        let mut t;
+        let mut r;
+        let mut temptype: u8;
 
         if self.opts.params() {
             declp.push(b'(');
