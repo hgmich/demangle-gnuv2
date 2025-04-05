@@ -368,6 +368,7 @@ enum StateSymbolKind {
     TypeInfoFunction,
 }
 
+// TODO: remove and rename internal state fields as appropriate
 #[derive(Default, Debug)]
 struct DemanglerState {
     opts: DemangleOpts,
@@ -382,9 +383,9 @@ struct DemanglerState {
     typevec_size: i32,
     constructor: i32,
     destructor: i32,
-    static_type: i32,
+    static_type: bool,
     temp_start: i32,
-    dllimported: i32,
+    dllimported: bool,
     tmpl_argvec: Vec<Vec<u8>>,
     ntmpl_args: i32,
     forgetting_types: i32,
@@ -457,8 +458,17 @@ impl DemanglerState {
             StateSymbolKind::StaticMember => Ok(SymbolKind::StaticMember),
             StateSymbolKind::TypeInfoNode => Ok(SymbolKind::TypeInfo(TypeInfoKind::Node)),
             StateSymbolKind::TypeInfoFunction => Ok(SymbolKind::TypeInfo(TypeInfoKind::Function)),
+            StateSymbolKind::Function => self.extract_function_info(),
             sym => unimplemented!("output translation not implemented for symbol {sym:?}"),
         }
+    }
+
+    fn extract_function_info(&self) -> Result<SymbolKind> {
+        // TODO: implement properly
+        return Ok(SymbolKind::Function {
+            args: vec![],
+            return_type: DemangledType::Void,
+        });
     }
 
     fn internal_demangle(&mut self, mangled: &[u8]) -> Vec<u8> {
@@ -479,16 +489,152 @@ impl DemanglerState {
 
         let result = if let None = result {
             log::debug!("prefix demangle");
-            todo!("implement demangle_prefix")
-            // demangle_prefix(state, mangled, &mut declp)
+            self.demangle_prefix(mangled, &mut declp)
         } else {
             result
+        };
+
+        let result = match result {
+            Some(ConsumeVal { mangled, .. }) if mangled.len() > 0 => {
+                log::debug!("signature demangle");
+                self.demangle_signature(mangled, &mut declp)
+            }
+            _ => result,
         };
 
         declp
     }
 
-    fn gnu_special<'a, 'b>(
+    fn demangle_prefix<'a>(
+        &mut self,
+        mangled: &'a [u8],
+        declp: &mut Vec<u8>,
+    ) -> Option<ConsumeVal<'a, ()>> {
+        let mut success = true;
+        let mut mangled = mangled;
+        let style = self.opts.style();
+
+        if mangled.starts_with(b"__imp_") || mangled.starts_with(b"_imp__") {
+            // it's a symbol imported from a PE dynamic library.
+            // Check for both new style prefix _imp__ and legacy __imp_
+            // used by older versions of dlltool.
+            mangled = &mangled[6..];
+            self.dllimported = true;
+        } else if mangled.len() >= 11 && mangled.starts_with(b"_GLOBAL_") {
+            let marker = CPLUS_MARKERS.iter().find(|&&c| c == mangled[8]);
+            match (marker, mangled[10]) {
+                (Some(&c), b'D') if c == mangled[10] => {
+                    // Global destructor called at exit
+                    mangled = &mangled[11..];
+                    self.destructor = 2;
+                    match self.gnu_special(mangled, declp) {
+                        res @ Some(_) => return res,
+                        _ => {}
+                    }
+                }
+                (Some(&c), b'I') if c == mangled[10] => {
+                    // Global constructor called at init
+                    mangled = &mangled[11..];
+                    self.constructor = 2;
+                    match self.gnu_special(mangled, declp) {
+                        res @ Some(_) => return res,
+                        _ => {}
+                    }
+                }
+                _ => {}
+            }
+        } else if style.arm() || style.hp() || style.edg() {
+            if mangled.starts_with(b"__std__") {
+                // Global destructor (ARM style)
+                mangled = &mangled[7..];
+                self.destructor += 2;
+            } else if mangled.starts_with(b"__sti__") {
+                // Global constructor (ARM style)
+                mangled = &mangled[7..];
+                self.constructor += 2;
+            }
+        }
+
+        let scan_idx = memmem::find(mangled, b"__")?;
+        let scan = &mangled[scan_idx..];
+
+        if self.static_type {
+            if !scan[0].is_ascii_digit() && scan[0] != b't' {
+                success = false;
+            }
+        } else if scan_idx == 0
+            && scan.len() > 2
+            && (scan[2].is_ascii_digit()
+                || (scan[2] == b'Q')
+                || (scan[2] == b't')
+                || (scan[2] == b'K')
+                || (scan[2] == b'H'))
+        {
+            // The ARM says nothing about the mangling of local variables.
+            // But cfront mangles local variables by prepending __<nesting_level>
+            // to them. As an extension to ARM demangling we handle this case.
+            if style.lucid() || style.arm() || style.hp() && scan[2].is_ascii_digit() {
+                log::debug!("demangle_prefix: cfront local variable");
+                mangled = &scan[2..];
+                ConsumeVal { mangled, .. } = consume_count(mangled)?;
+                declp.extend(mangled);
+                mangled = &mangled[mangled.len()..];
+            } else {
+                // A GNU style constructor starts with __[0-9Qt].  But cfront uses
+                // names like __Q2_3foo3bar for nested type names.  So don't accept
+                // this style of constructor for cfront demangling.  A GNU
+                // style member-template constructor starts with 'H'
+                if style.lucid() || style.arm() || style.hp() || style.edg() {
+                    self.constructor += 1;
+                }
+                mangled = &scan[2..];
+            }
+        } else if style.arm() && scan.len() > 3 && scan[2..4] == b"pt"[..] {
+            log::debug!("demangle_prefix: cfront parameterized type");
+            // Cfront style parameterised type
+            ConsumeVal { mangled, .. } =
+                self.demangle_arm_hp_template(mangled, mangled.len(), declp)?;
+        } else if style.edg()
+            && scan.len() > 3
+            && ((scan[2..4] == b"pt"[..]) || (scan[2..4] == b"tm"[..]) || (scan[2..4] == b"ps"[..]))
+        {
+            log::debug!("demangle_prefix: edg parameterized type");
+            // EDG-style parameterized type
+            ConsumeVal { mangled, .. } =
+                self.demangle_arm_hp_template(mangled, mangled.len(), declp)?;
+        } else if scan_idx == 0 && scan.len() > 2 && !scan[2].is_ascii_digit() && scan[2] != b't' {
+            log::debug!("demangle_prefix: arm name");
+            // mangled name that starts with "__"
+            if !(style.arm() || style.lucid() || style.hp() || style.edg()) {
+                if let None = arm_special(mangled, declp) {
+                    log::debug!("Not arm special");
+                }
+            }
+        } else if scan.len() > 2 {
+            // Mangled name does not start with "__" but does have one somewhere
+            // in there with non empty stuff after it.  Looks like a global
+            // function name.
+            log::debug!("demangle_prefix: global function name");
+            ConsumeVal { mangled, .. } = self.demangle_function_name(mangled, declp, scan)?;
+            self.symbol_kind = StateSymbolKind::Function;
+        } else {
+            // Doesn't look like a mangled name
+            success = false;
+        }
+
+        if !success {
+            if self.constructor == 2 || self.destructor == 2 {
+                declp.extend(mangled);
+                mangled = &mangled[mangled.len()..];
+            } else {
+                return None;
+            }
+        }
+
+        Some(ConsumeVal { mangled, value: () })
+    }
+
+    fn gnu_special<'a>(
         &mut self,
         mangled: &'a [u8],
         declp: &mut Vec<u8>,
@@ -541,6 +687,9 @@ impl DemanglerState {
         let mangled = match case {
             GnuMangleCase::Destructor => {
                 self.destructor += 1;
+
+                self.symbol_kind = StateSymbolKind::Function;
+
                 mangled
             }
             GnuMangleCase::Vtable => {
@@ -582,7 +731,7 @@ impl DemanglerState {
                     match p {
                         None if success => {}
                         Some(p) if success && p == mangled => {
-                            declp.extend(b"::");
+                            declp.extend(self.scope_str());
                             mangled = &mangled[1..];
                         }
                         _ => {
@@ -692,6 +841,11 @@ impl DemanglerState {
 
             _ => mangled,
         };
+
+        if log::log_enabled!(log::Level::Debug) {
+            let mangled_s = std::str::from_utf8(&*mangled).expect("failed to deserialize mangled");
+            log::debug!("mangled after fund type: {mangled_s}");
+        }
 
         Some(ConsumeVal { value: (), mangled })
     }
@@ -1260,6 +1414,227 @@ impl DemanglerState {
 
         None
     }
+
+    fn demangle_function_name<'a>(
+        &mut self,
+        mangled: &'a [u8],
+        declp: &mut Vec<u8>,
+        scan: &'_ [u8],
+    ) -> Option<ConsumeVal<'a, ()>> {
+        let mut mangled = mangled;
+        let style = self.opts.style();
+        let scan_idx = memmem::find(mangled, scan)?;
+        declp.extend(&mangled[..scan_idx]);
+
+        // Consume the function name, including the "__" separating the name
+        // from the signature.  We are guaranteed that SCAN points to the
+        // separator.
+        // RUST NOTE: using scan_idx here to maintain provenance from original mangled
+        mangled = &mangled[(scan_idx + 2)..];
+
+        // We may be looking at an instantiation of a template function:
+        // foo__Xt1t2_Ft3t4, where t1, t2, ... are template arguments and a
+        // following _F marks the start of the function arguments.  Handle
+        // the template arguments first
+        if style.hp() && mangled[0] == b'X' {
+            log::debug!("demangle_function_name: hp style template");
+            ConsumeVal { mangled, .. } = self.demangle_arm_hp_template(mangled, 0, declp)?;
+            // mangled now refers to the 'F' marking the func args
+        }
+
+        if style.lucid() || style.arm() || style.hp() || style.edg() {
+            // See if we have an ARM style constructor or destructor operator.
+            // If so, then just record it, clear the decl, and return.
+            // We can't build the actual constructor/destructor decl until later,
+            // when we recover the class name from the signature.
+            if *declp == b"__ct"[..] {
+                self.constructor += 1;
+                declp.clear();
+                return Some(ConsumeVal { mangled, value: () });
+            } else if *declp == b"__dt"[..] {
+                self.destructor += 1;
+                declp.clear();
+                return Some(ConsumeVal { mangled, value: () });
+            }
+        }
+
+        if declp.len() >= 3 && declp[0..2] == b"op"[..] && CPLUS_MARKERS.contains(&declp[2]) {
+            // see if it's an assignment expression
+            if declp.len() >= 10 && declp[3..10] == b"assign_"[..] {
+                log::debug!("demangle_function_name: assignment operator");
+                todo!("implement operator= demangle");
+            } else {
+                log::debug!("demangle_function_name: other operator");
+                todo!("implement operator demangle");
+            }
+        } else if declp.len() >= 5 && declp[..4] == b"type"[..] && CPLUS_MARKERS.contains(&declp[4])
+        {
+            // type conversion operator
+            log::debug!("demangle_function_name: type conversion operator");
+            todo!("implement type conversion operator demangle");
+        } else if declp[0..4] == b"__op"[..] {
+            // ansi type conversion operator
+            log::debug!("demangle_function_name: ansi type conversion operator");
+            todo!("implement ansi type conversion operator demangle");
+        } else if declp[0..2] == b"__"[..]
+            && declp[2].is_ascii_lowercase()
+            && declp[3].is_ascii_lowercase()
+        {
+            if declp.len() == 5 {
+                // operator
+                log::debug!("demangle_function_name: alt operator");
+                todo!("implement alt operator demangle");
+            } else if declp[2] == b'a' && declp.len() == 6 {
+                // assignment
+                log::debug!("demangle_function_name: alt assignment");
+                todo!("implement alt assignment demangle");
+            }
+        }
+
+        Some(ConsumeVal { mangled, value: () })
+    }
+
+    fn demangle_signature<'a>(
+        &mut self,
+        mangled: &'a [u8],
+        declp: &mut Vec<u8>,
+    ) -> Option<ConsumeVal<'a, ()>> {
+        let style = self.opts.style();
+        let mut mangled = mangled;
+        let mut success = true;
+        let mut expect_func = false;
+        let mut expect_return_type = false;
+        let mut func_done = false;
+
+        while success && mangled.len() > 0 {
+            match mangled[0] {
+                b'Q' => {
+                    let oldmangled = mangled;
+
+                    self.demangle_qualified(mangled, declp, true, false)?;
+                    // self.typevec.push(value);
+                    if style.auto() || style.gnu() {
+                        expect_func = true;
+                    }
+                }
+                b'K' => {
+                    log::debug!("demangle signature: param K");
+                    todo!("implement demangle K");
+                }
+                b'S' => {
+                    log::debug!("demangle signature: param S");
+                    todo!("implement demangle S");
+                }
+                b'C' | b'V' | b'u' => {
+                    log::debug!("demangle signature: param C/V/u");
+                    todo!("implement demangle qualifiers");
+                }
+                b'L' => {
+                    log::debug!("demangle signature: param L");
+                    todo!("implement demangle L");
+                }
+                c if c.is_ascii_digit() => {
+                    log::debug!("demangle signature: param class name");
+                    self.temp_start = -1;
+                    ConsumeVal { mangled, .. } = self.demangle_class(mangled, declp)?;
+                    todo!("implement demangle class");
+                }
+                b'B' => {
+                    log::debug!("demangle signature: param B");
+                    todo!("implement demangle B");
+                }
+                b'F' => {
+                    log::debug!("demangle signature: param F");
+                    todo!("implement demangle F");
+                }
+                b't' => {
+                    log::debug!("demangle signature: param t");
+                    todo!("implement demangle g++ template");
+                }
+                b'_' => {
+                    log::debug!("demangle signature: param _");
+                    todo!("implement demangle _");
+                }
+                b'H' => {
+                    log::debug!("demangle signature: param H");
+                    todo!("implement demangle g++ template function");
+                }
+                _ => {
+                    log::debug!("demangle signature: param other");
+                    todo!("implement demangle other");
+                }
+            }
+
+            if success && expect_func {
+                func_done = true;
+                if style.lucid() || style.arm() || style.edg() {
+                    self.typevec.clear();
+                }
+                ConsumeVal { mangled, .. } = self.demangle_args(mangled, declp)?;
+                // Since template include the mangling of their return types,
+                // we must set expect_func to 0 so that we don't try do
+                // demangle more arguments the next time we get here.
+                expect_func = false;
+            }
+        }
+
+        if success && !func_done && (style.auto() || style.gnu()) {
+            ConsumeVal { mangled, .. } = self.demangle_args(mangled, declp)?;
+        }
+
+        if success && self.opts.params() {
+            if self.static_type {
+                declp.extend(b" static");
+            }
+            // if self.type_quals.none
+            if false {
+                append_blank(declp);
+                // decl.extend(qualifier_string(self.type_quals))
+            }
+        }
+
+        return Some(ConsumeVal { mangled, value: () });
+    }
+
+    fn demangle_args<'a>(
+        &mut self,
+        mangled: &[u8],
+        declp: &mut Vec<u8>,
+    ) -> Option<ConsumeVal<'a, ()>> {
+        todo!()
+    }
+
+    fn demangle_class<'a>(
+        &mut self,
+        mangled: &'a [u8],
+        declp: &'_ mut Vec<u8>,
+    ) -> Option<ConsumeVal<'a, ()>> {
+        let mut class_name = vec![];
+        self.demangle_class_name(mangled, &mut class_name)?;
+        let save_class_name_end = &class_name;
+        if ((self.constructor & 1) == 1) || ((self.destructor & 1) == 1) {
+            // Adjust so we don't include template args
+            if self.temp_start > 0 {
+                class_name.truncate(self.temp_start as usize);
+            }
+            declp.prepend(&class_name);
+            if (self.destructor & 1) == 1 {
+                declp.prepend(b"~");
+                self.destructor -= 1;
+            } else {
+                self.constructor -= 1;
+            }
+        }
+
+        Some(ConsumeVal { mangled, value: () })
+    }
+
+    fn scope_str(&self) -> &'static [u8] {
+        match self.opts.java() {
+            true => b".",
+            false => b"::",
+        }
+    }
 }
 
 const CPLUS_MARKERS: &[u8] = &[b'$', b'.', 0u8];
@@ -1326,4 +1701,50 @@ fn get_count<'a>(mangled: &'a [u8]) -> Option<ConsumeVal<'a, usize>> {
 fn strpbrk<'a, 'b>(s: &'a [u8], accept: &'b [u8]) -> Option<&'a [u8]> {
     let position = s.iter().position(|c| accept.contains(c))?;
     Some(&s[position..])
+}
+
+const ARM_VTABLE_STRING: &[u8] = b"__vtbl__";
+
+fn arm_special<'a>(mangled: &'a [u8], declp: &mut Vec<u8>) -> Option<ConsumeVal<'a, ()>> {
+    let mut n = 0;
+    let mut mangled = mangled;
+
+    log::debug!("arm_special");
+
+    if mangled.starts_with(ARM_VTABLE_STRING) {
+        // Found a ARM style virtual table, get past ARM_VTABLE_STRING
+        // and create the decl.  Note that we consume the entire mangled
+        // input string, which means that demangle_signature has no work
+        // to do.
+
+        let mut scan = &mangled[ARM_VTABLE_STRING.len()..];
+
+        // Check if it can be demangled
+        while scan.len() > 0 {
+            ConsumeVal {
+                value: n,
+                mangled: scan,
+            } = consume_count(scan)?;
+            scan = &scan[n..];
+            if scan[0..2] == b"__"[..] {
+                scan = &scan[2..];
+            }
+        }
+        mangled = &mangled[ARM_VTABLE_STRING.len()..];
+        while mangled.len() > 0 {
+            ConsumeVal { value: n, mangled } = consume_count(scan)?;
+            if n > mangled.len() {
+                return None;
+            }
+            declp.prepend(&mangled[..n]);
+            if mangled[0..2] == b"__"[..] {
+                declp.prepend(b"::");
+                mangled = &mangled[2..];
+            }
+        }
+        declp.extend(b" virtual table");
+        return Some(ConsumeVal { mangled, value: () });
+    }
+
+    None
 }
