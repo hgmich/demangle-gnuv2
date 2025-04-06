@@ -1,0 +1,3892 @@
+{
+  "symbols": [
+    {
+      "mangled": "AbortConnectionAttempt__12CBabelClient",
+      "demangled": "CBabelClient::AbortConnectionAttempt(void)"
+    },
+    {
+      "mangled": "AcceptCore__16CBabelConnectionP12CBabelSocket",
+      "demangled": "CBabelConnection::AcceptCore(CBabelSocket *)"
+    },
+    {
+      "mangled": "AcceptCore__20CBabelClientPeerLinkP12CBabelSocket",
+      "demangled": "CBabelClientPeerLink::AcceptCore(CBabelSocket *)"
+    },
+    {
+      "mangled": "Accept__12CBabelSocket",
+      "demangled": "CBabelSocket::Accept(void)"
+    },
+    {
+      "mangled": "Accept__16CBabelConnection",
+      "demangled": "CBabelConnection::Accept(void)"
+    },
+    {
+      "mangled": "Accept__16CBabelSyncSocket",
+      "demangled": "CBabelSyncSocket::Accept(void)"
+    },
+    {
+      "mangled": "Accept__20CBabelClientPeerLink",
+      "demangled": "CBabelClientPeerLink::Accept(void)"
+    },
+    {
+      "mangled": "AddCAOSCommands__21NetworkImplementationR15CAOSDescription",
+      "demangled": "NetworkImplementation::AddCAOSCommands(CAOSDescription &)"
+    },
+    {
+      "mangled": "AddChannel__15CBabelAsyncCore",
+      "demangled": "CBabelAsyncCore::AddChannel(void)"
+    },
+    {
+      "mangled": "AddChild__15CBabelAsyncCore",
+      "demangled": "CBabelAsyncCore::AddChild(void)"
+    },
+    {
+      "mangled": "AddMessageToSpool__10NetManagerRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0PCci",
+      "demangled": "NetManager::AddMessageToSpool(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &, char const *, int)"
+    },
+    {
+      "mangled": "AddToWWRCoreBackgroundThread__10NetManager",
+      "demangled": "NetManager::AddToWWRCoreBackgroundThread(void)"
+    },
+    {
+      "mangled": "AddToWWRCore__10NetManagerRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "NetManager::AddToWWRCore(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "AddToWWR__10NetManagerRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Rb",
+      "demangled": "NetManager::AddToWWR(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &, bool &)"
+    },
+    {
+      "mangled": "AddTransactionTicket__12CBabelClientP23CBabelTransactionTicket",
+      "demangled": "CBabelClient::AddTransactionTicket(CBabelTransactionTicket *)"
+    },
+    {
+      "mangled": "AddUserOnline__12CBabelClientR5B_UIN",
+      "demangled": "CBabelClient::AddUserOnline(B_UIN &)"
+    },
+    {
+      "mangled": "AddWWREntry__12CBabelClientRC5B_UIN",
+      "demangled": "CBabelClient::AddWWREntry(B_UIN const &)"
+    },
+    {
+      "mangled": "Add__16CBabelConnection",
+      "demangled": "CBabelConnection::Add(void)"
+    },
+    {
+      "mangled": "Add__16CBabelConnectionP16CBabelConnection",
+      "demangled": "CBabelConnection::Add(CBabelConnection *)"
+    },
+    {
+      "mangled": "Add__20CBabelAsyncCoreChildP15CBabelAsyncCore",
+      "demangled": "CBabelAsyncCoreChild::Add(CBabelAsyncCore *)"
+    },
+    {
+      "mangled": "AllRead__15NetMemoryUnpack",
+      "demangled": "NetMemoryUnpack::AllRead(void)"
+    },
+    {
+      "mangled": "AsyncDSFetchRandomUser__12DSNetManager",
+      "demangled": "DSNetManager::AsyncDSFetchRandomUser(void)"
+    },
+    {
+      "mangled": "AsyncFetchUserData__10NetManager",
+      "demangled": "NetManager::AsyncFetchUserData(void)"
+    },
+    {
+      "mangled": "AsyncGetStatus__10NetManager",
+      "demangled": "NetManager::AsyncGetStatus(void)"
+    },
+    {
+      "mangled": "AttemptMigrate__23CBabelMigrateConnectionPciiUsUl",
+      "demangled": "CBabelMigrateConnection::AttemptMigrate(char *, int, int, unsigned short, unsigned long)"
+    },
+    {
+      "mangled": "Auto__17CBabelDConnection",
+      "demangled": "CBabelDConnection::Auto(void)"
+    },
+    {
+      "mangled": "BabelCallbackStatic__10NetManagerP12CBabelClientUiii",
+      "demangled": "NetManager::BabelCallbackStatic(CBabelClient *, unsigned int, int, int)"
+    },
+    {
+      "mangled": "BabelCallback__10NetManagerUiii",
+      "demangled": "NetManager::BabelCallback(unsigned int, int, int)"
+    },
+    {
+      "mangled": "BabelTrace__FPce",
+      "demangled": "BabelTrace(char *, ...)"
+    },
+    {
+      "mangled": "BeginThread__t11BabelThread1Z13MessageThreadP13MessageThreadPM13MessageThreadFP13MessageThread_v",
+      "demangled": "BabelThread<MessageThread>::BeginThread(MessageThread *, void (MessageThread::*)(MessageThread *))"
+    },
+    {
+      "mangled": "BeginThread__t11BabelThread1Z15CBabelAsyncCoreP15CBabelAsyncCorePM15CBabelAsyncCoreFP15CBabelAsyncCore_v",
+      "demangled": "BabelThread<CBabelAsyncCore>::BeginThread(CBabelAsyncCore *, void (CBabelAsyncCore::*)(CBabelAsyncCore *))"
+    },
+    {
+      "mangled": "BeginThread__t11BabelThread1Z20CBabelAsyncCoreChildP20CBabelAsyncCoreChildPM20CBabelAsyncCoreChildFP20CBabelAsyncCoreChild_v",
+      "demangled": "BabelThread<CBabelAsyncCoreChild>::BeginThread(CBabelAsyncCoreChild *, void (CBabelAsyncCoreChild::*)(CBabelAsyncCoreChild *))"
+    },
+    {
+      "mangled": "BindToFile__12ConfiguratorRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "Configurator::BindToFile(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "Block__11CAOSMachine",
+      "demangled": "CAOSMachine::Block(void)"
+    },
+    {
+      "mangled": "BreakLink__19CBabelUDPConnection",
+      "demangled": "CBabelUDPConnection::BreakLink(void)"
+    },
+    {
+      "mangled": "BytesReady__12CBabelSocket",
+      "demangled": "CBabelSocket::BytesReady(void)"
+    },
+    {
+      "mangled": "BytesReady__15CBabelAsyncCore",
+      "demangled": "CBabelAsyncCore::BytesReady(void)"
+    },
+    {
+      "mangled": "BytesReady__16CBabelSyncSocket",
+      "demangled": "CBabelSyncSocket::BytesReady(void)"
+    },
+    {
+      "mangled": "CalculatePackedSize__13NetMemoryPackRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "NetMemoryPack::CalculatePackedSize(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "CancelTickets__12CBabelClient",
+      "demangled": "CBabelClient::CancelTickets(void)"
+    },
+    {
+      "mangled": "CancelUsersOnlineNotification__12CBabelClient",
+      "demangled": "CBabelClient::CancelUsersOnlineNotification(void)"
+    },
+    {
+      "mangled": "CheckChannelExists__15CBabelSwitchBoxi",
+      "demangled": "CBabelSwitchBox::CheckChannelExists(int)"
+    },
+    {
+      "mangled": "CheckChunk__11PrayManagerGt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "PrayManager::CheckChunk(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>)"
+    },
+    {
+      "mangled": "CheckConnectedToInternet__12CBabelClient",
+      "demangled": "CBabelClient::CheckConnectedToInternet(void)"
+    },
+    {
+      "mangled": "CheckInDockingStation__12DSNetManager",
+      "demangled": "DSNetManager::CheckInDockingStation(void)"
+    },
+    {
+      "mangled": "CheckRequest__15NetMemoryUnpacki",
+      "demangled": "NetMemoryUnpack::CheckRequest(int)"
+    },
+    {
+      "mangled": "CheckUserOnline__12CBabelClientRC5B_UINb",
+      "demangled": "CBabelClient::CheckUserOnline(B_UIN const &, bool)"
+    },
+    {
+      "mangled": "ChoosePort__19CBabelUDPConnection",
+      "demangled": "CBabelUDPConnection::ChoosePort(void)"
+    },
+    {
+      "mangled": "ClearWWR__11NetHandlers",
+      "demangled": "NetHandlers::ClearWWR(void)"
+    },
+    {
+      "mangled": "ClientClientCommand__17CBabelDConnectionP10C_TID_BASE",
+      "demangled": "CBabelDConnection::ClientClientCommand(C_TID_BASE *)"
+    },
+    {
+      "mangled": "ClientMessage__12CBabelClientUiii",
+      "demangled": "CBabelClient::ClientMessage(unsigned int, int, int)"
+    },
+    {
+      "mangled": "CloseIChannel__12CBabelClient",
+      "demangled": "CBabelClient::CloseIChannel(void)"
+    },
+    {
+      "mangled": "CloseSocket__12SystemSocketi",
+      "demangled": "SystemSocket::CloseSocket(int)"
+    },
+    {
+      "mangled": "Close__12CBabelSocket",
+      "demangled": "CBabelSocket::Close(void)"
+    },
+    {
+      "mangled": "Close__13NetDirectLink",
+      "demangled": "NetDirectLink::Close(void)"
+    },
+    {
+      "mangled": "Close__15CBabelRadioLink",
+      "demangled": "CBabelRadioLink::Close(void)"
+    },
+    {
+      "mangled": "Close__16CBabelConnection",
+      "demangled": "CBabelConnection::Close(void)"
+    },
+    {
+      "mangled": "Close__16CBabelSyncSocket",
+      "demangled": "CBabelSyncSocket::Close(void)"
+    },
+    {
+      "mangled": "Close__17CBabelDConnection",
+      "demangled": "CBabelDConnection::Close(void)"
+    },
+    {
+      "mangled": "Close__19CBabelUDPConnection",
+      "demangled": "CBabelUDPConnection::Close(void)"
+    },
+    {
+      "mangled": "Close__20CBabelClientPeerLink",
+      "demangled": "CBabelClientPeerLink::Close(void)"
+    },
+    {
+      "mangled": "Closed__15CBabelAsyncCore",
+      "demangled": "CBabelAsyncCore::Closed(void)"
+    },
+    {
+      "mangled": "Command_NET__11NetHandlersR11CAOSMachine",
+      "demangled": "NetHandlers::Command_NET(CAOSMachine &)"
+    },
+    {
+      "mangled": "ConnectBackgroundThread__10NetManager",
+      "demangled": "NetManager::ConnectBackgroundThread(void)"
+    },
+    {
+      "mangled": "ConnectInBackground__10NetManagerRbRCt6vector2Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "NetManager::ConnectInBackground(bool &, vector<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, allocator<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>> const &)"
+    },
+    {
+      "mangled": "ConnectResponse__15CBabelRadioLinkiiiUl",
+      "demangled": "CBabelRadioLink::ConnectResponse(int, int, int, unsigned long)"
+    },
+    {
+      "mangled": "ConnectToPeer__10NetManagerRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "NetManager::ConnectToPeer(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "ConnectToPeer__12CBabelClientR5B_UINP16CBabelConnection",
+      "demangled": "CBabelClient::ConnectToPeer(B_UIN &, CBabelConnection *)"
+    },
+    {
+      "mangled": "Connect__10NetManager",
+      "demangled": "NetManager::Connect(void)"
+    },
+    {
+      "mangled": "Connect__12CBabelClientPCcN21ibT5",
+      "demangled": "CBabelClient::Connect(char const *, char const *, char const *, int, bool, bool)"
+    },
+    {
+      "mangled": "Connect__12CBabelClientPCcT1b",
+      "demangled": "CBabelClient::Connect(char const *, char const *, bool)"
+    },
+    {
+      "mangled": "Connect__12CBabelClientPCcibT3",
+      "demangled": "CBabelClient::Connect(char const *, int, bool, bool)"
+    },
+    {
+      "mangled": "Connect__12CBabelClientb",
+      "demangled": "CBabelClient::Connect(bool)"
+    },
+    {
+      "mangled": "Connect__13NetDirectLinkPCcUi",
+      "demangled": "NetDirectLink::Connect(char const *, unsigned int)"
+    },
+    {
+      "mangled": "Connect__13NetDirectLinkR5B_UIN",
+      "demangled": "NetDirectLink::Connect(B_UIN &)"
+    },
+    {
+      "mangled": "Connect__15CBabelAsyncCorePCci",
+      "demangled": "CBabelAsyncCore::Connect(char const *, int)"
+    },
+    {
+      "mangled": "Connect__15CBabelRadioLinkPCcUi",
+      "demangled": "CBabelRadioLink::Connect(char const *, unsigned int)"
+    },
+    {
+      "mangled": "Connect__15CBabelRadioLinkR5B_UIN",
+      "demangled": "CBabelRadioLink::Connect(B_UIN &)"
+    },
+    {
+      "mangled": "Connect__15CBabelRadioLinkiiP18CBabelRemoteSwitch",
+      "demangled": "CBabelRadioLink::Connect(int, int, CBabelRemoteSwitch *)"
+    },
+    {
+      "mangled": "Connect__15CBabelSwitchBoxiR5B_UIN",
+      "demangled": "CBabelSwitchBox::Connect(int, B_UIN &)"
+    },
+    {
+      "mangled": "Connect__15CBabelSwitchBoxiiUlP15CBabelRadioLink",
+      "demangled": "CBabelSwitchBox::Connect(int, int, unsigned long, CBabelRadioLink *)"
+    },
+    {
+      "mangled": "Connect__16CBabelConnectionPCcUi",
+      "demangled": "CBabelConnection::Connect(char const *, unsigned int)"
+    },
+    {
+      "mangled": "Connect__16CBabelConnectionR5B_UIN",
+      "demangled": "CBabelConnection::Connect(B_UIN &)"
+    },
+    {
+      "mangled": "Connect__16CBabelSyncSocketPCcUi",
+      "demangled": "CBabelSyncSocket::Connect(char const *, unsigned int)"
+    },
+    {
+      "mangled": "Connect__18CBabelRemoteSwitchR5B_UIN",
+      "demangled": "CBabelRemoteSwitch::Connect(B_UIN &)"
+    },
+    {
+      "mangled": "Connect__18CBabelRemoteSwitchiUlP15CBabelRadioLink",
+      "demangled": "CBabelRemoteSwitch::Connect(int, unsigned long, CBabelRadioLink *)"
+    },
+    {
+      "mangled": "Connect__19CBabelUDPConnectionPCcUi",
+      "demangled": "CBabelUDPConnection::Connect(char const *, unsigned int)"
+    },
+    {
+      "mangled": "Connect__19CBabelVirtualSocketP21C_TID_VIRTUAL_CONNECT",
+      "demangled": "CBabelVirtualSocket::Connect(C_TID_VIRTUAL_CONNECT *)"
+    },
+    {
+      "mangled": "Connect__19CBabelVirtualSocketR5B_UIN",
+      "demangled": "CBabelVirtualSocket::Connect(B_UIN &)"
+    },
+    {
+      "mangled": "ConnectionLost__12CBabelClient",
+      "demangled": "CBabelClient::ConnectionLost(void)"
+    },
+    {
+      "mangled": "ConnectionLost__18CBabelRemoteSwitchP15CBabelRadioLink",
+      "demangled": "CBabelRemoteSwitch::ConnectionLost(CBabelRadioLink *)"
+    },
+    {
+      "mangled": "Connectx__12CBabelClientPCcibT3Pvi",
+      "demangled": "CBabelClient::Connectx(char const *, int, bool, bool, void *, int)"
+    },
+    {
+      "mangled": "CreateChannel__15CBabelSwitchBoxi",
+      "demangled": "CBabelSwitchBox::CreateChannel(int)"
+    },
+    {
+      "mangled": "CreateIChannel__12CBabelClientP16CBabelConnection",
+      "demangled": "CBabelClient::CreateIChannel(CBabelConnection *)"
+    },
+    {
+      "mangled": "CreateSocket__15CBabelAsyncCoreiii",
+      "demangled": "CBabelAsyncCore::CreateSocket(int, int, int)"
+    },
+    {
+      "mangled": "CreateThread__12SystemThreadPUlPFPv_PvPvP14pthread_attr_tbUiUi",
+      "demangled": "SystemThread::CreateThread(unsigned long *, void *(*)(void *), void *, pthread_attr_t *, bool, unsigned int, unsigned int)"
+    },
+    {
+      "mangled": "Create__15CBabelRadioLinki",
+      "demangled": "CBabelRadioLink::Create(int)"
+    },
+    {
+      "mangled": "Create__16CBabelSyncSocketi",
+      "demangled": "CBabelSyncSocket::Create(int)"
+    },
+    {
+      "mangled": "Create__19CBabelUDPConnectioni",
+      "demangled": "CBabelUDPConnection::Create(int)"
+    },
+    {
+      "mangled": "Create__20CBabelClientPeerLinki",
+      "demangled": "CBabelClientPeerLink::Create(int)"
+    },
+    {
+      "mangled": "CreaturePresentForEvent__C9LifeEvent",
+      "demangled": "LifeEvent::CreaturePresentForEvent(void) const"
+    },
+    {
+      "mangled": "DSFeedHistory__12DSNetManagerPvi",
+      "demangled": "DSNetManager::DSFeedHistory(void *, int)"
+    },
+    {
+      "mangled": "DSFetchRandomUser__12DSNetManagerRb",
+      "demangled": "DSNetManager::DSFetchRandomUser(bool &)"
+    },
+    {
+      "mangled": "DSMultiplyBySeventeen__12DSNetManager",
+      "demangled": "DSNetManager::DSMultiplyBySeventeen(void)"
+    },
+    {
+      "mangled": "DataIn__19CBabelVirtualSocketPvUi",
+      "demangled": "CBabelVirtualSocket::DataIn(void *, unsigned int)"
+    },
+    {
+      "mangled": "DataOut__19CBabelVirtualSocketPvUi",
+      "demangled": "CBabelVirtualSocket::DataOut(void *, unsigned int)"
+    },
+    {
+      "mangled": "DealWithLength__13NetMemoryPacki",
+      "demangled": "NetMemoryPack::DealWithLength(int)"
+    },
+    {
+      "mangled": "DebugGetCurrentAction__10NetManager",
+      "demangled": "NetManager::DebugGetCurrentAction(void)"
+    },
+    {
+      "mangled": "Debug_free__FPv",
+      "demangled": "Debug_free(void *)"
+    },
+    {
+      "mangled": "Debug_malloc__FUi",
+      "demangled": "Debug_malloc(unsigned int)"
+    },
+    {
+      "mangled": "Debug_realloc__FPvUi",
+      "demangled": "Debug_realloc(void *, unsigned int)"
+    },
+    {
+      "mangled": "DecodeUniqueFilename__10NetManagerRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "NetManager::DecodeUniqueFilename(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "DeleteChannel__15CBabelSwitchBoxi",
+      "demangled": "CBabelSwitchBox::DeleteChannel(int)"
+    },
+    {
+      "mangled": "DeleteClosedChannels__15CBabelAsyncCore",
+      "demangled": "CBabelAsyncCore::DeleteClosedChannels(void)"
+    },
+    {
+      "mangled": "DeleteCriticalBlock__12SystemThreadP15pthread_mutex_t",
+      "demangled": "SystemThread::DeleteCriticalBlock(pthread_mutex_t *)"
+    },
+    {
+      "mangled": "DeleteFile__FPCc",
+      "demangled": "DeleteFile(char const *)"
+    },
+    {
+      "mangled": "DeleteMessage__12CBabelClienti",
+      "demangled": "CBabelClient::DeleteMessage(int)"
+    },
+    {
+      "mangled": "DirectMessageArrivedAsync__10NetManagerRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0T1",
+      "demangled": "NetManager::DirectMessageArrivedAsync(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "Disconnect__10NetManager",
+      "demangled": "NetManager::Disconnect(void)"
+    },
+    {
+      "mangled": "Disconnect__12CBabelClient",
+      "demangled": "CBabelClient::Disconnect(void)"
+    },
+    {
+      "mangled": "Disconnect__15CBabelRadioLinki",
+      "demangled": "CBabelRadioLink::Disconnect(int)"
+    },
+    {
+      "mangled": "Disconnect__15CBabelSwitchBox",
+      "demangled": "CBabelSwitchBox::Disconnect(void)"
+    },
+    {
+      "mangled": "Disconnect__15CBabelSwitchBoxi",
+      "demangled": "CBabelSwitchBox::Disconnect(int)"
+    },
+    {
+      "mangled": "Disconnect__15CBabelSwitchBoxiR5B_UIN",
+      "demangled": "CBabelSwitchBox::Disconnect(int, B_UIN &)"
+    },
+    {
+      "mangled": "Disconnect__18CBabelRemoteSwitch",
+      "demangled": "CBabelRemoteSwitch::Disconnect(void)"
+    },
+    {
+      "mangled": "Disconnect__18CBabelRemoteSwitchR5B_UIN",
+      "demangled": "CBabelRemoteSwitch::Disconnect(B_UIN &)"
+    },
+    {
+      "mangled": "Disconnected__15CBabelSwitchBoxiP15CBabelRadioLink",
+      "demangled": "CBabelSwitchBox::Disconnected(int, CBabelRadioLink *)"
+    },
+    {
+      "mangled": "Disconnected__18CBabelRemoteSwitchP15CBabelRadioLink",
+      "demangled": "CBabelRemoteSwitch::Disconnected(CBabelRadioLink *)"
+    },
+    {
+      "mangled": "DontDelete__15CBabelAsyncCore",
+      "demangled": "CBabelAsyncCore::DontDelete(void)"
+    },
+    {
+      "mangled": "DumpChannels__15CBabelAsyncCore",
+      "demangled": "CBabelAsyncCore::DumpChannels(void)"
+    },
+    {
+      "mangled": "DumpMessages__12CBabelClient",
+      "demangled": "CBabelClient::DumpMessages(void)"
+    },
+    {
+      "mangled": "DumpUserCache__12CBabelClient",
+      "demangled": "CBabelClient::DumpUserCache(void)"
+    },
+    {
+      "mangled": "EncodeAsUniqueFilename__10NetManagerRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0T1",
+      "demangled": "NetManager::EncodeAsUniqueFilename(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "EnterCriticalBlock__12SystemThreadP15pthread_mutex_t",
+      "demangled": "SystemThread::EnterCriticalBlock(pthread_mutex_t *)"
+    },
+    {
+      "mangled": "ExecuteScriptOnAgent__12AgentManagerG11AgentHandleiRC7CAOSVarN23",
+      "demangled": "AgentManager::ExecuteScriptOnAgent(AgentHandle, int, CAOSVar const &, CAOSVar const &, CAOSVar const &)"
+    },
+    {
+      "mangled": "ExecuteScriptOnAllAgents__12AgentManageriRC7CAOSVarN22",
+      "demangled": "AgentManager::ExecuteScriptOnAllAgents(int, CAOSVar const &, CAOSVar const &, CAOSVar const &)"
+    },
+    {
+      "mangled": "ExportHelper__12PrayHandlersR8CreatureGt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0T2bT4",
+      "demangled": "PrayHandlers::ExportHelper(Creature &, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, bool, bool)"
+    },
+    {
+      "mangled": "FailedOnCreate__12SystemThreadi",
+      "demangled": "SystemThread::FailedOnCreate(int)"
+    },
+    {
+      "mangled": "FetchGenericRV__11CAOSMachine",
+      "demangled": "CAOSMachine::FetchGenericRV(void)"
+    },
+    {
+      "mangled": "FetchIntegerRV__11CAOSMachine",
+      "demangled": "CAOSMachine::FetchIntegerRV(void)"
+    },
+    {
+      "mangled": "FetchStringRV__11CAOSMachineRt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "CAOSMachine::FetchStringRV(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> &)"
+    },
+    {
+      "mangled": "FetchUserData__10NetManagerRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Rt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Rb",
+      "demangled": "NetManager::FetchUserData(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> &, bool &)"
+    },
+    {
+      "mangled": "FetchVariable__11CAOSMachine",
+      "demangled": "CAOSMachine::FetchVariable(void)"
+    },
+    {
+      "mangled": "FileExists__FPCc",
+      "demangled": "FileExists(char const *)"
+    },
+    {
+      "mangled": "FileExtension__FRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "FileExtension(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "FileSize__FPCc",
+      "demangled": "FileSize(char const *)"
+    },
+    {
+      "mangled": "FindUserWhoSentFile__10NetManagerGt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "NetManager::FindUserWhoSentFile(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>)"
+    },
+    {
+      "mangled": "FirstName__25CBabelShortUserDataObject",
+      "demangled": "CBabelShortUserDataObject::FirstName(void)"
+    },
+    {
+      "mangled": "Flush__12Configurator",
+      "demangled": "Configurator::Flush(void)"
+    },
+    {
+      "mangled": "GetAddress__18HistoryTransferOut",
+      "demangled": "HistoryTransferOut::GetAddress(void)"
+    },
+    {
+      "mangled": "GetAddress__C13NetMemoryPack",
+      "demangled": "NetMemoryPack::GetAddress(void) const"
+    },
+    {
+      "mangled": "GetAgentManager__12AgentManager",
+      "demangled": "AgentManager::GetAgentManager(void)"
+    },
+    {
+      "mangled": "GetBabelClientToNetManagerMutex__10NetManager",
+      "demangled": "NetManager::GetBabelClientToNetManagerMutex(void)"
+    },
+    {
+      "mangled": "GetBabelClientToNetManager__10NetManager",
+      "demangled": "NetManager::GetBabelClientToNetManager(void)"
+    },
+    {
+      "mangled": "GetCachedUserID__11NetHandlers",
+      "demangled": "NetHandlers::GetCachedUserID(void)"
+    },
+    {
+      "mangled": "GetChunkParentFile__11PrayManagerGt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "PrayManager::GetChunkParentFile(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>)"
+    },
+    {
+      "mangled": "GetClientInfo__12CBabelClientPC5B_UINb",
+      "demangled": "CBabelClient::GetClientInfo(B_UIN const *, bool)"
+    },
+    {
+      "mangled": "GetClientInfo__12CBabelClientRC5B_UINb",
+      "demangled": "CBabelClient::GetClientInfo(B_UIN const &, bool)"
+    },
+    {
+      "mangled": "GetClient__10NetManager",
+      "demangled": "NetManager::GetClient(void)"
+    },
+    {
+      "mangled": "GetConnectionCount__15CBabelSwitchBoxi",
+      "demangled": "CBabelSwitchBox::GetConnectionCount(int)"
+    },
+    {
+      "mangled": "GetConnectionDetail__12CBabelClientRC5B_UINPUlPiPUsb",
+      "demangled": "CBabelClient::GetConnectionDetail(B_UIN const &, unsigned long *, int *, unsigned short *, bool)"
+    },
+    {
+      "mangled": "GetCreatureHistory__12HistoryStoreRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "HistoryStore::GetCreatureHistory(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "GetCreatureTarg__11CAOSMachine",
+      "demangled": "CAOSMachine::GetCreatureTarg(void)"
+    },
+    {
+      "mangled": "GetCurrentDebugText__13MessageThread",
+      "demangled": "MessageThread::GetCurrentDebugText(void)"
+    },
+    {
+      "mangled": "GetData__15NetMemoryUnpack",
+      "demangled": "NetMemoryUnpack::GetData(void)"
+    },
+    {
+      "mangled": "GetDebugText__C13QueuedMessage",
+      "demangled": "QueuedMessage::GetDebugText(void) const"
+    },
+    {
+      "mangled": "GetDirectoryManager__16DirectoryManager",
+      "demangled": "DirectoryManager::GetDirectoryManager(void)"
+    },
+    {
+      "mangled": "GetDirectory__16DirectoryManageri",
+      "demangled": "DirectoryManager::GetDirectory(int)"
+    },
+    {
+      "mangled": "GetFileVersion__16CreaturesArchive",
+      "demangled": "CreaturesArchive::GetFileVersion(void)"
+    },
+    {
+      "mangled": "GetFilesInDirectory__12NetUtilitiesRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Rt6vector2Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0T1",
+      "demangled": "NetUtilities::GetFilesInDirectory(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &, vector<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, allocator<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>> &, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "GetFlightRecorder__Fv",
+      "demangled": "GetFlightRecorder(void)"
+    },
+    {
+      "mangled": "GetGameVar__3AppRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "App::GetGameVar(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "GetHID__15CBabelSwitchBoxii",
+      "demangled": "CBabelSwitchBox::GetHID(int, int)"
+    },
+    {
+      "mangled": "GetHID__18CBabelRemoteSwitchi",
+      "demangled": "CBabelRemoteSwitch::GetHID(int)"
+    },
+    {
+      "mangled": "GetHostName__16CBabelSyncSocketPcUiRUi",
+      "demangled": "CBabelSyncSocket::GetHostName(char *, unsigned int, unsigned int &)"
+    },
+    {
+      "mangled": "GetIPAddress__12SystemSocketG7in_addr",
+      "demangled": "SystemSocket::GetIPAddress(in_addr)"
+    },
+    {
+      "mangled": "GetIP__20CBabelUserDataObjecti",
+      "demangled": "CBabelUserDataObject::GetIP(int)"
+    },
+    {
+      "mangled": "GetInboxDirectory__10NetManager",
+      "demangled": "NetManager::GetInboxDirectory(void)"
+    },
+    {
+      "mangled": "GetLastErrorFromBabel__10NetManager",
+      "demangled": "NetManager::GetLastErrorFromBabel(void)"
+    },
+    {
+      "mangled": "GetLastError__10NetManager",
+      "demangled": "NetManager::GetLastError(void)"
+    },
+    {
+      "mangled": "GetLastError__12SystemSocket",
+      "demangled": "SystemSocket::GetLastError(void)"
+    },
+    {
+      "mangled": "GetLength__18HistoryTransferOut",
+      "demangled": "HistoryTransferOut::GetLength(void)"
+    },
+    {
+      "mangled": "GetLifeEvent__15CreatureHistoryi",
+      "demangled": "CreatureHistory::GetLifeEvent(int)"
+    },
+    {
+      "mangled": "GetMessageCount__12CBabelClient",
+      "demangled": "CBabelClient::GetMessageCount(void)"
+    },
+    {
+      "mangled": "GetMessageSize__13CBabelMessage",
+      "demangled": "CBabelMessage::GetMessageSize(void)"
+    },
+    {
+      "mangled": "GetMessage__13CBabelMessage",
+      "demangled": "CBabelMessage::GetMessage(void)"
+    },
+    {
+      "mangled": "GetMessages__10NetManagerRt6vector2Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Rt6vector2ZQ211NetMessages11MessageTypeZt9allocator1ZQ211NetMessages11MessageTypeT1",
+      "demangled": "NetManager::GetMessages(vector<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, allocator<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>> &, vector<NetMessages::MessageType, allocator<NetMessages::MessageType>> &, vector<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, allocator<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>> &)"
+    },
+    {
+      "mangled": "GetMode__15CBabelSwitchBoxi",
+      "demangled": "CBabelSwitchBox::GetMode(int)"
+    },
+    {
+      "mangled": "GetNetManager__10NetManagerP12CBabelClient",
+      "demangled": "NetManager::GetNetManager(CBabelClient *)"
+    },
+    {
+      "mangled": "GetNetManager__11NetHandlers",
+      "demangled": "NetHandlers::GetNetManager(void)"
+    },
+    {
+      "mangled": "GetNetManager__21NetworkImplementation",
+      "demangled": "NetworkImplementation::GetNetManager(void)"
+    },
+    {
+      "mangled": "GetNetManager__C13MessageThread",
+      "demangled": "MessageThread::GetNetManager(void) const"
+    },
+    {
+      "mangled": "GetNewVirtualSocket__12CBabelClient",
+      "demangled": "CBabelClient::GetNewVirtualSocket(void)"
+    },
+    {
+      "mangled": "GetNickname__11NetHandlers",
+      "demangled": "NetHandlers::GetNickname(void)"
+    },
+    {
+      "mangled": "GetNickname__21NetworkImplementation",
+      "demangled": "NetworkImplementation::GetNickname(void)"
+    },
+    {
+      "mangled": "GetOutboxDirectory__10NetManager",
+      "demangled": "NetManager::GetOutboxDirectory(void)"
+    },
+    {
+      "mangled": "GetOverrideHost__10NetManager",
+      "demangled": "NetManager::GetOverrideHost(void)"
+    },
+    {
+      "mangled": "GetOverridePort__10NetManager",
+      "demangled": "NetManager::GetOverridePort(void)"
+    },
+    {
+      "mangled": "GetPeerName__16CBabelSyncSocketPcUiRUi",
+      "demangled": "CBabelSyncSocket::GetPeerName(char *, unsigned int, unsigned int &)"
+    },
+    {
+      "mangled": "GetPort__12CBabelClient",
+      "demangled": "CBabelClient::GetPort(void)"
+    },
+    {
+      "mangled": "GetPort__20CBabelUserDataObjecti",
+      "demangled": "CBabelUserDataObject::GetPort(int)"
+    },
+    {
+      "mangled": "GetPrayManager__11PrayManager",
+      "demangled": "PrayManager::GetPrayManager(void)"
+    },
+    {
+      "mangled": "GetServerFriendlyName__10NetManager",
+      "demangled": "NetManager::GetServerFriendlyName(void)"
+    },
+    {
+      "mangled": "GetServerFriendlyName__12CBabelClient",
+      "demangled": "CBabelClient::GetServerFriendlyName(void)"
+    },
+    {
+      "mangled": "GetServerHost__10NetManager",
+      "demangled": "NetManager::GetServerHost(void)"
+    },
+    {
+      "mangled": "GetServerID__10NetManager",
+      "demangled": "NetManager::GetServerID(void)"
+    },
+    {
+      "mangled": "GetServerID__12CBabelClient",
+      "demangled": "CBabelClient::GetServerID(void)"
+    },
+    {
+      "mangled": "GetServerList__10NetManagerRt6vector2Z16CBabelServerInfoZt9allocator1Z16CBabelServerInfo",
+      "demangled": "NetManager::GetServerList(vector<CBabelServerInfo, allocator<CBabelServerInfo>> &)"
+    },
+    {
+      "mangled": "GetServerPort__10NetManager",
+      "demangled": "NetManager::GetServerPort(void)"
+    },
+    {
+      "mangled": "GetServer__12CBabelClient",
+      "demangled": "CBabelClient::GetServer(void)"
+    },
+    {
+      "mangled": "GetSize__15NetMemoryUnpack",
+      "demangled": "NetMemoryUnpack::GetSize(void)"
+    },
+    {
+      "mangled": "GetSize__C13NetMemoryPack",
+      "demangled": "NetMemoryPack::GetSize(void) const"
+    },
+    {
+      "mangled": "GetSocket__15CBabelAsyncCore",
+      "demangled": "CBabelAsyncCore::GetSocket(void)"
+    },
+    {
+      "mangled": "GetSolidLifeEvent__15CreatureHistoryGQ215CreatureHistory10SolidIndex",
+      "demangled": "CreatureHistory::GetSolidLifeEvent(CreatureHistory::SolidIndex)"
+    },
+    {
+      "mangled": "GetState__15CBabelSwitchBoxi",
+      "demangled": "CBabelSwitchBox::GetState(int)"
+    },
+    {
+      "mangled": "GetStatus__10NetManagerRiN31Rb",
+      "demangled": "NetManager::GetStatus(int &, int &, int &, int &, bool &)"
+    },
+    {
+      "mangled": "GetStatus__12CBabelClient",
+      "demangled": "CBabelClient::GetStatus(void)"
+    },
+    {
+      "mangled": "GetTheApp__3App",
+      "demangled": "App::GetTheApp(void)"
+    },
+    {
+      "mangled": "GetType__13CBabelMessage",
+      "demangled": "CBabelMessage::GetType(void)"
+    },
+    {
+      "mangled": "GetUID__15CBabelSwitchBoxii",
+      "demangled": "CBabelSwitchBox::GetUID(int, int)"
+    },
+    {
+      "mangled": "GetUID__18CBabelRemoteSwitchi",
+      "demangled": "CBabelRemoteSwitch::GetUID(int)"
+    },
+    {
+      "mangled": "GetUIN__15CBabelSwitchBoxii",
+      "demangled": "CBabelSwitchBox::GetUIN(int, int)"
+    },
+    {
+      "mangled": "GetUIN__18CBabelRemoteSwitchi",
+      "demangled": "CBabelRemoteSwitch::GetUIN(int)"
+    },
+    {
+      "mangled": "GetUserDump__17NetDebugListUsersRt6vector2Z25CBabelShortUserDataObjectZt9allocator1Z25CBabelShortUserDataObject",
+      "demangled": "NetDebugListUsers::GetUserDump(vector<CBabelShortUserDataObject, allocator<CBabelShortUserDataObject>> &)"
+    },
+    {
+      "mangled": "GetUserId__21NetworkImplementation",
+      "demangled": "NetworkImplementation::GetUserId(void)"
+    },
+    {
+      "mangled": "GetUser__10NetManager",
+      "demangled": "NetManager::GetUser(void)"
+    },
+    {
+      "mangled": "GetUser__12CBabelClient",
+      "demangled": "CBabelClient::GetUser(void)"
+    },
+    {
+      "mangled": "GetWorldDirectoryVersion__16DirectoryManageriRt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0bGt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "DirectoryManager::GetWorldDirectoryVersion(int, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> &, bool, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>)"
+    },
+    {
+      "mangled": "Get__C12ConfiguratorRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Ri",
+      "demangled": "Configurator::Get(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &, int &) const"
+    },
+    {
+      "mangled": "Get__C12ConfiguratorRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Rt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "Configurator::Get(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> &) const"
+    },
+    {
+      "mangled": "H__C12CBabelSocket",
+      "demangled": "CBabelSocket::H(void) const"
+    },
+    {
+      "mangled": "H__C16CBabelSyncSocket",
+      "demangled": "CBabelSyncSocket::H(void) const"
+    },
+    {
+      "mangled": "H__C19CBabelVirtualSocket",
+      "demangled": "CBabelVirtualSocket::H(void) const"
+    },
+    {
+      "mangled": "Handle_Accept__15CBabelAsyncCore",
+      "demangled": "CBabelAsyncCore::Handle_Accept(void)"
+    },
+    {
+      "mangled": "Handle_Close__15CBabelAsyncCore",
+      "demangled": "CBabelAsyncCore::Handle_Close(void)"
+    },
+    {
+      "mangled": "Handle_Close__17CBabelDConnection",
+      "demangled": "CBabelDConnection::Handle_Close(void)"
+    },
+    {
+      "mangled": "Handle_Close__23CBabelMigrateConnection",
+      "demangled": "CBabelMigrateConnection::Handle_Close(void)"
+    },
+    {
+      "mangled": "Handle_Connect__15CBabelAsyncCore",
+      "demangled": "CBabelAsyncCore::Handle_Connect(void)"
+    },
+    {
+      "mangled": "Handle_Error__15CBabelAsyncCorei",
+      "demangled": "CBabelAsyncCore::Handle_Error(int)"
+    },
+    {
+      "mangled": "Handle_ReadEvent__15CBabelAsyncCore",
+      "demangled": "CBabelAsyncCore::Handle_ReadEvent(void)"
+    },
+    {
+      "mangled": "Handle_Read__15CBabelAsyncCore",
+      "demangled": "CBabelAsyncCore::Handle_Read(void)"
+    },
+    {
+      "mangled": "Handle_Read__17CBabelDConnection",
+      "demangled": "CBabelDConnection::Handle_Read(void)"
+    },
+    {
+      "mangled": "Handle_Read__23CBabelMigrateConnection",
+      "demangled": "CBabelMigrateConnection::Handle_Read(void)"
+    },
+    {
+      "mangled": "Handle_WriteEvent__15CBabelAsyncCore",
+      "demangled": "CBabelAsyncCore::Handle_WriteEvent(void)"
+    },
+    {
+      "mangled": "Handle_Write__15CBabelAsyncCore",
+      "demangled": "CBabelAsyncCore::Handle_Write(void)"
+    },
+    {
+      "mangled": "Handle__17CBabelDConnection",
+      "demangled": "CBabelDConnection::Handle(void)"
+    },
+    {
+      "mangled": "HistoryFeed__21NetworkImplementationR12HistoryStore",
+      "demangled": "NetworkImplementation::HistoryFeed(HistoryStore &)"
+    },
+    {
+      "mangled": "HistoryFillInUserID__21NetworkImplementationR12HistoryStoreRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "NetworkImplementation::HistoryFillInUserID(HistoryStore &, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "HistoryUploadComplete__21NetworkImplementationb",
+      "demangled": "NetworkImplementation::HistoryUploadComplete(bool)"
+    },
+    {
+      "mangled": "HowManyChannelsOpen__15CBabelAsyncCore",
+      "demangled": "CBabelAsyncCore::HowManyChannelsOpen(void)"
+    },
+    {
+      "mangled": "Init__11NetHandlers",
+      "demangled": "NetHandlers::Init(void)"
+    },
+    {
+      "mangled": "Init__12CBabelClient",
+      "demangled": "CBabelClient::Init(void)"
+    },
+    {
+      "mangled": "Init__13NetMemoryPacki",
+      "demangled": "NetMemoryPack::Init(int)"
+    },
+    {
+      "mangled": "Init__15NetMemoryUnpackPCvi",
+      "demangled": "NetMemoryUnpack::Init(void const *, int)"
+    },
+    {
+      "mangled": "Init__16CBabelSyncSocketi",
+      "demangled": "CBabelSyncSocket::Init(int)"
+    },
+    {
+      "mangled": "Init__21CBabelCriticalSection",
+      "demangled": "CBabelCriticalSection::Init(void)"
+    },
+    {
+      "mangled": "InitialiseCriticalBlock__12SystemThreadP15pthread_mutex_t",
+      "demangled": "SystemThread::InitialiseCriticalBlock(pthread_mutex_t *)"
+    },
+    {
+      "mangled": "InitializeSocket__16CBabelSyncSocketi",
+      "demangled": "CBabelSyncSocket::InitializeSocket(int)"
+    },
+    {
+      "mangled": "InitializeSocket__19CBabelUDPConnectioni",
+      "demangled": "CBabelUDPConnection::InitializeSocket(int)"
+    },
+    {
+      "mangled": "InitiateLink__19CBabelUDPConnectionPCcUi",
+      "demangled": "CBabelUDPConnection::InitiateLink(char const *, unsigned int)"
+    },
+    {
+      "mangled": "IntegerRV_NET_ERRA__11NetHandlersR11CAOSMachine",
+      "demangled": "NetHandlers::IntegerRV_NET_ERRA(CAOSMachine &)"
+    },
+    {
+      "mangled": "IntegerRV_NET_EXPO__11NetHandlersR11CAOSMachine",
+      "demangled": "NetHandlers::IntegerRV_NET_EXPO(CAOSMachine &)"
+    },
+    {
+      "mangled": "IntegerRV_NET_LINE__11NetHandlersR11CAOSMachine",
+      "demangled": "NetHandlers::IntegerRV_NET_LINE(CAOSMachine &)"
+    },
+    {
+      "mangled": "IntegerRV_NET_MAKE__11NetHandlersR11CAOSMachine",
+      "demangled": "NetHandlers::IntegerRV_NET_MAKE(CAOSMachine &)"
+    },
+    {
+      "mangled": "IntegerRV_NET_RAWE__11NetHandlersR11CAOSMachine",
+      "demangled": "NetHandlers::IntegerRV_NET_RAWE(CAOSMachine &)"
+    },
+    {
+      "mangled": "IntegerRV_NET_ULIN__11NetHandlersR11CAOSMachine",
+      "demangled": "NetHandlers::IntegerRV_NET_ULIN(CAOSMachine &)"
+    },
+    {
+      "mangled": "IntegerRV_NET__11NetHandlersR11CAOSMachine",
+      "demangled": "NetHandlers::IntegerRV_NET(CAOSMachine &)"
+    },
+    {
+      "mangled": "InvalidateSocket__16CBabelSyncSocket",
+      "demangled": "CBabelSyncSocket::InvalidateSocket(void)"
+    },
+    {
+      "mangled": "Ioctl__12SystemSocketilPUl",
+      "demangled": "SystemSocket::Ioctl(int, long, unsigned long *)"
+    },
+    {
+      "mangled": "IsConnected__15CBabelSwitchBoxi",
+      "demangled": "CBabelSwitchBox::IsConnected(int)"
+    },
+    {
+      "mangled": "IsConnected__18CBabelRemoteSwitch",
+      "demangled": "CBabelRemoteSwitch::IsConnected(void)"
+    },
+    {
+      "mangled": "IsInvalid__11AgentHandle",
+      "demangled": "AgentHandle::IsInvalid(void)"
+    },
+    {
+      "mangled": "IsLinked__19CBabelUDPConnection",
+      "demangled": "CBabelUDPConnection::IsLinked(void)"
+    },
+    {
+      "mangled": "IsNetworkInterface__15ModuleInterface",
+      "demangled": "ModuleInterface::IsNetworkInterface(void)"
+    },
+    {
+      "mangled": "IsNetworkInterface__16NetworkInterface",
+      "demangled": "NetworkInterface::IsNetworkInterface(void)"
+    },
+    {
+      "mangled": "IsNonblockingError__15CBabelAsyncCorei",
+      "demangled": "CBabelAsyncCore::IsNonblockingError(int)"
+    },
+    {
+      "mangled": "IsUserOnline__10NetManagerRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "NetManager::IsUserOnline(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "IsValid__11AgentHandle",
+      "demangled": "AgentHandle::IsValid(void)"
+    },
+    {
+      "mangled": "LastName__25CBabelShortUserDataObject",
+      "demangled": "CBabelShortUserDataObject::LastName(void)"
+    },
+    {
+      "mangled": "LeaveCriticalBlock__12SystemThreadP15pthread_mutex_t",
+      "demangled": "SystemThread::LeaveCriticalBlock(pthread_mutex_t *)"
+    },
+    {
+      "mangled": "LockBabelClientToNetManager__10NetManager",
+      "demangled": "NetManager::LockBabelClientToNetManager(void)"
+    },
+    {
+      "mangled": "Log__10NetManagerPCce",
+      "demangled": "NetManager::Log(char const *, ...)"
+    },
+    {
+      "mangled": "Log__14FlightRecorder14FlightCategoryPCce",
+      "demangled": "FlightRecorder::Log(FlightCategory, char const *, ...)"
+    },
+    {
+      "mangled": "Log__20NetLogImplementationPCc",
+      "demangled": "NetLogImplementation::Log(char const *)"
+    },
+    {
+      "mangled": "Loop__15CBabelAsyncCoreP7timeval",
+      "demangled": "CBabelAsyncCore::Loop(timeval *)"
+    },
+    {
+      "mangled": "MaintainState__15CBabelAsyncCore",
+      "demangled": "CBabelAsyncCore::MaintainState(void)"
+    },
+    {
+      "mangled": "MaintainThread__15CBabelAsyncCoreb",
+      "demangled": "CBabelAsyncCore::MaintainThread(bool)"
+    },
+    {
+      "mangled": "MakeHelper__12PrayHandlersGt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0N21R7CAOSVar",
+      "demangled": "PrayHandlers::MakeHelper(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, CAOSVar &)"
+    },
+    {
+      "mangled": "Manual__17CBabelDConnection",
+      "demangled": "CBabelDConnection::Manual(void)"
+    },
+    {
+      "mangled": "Mapped__15CBabelAsyncCore",
+      "demangled": "CBabelAsyncCore::Mapped(void)"
+    },
+    {
+      "mangled": "MarkChannelForDeletion__15CBabelAsyncCore",
+      "demangled": "CBabelAsyncCore::MarkChannelForDeletion(void)"
+    },
+    {
+      "mangled": "MessageDispatch__17CBabelDConnectionP10C_TID_BASE",
+      "demangled": "CBabelDConnection::MessageDispatch(C_TID_BASE *)"
+    },
+    {
+      "mangled": "Migrate__17CBabelDConnectionP10C_TID_BASE",
+      "demangled": "CBabelDConnection::Migrate(C_TID_BASE *)"
+    },
+    {
+      "mangled": "ModuleName__21NetworkImplementationRt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "NetworkImplementation::ModuleName(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> &)"
+    },
+    {
+      "mangled": "ModuleVersion__21NetworkImplementation",
+      "demangled": "NetworkImplementation::ModuleVersion(void)"
+    },
+    {
+      "mangled": "MoveFile__FPCcT0",
+      "demangled": "MoveFile(char const *, char const *)"
+    },
+    {
+      "mangled": "NextChangedUserWWR__10NetManagerRt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Rb",
+      "demangled": "NetManager::NextChangedUserWWR(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> &, bool &)"
+    },
+    {
+      "mangled": "Next__12HistoryStoreRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "HistoryStore::Next(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "NickName__25CBabelShortUserDataObject",
+      "demangled": "CBabelShortUserDataObject::NickName(void)"
+    },
+    {
+      "mangled": "NotifyAgentsWWR__11NetHandlersRt3set3Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandlebR7CAOSVarT3",
+      "demangled": "NetHandlers::NotifyAgentsWWR(set<AgentHandle, less<AgentHandle>, allocator<AgentHandle>> &, bool, CAOSVar &, CAOSVar &)"
+    },
+    {
+      "mangled": "NotifyAgentsWhetherOnline__21NetworkImplementationb",
+      "demangled": "NetworkImplementation::NotifyAgentsWhetherOnline(bool)"
+    },
+    {
+      "mangled": "NotifyAllWWRState__11NetHandlers",
+      "demangled": "NetHandlers::NotifyAllWWRState(void)"
+    },
+    {
+      "mangled": "NotifyListeningPort__12CBabelClienti",
+      "demangled": "CBabelClient::NotifyListeningPort(int)"
+    },
+    {
+      "mangled": "NotifyNewNickname__3AppRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "App::NotifyNewNickname(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "NotifyUsersOnline__11NetHandlersi",
+      "demangled": "NetHandlers::NotifyUsersOnline(int)"
+    },
+    {
+      "mangled": "NullMessageData__13CBabelMessage",
+      "demangled": "CBabelMessage::NullMessageData(void)"
+    },
+    {
+      "mangled": "OnlineChange__17CBabelDConnectionP10C_TID_BASE",
+      "demangled": "CBabelDConnection::OnlineChange(C_TID_BASE *)"
+    },
+    {
+      "mangled": "Online__10NetManager",
+      "demangled": "NetManager::Online(void)"
+    },
+    {
+      "mangled": "OutgoingMessageComplete__10NetManageri",
+      "demangled": "NetManager::OutgoingMessageComplete(int)"
+    },
+    {
+      "mangled": "OverrideHost__10NetManagerRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0i",
+      "demangled": "NetManager::OverrideHost(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &, int)"
+    },
+    {
+      "mangled": "PackCaosVarSize__11NetHandlersR7CAOSVar",
+      "demangled": "NetHandlers::PackCaosVarSize(CAOSVar &)"
+    },
+    {
+      "mangled": "PackCaosVar__11NetHandlersR13NetMemoryPackR7CAOSVar",
+      "demangled": "NetHandlers::PackCaosVar(NetMemoryPack &, CAOSVar &)"
+    },
+    {
+      "mangled": "PackInFile__13NetMemoryPackRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "NetMemoryPack::PackInFile(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "PackInInt__13NetMemoryPackRCi",
+      "demangled": "NetMemoryPack::PackInInt(int const &)"
+    },
+    {
+      "mangled": "PackIn__13NetMemoryPackPCvi",
+      "demangled": "NetMemoryPack::PackIn(void const *, int)"
+    },
+    {
+      "mangled": "PackIn__13NetMemoryPackRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "NetMemoryPack::PackIn(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "PackOutInt__15NetMemoryUnpackRi",
+      "demangled": "NetMemoryUnpack::PackOutInt(int &)"
+    },
+    {
+      "mangled": "PackOut__15NetMemoryUnpackPvi",
+      "demangled": "NetMemoryUnpack::PackOut(void *, int)"
+    },
+    {
+      "mangled": "PackOut__15NetMemoryUnpackRt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "NetMemoryUnpack::PackOut(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> &)"
+    },
+    {
+      "mangled": "Pack__13CBabelMessagePPv",
+      "demangled": "CBabelMessage::Pack(void **)"
+    },
+    {
+      "mangled": "Pack__17CBabelUserMessagePPv",
+      "demangled": "CBabelUserMessage::Pack(void **)"
+    },
+    {
+      "mangled": "Pack__25CBabelShortUserDataObjectPPv",
+      "demangled": "CBabelShortUserDataObject::Pack(void **)"
+    },
+    {
+      "mangled": "PeerHandlerStatic__10NetManagerP18C_BABELCLIENT_BASEP12CBabelSocketP12CBabelClient",
+      "demangled": "NetManager::PeerHandlerStatic(C_BABELCLIENT_BASE *, CBabelSocket *, CBabelClient *)"
+    },
+    {
+      "mangled": "PeerHandler__10NetManagerP18C_BABELCLIENT_BASEP12CBabelSocketP12CBabelClient",
+      "demangled": "NetManager::PeerHandler(C_BABELCLIENT_BASE *, CBabelSocket *, CBabelClient *)"
+    },
+    {
+      "mangled": "Persistent__15ModuleInterface",
+      "demangled": "ModuleInterface::Persistent(void)"
+    },
+    {
+      "mangled": "Persistent__21NetworkImplementation",
+      "demangled": "NetworkImplementation::Persistent(void)"
+    },
+    {
+      "mangled": "Poll__15CBabelAsyncCoreP7timeval",
+      "demangled": "CBabelAsyncCore::Poll(timeval *)"
+    },
+    {
+      "mangled": "PostDirectMessage__10NetManagerRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Pci",
+      "demangled": "NetManager::PostDirectMessage(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &, char *, int)"
+    },
+    {
+      "mangled": "PrecalculateLength__18HistoryTransferOut",
+      "demangled": "HistoryTransferOut::PrecalculateLength(void)"
+    },
+    {
+      "mangled": "PushTable__15CAOSDescriptionG15HandlerFunctioniRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0P6OpSpeci",
+      "demangled": "CAOSDescription::PushTable(HandlerFunction, int, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &, OpSpec *, int)"
+    },
+    {
+      "mangled": "PushTables__11NetHandlersR15CAOSDescription",
+      "demangled": "NetHandlers::PushTables(CAOSDescription &)"
+    },
+    {
+      "mangled": "QueryChannelCount__15CBabelRadioLink",
+      "demangled": "CBabelRadioLink::QueryChannelCount(void)"
+    },
+    {
+      "mangled": "QueryUsersOnline__12CBabelClient",
+      "demangled": "CBabelClient::QueryUsersOnline(void)"
+    },
+    {
+      "mangled": "QueueMessage__10NetManagerPC13QueuedMessage",
+      "demangled": "NetManager::QueueMessage(QueuedMessage const *)"
+    },
+    {
+      "mangled": "QueueMessage__13MessageThreadPC13QueuedMessage",
+      "demangled": "MessageThread::QueueMessage(QueuedMessage const *)"
+    },
+    {
+      "mangled": "RawGetLastError__10NetManager",
+      "demangled": "NetManager::RawGetLastError(void)"
+    },
+    {
+      "mangled": "ReadString__21CBabelReadWriteSocketPci",
+      "demangled": "CBabelReadWriteSocket::ReadString(char *, int)"
+    },
+    {
+      "mangled": "ReadString__21CBabelReadWriteSocketPwi",
+      "demangled": "CBabelReadWriteSocket::ReadString(wchar_t *, int)"
+    },
+    {
+      "mangled": "Read__11NetHandlersR16CreaturesArchive",
+      "demangled": "NetHandlers::Read(CreaturesArchive &)"
+    },
+    {
+      "mangled": "Read__13NetDirectLink",
+      "demangled": "NetDirectLink::Read(void)"
+    },
+    {
+      "mangled": "Read__15CBabelRadioLink",
+      "demangled": "CBabelRadioLink::Read(void)"
+    },
+    {
+      "mangled": "Read__15ModuleInterfaceR16CreaturesArchive",
+      "demangled": "ModuleInterface::Read(CreaturesArchive &)"
+    },
+    {
+      "mangled": "Read__16CBabelConnection",
+      "demangled": "CBabelConnection::Read(void)"
+    },
+    {
+      "mangled": "Read__16CreaturesArchiveRUl",
+      "demangled": "CreaturesArchive::Read(unsigned long &)"
+    },
+    {
+      "mangled": "Read__16CreaturesArchiveRt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "CreaturesArchive::Read(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> &)"
+    },
+    {
+      "mangled": "Read__17CBabelDConnection",
+      "demangled": "CBabelDConnection::Read(void)"
+    },
+    {
+      "mangled": "Read__17CBabelDConnectionPvi",
+      "demangled": "CBabelDConnection::Read(void *, int)"
+    },
+    {
+      "mangled": "Read__19CBabelUDPConnection",
+      "demangled": "CBabelUDPConnection::Read(void)"
+    },
+    {
+      "mangled": "Read__19CBabelVirtualSocketPvi",
+      "demangled": "CBabelVirtualSocket::Read(void *, int)"
+    },
+    {
+      "mangled": "Read__20CBabelClientPeerLink",
+      "demangled": "CBabelClientPeerLink::Read(void)"
+    },
+    {
+      "mangled": "Read__21CBabelReadWriteSocketPvi",
+      "demangled": "CBabelReadWriteSocket::Read(void *, int)"
+    },
+    {
+      "mangled": "Read__21NetworkImplementationR16CreaturesArchive",
+      "demangled": "NetworkImplementation::Read(CreaturesArchive &)"
+    },
+    {
+      "mangled": "Read__23CBabelMigrateConnectionPvi",
+      "demangled": "CBabelMigrateConnection::Read(void *, int)"
+    },
+    {
+      "mangled": "Readable__15CBabelAsyncCore",
+      "demangled": "CBabelAsyncCore::Readable(void)"
+    },
+    {
+      "mangled": "ReceiveDirectMessages__11NetHandlersi",
+      "demangled": "NetHandlers::ReceiveDirectMessages(int)"
+    },
+    {
+      "mangled": "ReleaseBabelClientToNetManager__10NetManager",
+      "demangled": "NetManager::ReleaseBabelClientToNetManager(void)"
+    },
+    {
+      "mangled": "RemoteSetState__15CBabelSwitchBoxii",
+      "demangled": "CBabelSwitchBox::RemoteSetState(int, int)"
+    },
+    {
+      "mangled": "RemoteSetState__18CBabelRemoteSwitchi",
+      "demangled": "CBabelRemoteSwitch::RemoteSetState(int)"
+    },
+    {
+      "mangled": "RemoveDirectLink__10NetManagerG5B_UINP13NetDirectLink",
+      "demangled": "NetManager::RemoveDirectLink(B_UIN, NetDirectLink *)"
+    },
+    {
+      "mangled": "RemoveFromWWR__10NetManagerRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "NetManager::RemoveFromWWR(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "RemoveLink__18CBabelRemoteSwitchP15CBabelRadioLink",
+      "demangled": "CBabelRemoteSwitch::RemoveLink(CBabelRadioLink *)"
+    },
+    {
+      "mangled": "RemoveUserOnline__12CBabelClientR5B_UIN",
+      "demangled": "CBabelClient::RemoveUserOnline(B_UIN &)"
+    },
+    {
+      "mangled": "RemoveWWREntry__12CBabelClientRC5B_UIN",
+      "demangled": "CBabelClient::RemoveWWREntry(B_UIN const &)"
+    },
+    {
+      "mangled": "Remove__20CBabelAsyncCoreChildP15CBabelAsyncCore",
+      "demangled": "CBabelAsyncCoreChild::Remove(CBabelAsyncCore *)"
+    },
+    {
+      "mangled": "RequestUsersOnlineNotification__12CBabelClient",
+      "demangled": "CBabelClient::RequestUsersOnlineNotification(void)"
+    },
+    {
+      "mangled": "ResetIteratorWWR__10NetManager",
+      "demangled": "NetManager::ResetIteratorWWR(void)"
+    },
+    {
+      "mangled": "Reset__5C_RID",
+      "demangled": "C_RID::Reset(void)"
+    },
+    {
+      "mangled": "ResolveChannelIndex__15CBabelSwitchBoxi",
+      "demangled": "CBabelSwitchBox::ResolveChannelIndex(int)"
+    },
+    {
+      "mangled": "ResolveChannel__15CBabelSwitchBoxi",
+      "demangled": "CBabelSwitchBox::ResolveChannel(int)"
+    },
+    {
+      "mangled": "Resume__20CBabelAsyncCoreChild",
+      "demangled": "CBabelAsyncCoreChild::Resume(void)"
+    },
+    {
+      "mangled": "RetrieveMessage__12CBabelClienti",
+      "demangled": "CBabelClient::RetrieveMessage(int)"
+    },
+    {
+      "mangled": "ReturnUniqueOutboxFilename__10NetManagerGt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "NetManager::ReturnUniqueOutboxFilename(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>)"
+    },
+    {
+      "mangled": "Searching__15CBabelAsyncCorei",
+      "demangled": "CBabelAsyncCore::Searching(int)"
+    },
+    {
+      "mangled": "SendBinaryMessage__12CBabelClientPviR5B_UINb",
+      "demangled": "CBabelClient::SendBinaryMessage(void *, int, B_UIN &, bool)"
+    },
+    {
+      "mangled": "SendChannelCount__15CBabelRadioLink",
+      "demangled": "CBabelRadioLink::SendChannelCount(void)"
+    },
+    {
+      "mangled": "SendConnectionHeader__13NetDirectLink",
+      "demangled": "NetDirectLink::SendConnectionHeader(void)"
+    },
+    {
+      "mangled": "SendCustomCommand__12CBabelClientR5B_UINi",
+      "demangled": "CBabelClient::SendCustomCommand(B_UIN &, int)"
+    },
+    {
+      "mangled": "SendData__13NetDirectLinkPci",
+      "demangled": "NetDirectLink::SendData(char *, int)"
+    },
+    {
+      "mangled": "SendMessage__12CBabelClientPvi",
+      "demangled": "CBabelClient::SendMessage(void *, int)"
+    },
+    {
+      "mangled": "SendOrdinaryMessages__10NetManager",
+      "demangled": "NetManager::SendOrdinaryMessages(void)"
+    },
+    {
+      "mangled": "SendTextMessage__12CBabelClientPCcR5B_UINb",
+      "demangled": "CBabelClient::SendTextMessage(char const *, B_UIN &, bool)"
+    },
+    {
+      "mangled": "Send__C20HistoryQueuedMessageRC13MessageThread",
+      "demangled": "HistoryQueuedMessage::Send(MessageThread const &) const"
+    },
+    {
+      "mangled": "Send__C21InternalQueuedMessageRC13MessageThread",
+      "demangled": "InternalQueuedMessage::Send(MessageThread const &) const"
+    },
+    {
+      "mangled": "Send__Ct27MemberFunctionQueuedMessage1Z10NetManagerRC13MessageThread",
+      "demangled": "MemberFunctionQueuedMessage<NetManager>::Send(MessageThread const &) const"
+    },
+    {
+      "mangled": "Send__Ct27MemberFunctionQueuedMessage1Z12DSNetManagerRC13MessageThread",
+      "demangled": "MemberFunctionQueuedMessage<DSNetManager>::Send(MessageThread const &) const"
+    },
+    {
+      "mangled": "SetBlocking__15CBabelAsyncCoreb",
+      "demangled": "CBabelAsyncCore::SetBlocking(bool)"
+    },
+    {
+      "mangled": "SetConnection__20CBabelUserDataObjectiUli",
+      "demangled": "CBabelUserDataObject::SetConnection(int, unsigned long, int)"
+    },
+    {
+      "mangled": "SetDebugText__13QueuedMessageRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "QueuedMessage::SetDebugText(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "SetDirectories__21NetworkImplementationRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0T1",
+      "demangled": "NetworkImplementation::SetDirectories(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "SetFirstName__25CBabelShortUserDataObjectPc",
+      "demangled": "CBabelShortUserDataObject::SetFirstName(char *)"
+    },
+    {
+      "mangled": "SetFirstName__25CBabelShortUserDataObjectPci",
+      "demangled": "CBabelShortUserDataObject::SetFirstName(char *, int)"
+    },
+    {
+      "mangled": "SetIPAddress__12SystemSocketR7in_addri",
+      "demangled": "SystemSocket::SetIPAddress(in_addr &, int)"
+    },
+    {
+      "mangled": "SetInboxDirectory__10NetManagerRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "NetManager::SetInboxDirectory(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "SetInteger__7CAOSVari",
+      "demangled": "CAOSVar::SetInteger(int)"
+    },
+    {
+      "mangled": "SetLastError__12SystemSocketi",
+      "demangled": "SystemSocket::SetLastError(int)"
+    },
+    {
+      "mangled": "SetLastName__25CBabelShortUserDataObjectPc",
+      "demangled": "CBabelShortUserDataObject::SetLastName(char *)"
+    },
+    {
+      "mangled": "SetLastName__25CBabelShortUserDataObjectPci",
+      "demangled": "CBabelShortUserDataObject::SetLastName(char *, int)"
+    },
+    {
+      "mangled": "SetMessage__13CBabelMessagePCcR5B_UIN",
+      "demangled": "CBabelMessage::SetMessage(char const *, B_UIN &)"
+    },
+    {
+      "mangled": "SetMessage__13CBabelMessagePCcUsUl",
+      "demangled": "CBabelMessage::SetMessage(char const *, unsigned short, unsigned long)"
+    },
+    {
+      "mangled": "SetMessage__13CBabelMessagePt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0R5B_UIN",
+      "demangled": "CBabelMessage::SetMessage(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> *, B_UIN &)"
+    },
+    {
+      "mangled": "SetMessage__13CBabelMessagePt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0UsUl",
+      "demangled": "CBabelMessage::SetMessage(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> *, unsigned short, unsigned long)"
+    },
+    {
+      "mangled": "SetMessage__13CBabelMessagePviG5B_UINb",
+      "demangled": "CBabelMessage::SetMessage(void *, int, B_UIN, bool)"
+    },
+    {
+      "mangled": "SetMessage__13CBabelMessagePviUsUlb",
+      "demangled": "CBabelMessage::SetMessage(void *, int, unsigned short, unsigned long, bool)"
+    },
+    {
+      "mangled": "SetMode__15CBabelSwitchBoxii",
+      "demangled": "CBabelSwitchBox::SetMode(int, int)"
+    },
+    {
+      "mangled": "SetNetManager__11NetHandlersP12DSNetManager",
+      "demangled": "NetHandlers::SetNetManager(DSNetManager *)"
+    },
+    {
+      "mangled": "SetNickName__25CBabelShortUserDataObjectPc",
+      "demangled": "CBabelShortUserDataObject::SetNickName(char *)"
+    },
+    {
+      "mangled": "SetNickName__25CBabelShortUserDataObjectPci",
+      "demangled": "CBabelShortUserDataObject::SetNickName(char *, int)"
+    },
+    {
+      "mangled": "SetNickname__11NetHandlersGt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0T1",
+      "demangled": "NetHandlers::SetNickname(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>)"
+    },
+    {
+      "mangled": "SetOutboxDirectory__10NetManagerRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "NetManager::SetOutboxDirectory(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "SetParent__17CBabelDConnectionP12CBabelClient",
+      "demangled": "CBabelDConnection::SetParent(CBabelClient *)"
+    },
+    {
+      "mangled": "SetPeerListener__12CBabelClientP16CBabelConnection",
+      "demangled": "CBabelClient::SetPeerListener(CBabelConnection *)"
+    },
+    {
+      "mangled": "SetPort__20CBabelUserDataObjectii",
+      "demangled": "CBabelUserDataObject::SetPort(int, int)"
+    },
+    {
+      "mangled": "SetRemote__19CBabelVirtualSocketUs",
+      "demangled": "CBabelVirtualSocket::SetRemote(unsigned short)"
+    },
+    {
+      "mangled": "SetServerList__10NetManagerRCt6vector2Z16CBabelServerInfoZt9allocator1Z16CBabelServerInfo",
+      "demangled": "NetManager::SetServerList(vector<CBabelServerInfo, allocator<CBabelServerInfo>> const &)"
+    },
+    {
+      "mangled": "SetServer__12CBabelClientGt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "CBabelClient::SetServer(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>)"
+    },
+    {
+      "mangled": "SetServer__12CBabelClientGt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0i",
+      "demangled": "CBabelClient::SetServer(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, int)"
+    },
+    {
+      "mangled": "SetServer__12CBabelClienti",
+      "demangled": "CBabelClient::SetServer(int)"
+    },
+    {
+      "mangled": "SetServer__16CBabelServerInfoGt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0T1ii",
+      "demangled": "CBabelServerInfo::SetServer(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, int, int)"
+    },
+    {
+      "mangled": "SetSocket__15CBabelAsyncCoreib",
+      "demangled": "CBabelAsyncCore::SetSocket(int, bool)"
+    },
+    {
+      "mangled": "SetState__15CBabelRadioLinkii",
+      "demangled": "CBabelRadioLink::SetState(int, int)"
+    },
+    {
+      "mangled": "SetState__15CBabelSwitchBoxii",
+      "demangled": "CBabelSwitchBox::SetState(int, int)"
+    },
+    {
+      "mangled": "SetState__18CBabelRemoteSwitchi",
+      "demangled": "CBabelRemoteSwitch::SetState(int)"
+    },
+    {
+      "mangled": "SetType__13CBabelMessagei",
+      "demangled": "CBabelMessage::SetType(int)"
+    },
+    {
+      "mangled": "SetType__15CBabelAsyncCorei",
+      "demangled": "CBabelAsyncCore::SetType(int)"
+    },
+    {
+      "mangled": "SetUser__10NetManagerRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "NetManager::SetUser(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "SetUser__10NetManagerRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0T1",
+      "demangled": "NetManager::SetUser(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "SetUser__12CBabelClientR5B_UIN",
+      "demangled": "CBabelClient::SetUser(B_UIN &)"
+    },
+    {
+      "mangled": "SetWarpFileExtension__10NetManagerRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "NetManager::SetWarpFileExtension(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "Set__12ConfiguratorRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0T1",
+      "demangled": "Configurator::Set(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "Set__12ConfiguratorRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0i",
+      "demangled": "Configurator::Set(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &, int)"
+    },
+    {
+      "mangled": "Shutdown__21NetworkImplementation",
+      "demangled": "NetworkImplementation::Shutdown(void)"
+    },
+    {
+      "mangled": "SignalNewWork__t11BabelThread1Z13MessageThread",
+      "demangled": "BabelThread<MessageThread>::SignalNewWork(void)"
+    },
+    {
+      "mangled": "SignalNewWork__t11BabelThread1Z20CBabelAsyncCoreChild",
+      "demangled": "BabelThread<CBabelAsyncCoreChild>::SignalNewWork(void)"
+    },
+    {
+      "mangled": "SignalTicket__23CBabelTransactionTicket",
+      "demangled": "CBabelTransactionTicket::SignalTicket(void)"
+    },
+    {
+      "mangled": "SignalTicket__23CBabelTransactionTicketP10C_TID_BASEP12CBabelSocket",
+      "demangled": "CBabelTransactionTicket::SignalTicket(C_TID_BASE *, CBabelSocket *)"
+    },
+    {
+      "mangled": "SignalTicket__23CBabelTransactionTicketP10C_TID_BASEP17CBabelDConnection",
+      "demangled": "CBabelTransactionTicket::SignalTicket(C_TID_BASE *, CBabelDConnection *)"
+    },
+    {
+      "mangled": "SignalTicket__28CBabelRadioTransactionTicketP20C_BABEL_RADIO_PACKET",
+      "demangled": "CBabelRadioTransactionTicket::SignalTicket(C_BABEL_RADIO_PACKET *)"
+    },
+    {
+      "mangled": "SkipAll__15NetMemoryUnpack",
+      "demangled": "NetMemoryUnpack::SkipAll(void)"
+    },
+    {
+      "mangled": "Skip__15NetMemoryUnpacki",
+      "demangled": "NetMemoryUnpack::Skip(int)"
+    },
+    {
+      "mangled": "SolidCount__C15CreatureHistory",
+      "demangled": "CreatureHistory::SolidCount(void) const"
+    },
+    {
+      "mangled": "SpoolEvents__18HistoryTransferOut",
+      "demangled": "HistoryTransferOut::SpoolEvents(void)"
+    },
+    {
+      "mangled": "SpoolHistory__18HistoryTransferOut",
+      "demangled": "HistoryTransferOut::SpoolHistory(void)"
+    },
+    {
+      "mangled": "SpoolInboxFile__10NetManagerRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0PCci",
+      "demangled": "NetManager::SpoolInboxFile(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &, char const *, int)"
+    },
+    {
+      "mangled": "SpoolMessages__10NetManager",
+      "demangled": "NetManager::SpoolMessages(void)"
+    },
+    {
+      "mangled": "SpoolMoniker__18HistoryTransferOut",
+      "demangled": "HistoryTransferOut::SpoolMoniker(void)"
+    },
+    {
+      "mangled": "SpoolName__18HistoryTransferOut",
+      "demangled": "HistoryTransferOut::SpoolName(void)"
+    },
+    {
+      "mangled": "SpoolUserText__18HistoryTransferOut",
+      "demangled": "HistoryTransferOut::SpoolUserText(void)"
+    },
+    {
+      "mangled": "StartThread__15CBabelAsyncCore",
+      "demangled": "CBabelAsyncCore::StartThread(void)"
+    },
+    {
+      "mangled": "StaticMain__t11BabelThread1Z13MessageThreadPv",
+      "demangled": "BabelThread<MessageThread>::StaticMain(void *)"
+    },
+    {
+      "mangled": "StaticMain__t11BabelThread1Z15CBabelAsyncCorePv",
+      "demangled": "BabelThread<CBabelAsyncCore>::StaticMain(void *)"
+    },
+    {
+      "mangled": "StaticMain__t11BabelThread1Z20CBabelAsyncCoreChildPv",
+      "demangled": "BabelThread<CBabelAsyncCoreChild>::StaticMain(void *)"
+    },
+    {
+      "mangled": "StringCopy__13SystemUnicodePcPCc",
+      "demangled": "SystemUnicode::StringCopy(char *, char const *)"
+    },
+    {
+      "mangled": "StringLength__13SystemUnicodePCc",
+      "demangled": "SystemUnicode::StringLength(char const *)"
+    },
+    {
+      "mangled": "StringRV_NET_FROM__11NetHandlersR11CAOSMachineRt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "NetHandlers::StringRV_NET_FROM(CAOSMachine &, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> &)"
+    },
+    {
+      "mangled": "StringRV_NET_HOST__11NetHandlersR11CAOSMachineRt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "NetHandlers::StringRV_NET_HOST(CAOSMachine &, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> &)"
+    },
+    {
+      "mangled": "StringRV_NET_PASS__11NetHandlersR11CAOSMachineRt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "NetHandlers::StringRV_NET_PASS(CAOSMachine &, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> &)"
+    },
+    {
+      "mangled": "StringRV_NET_USER__11NetHandlersR11CAOSMachineRt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "NetHandlers::StringRV_NET_USER(CAOSMachine &, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> &)"
+    },
+    {
+      "mangled": "StringRV_NET_WHAT__11NetHandlersR11CAOSMachineRt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "NetHandlers::StringRV_NET_WHAT(CAOSMachine &, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> &)"
+    },
+    {
+      "mangled": "StringRV_NET__11NetHandlersR11CAOSMachineRt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "NetHandlers::StringRV_NET(CAOSMachine &, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> &)"
+    },
+    {
+      "mangled": "StringToUser__12NetUtilitiesRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "NetUtilities::StringToUser(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "SubCommand_NET_HEAD__11NetHandlersR11CAOSMachine",
+      "demangled": "NetHandlers::SubCommand_NET_HEAD(CAOSMachine &)"
+    },
+    {
+      "mangled": "SubCommand_NET_HEAR__11NetHandlersR11CAOSMachine",
+      "demangled": "NetHandlers::SubCommand_NET_HEAR(CAOSMachine &)"
+    },
+    {
+      "mangled": "SubCommand_NET_LINE__11NetHandlersR11CAOSMachine",
+      "demangled": "NetHandlers::SubCommand_NET_LINE(CAOSMachine &)"
+    },
+    {
+      "mangled": "SubCommand_NET_PASS__11NetHandlersR11CAOSMachine",
+      "demangled": "NetHandlers::SubCommand_NET_PASS(CAOSMachine &)"
+    },
+    {
+      "mangled": "SubCommand_NET_RUSO__11NetHandlersR11CAOSMachine",
+      "demangled": "NetHandlers::SubCommand_NET_RUSO(CAOSMachine &)"
+    },
+    {
+      "mangled": "SubCommand_NET_STAT__11NetHandlersR11CAOSMachine",
+      "demangled": "NetHandlers::SubCommand_NET_STAT(CAOSMachine &)"
+    },
+    {
+      "mangled": "SubCommand_NET_UNIK__11NetHandlersR11CAOSMachine",
+      "demangled": "NetHandlers::SubCommand_NET_UNIK(CAOSMachine &)"
+    },
+    {
+      "mangled": "SubCommand_NET_WHOD__11NetHandlersR11CAOSMachine",
+      "demangled": "NetHandlers::SubCommand_NET_WHOD(CAOSMachine &)"
+    },
+    {
+      "mangled": "SubCommand_NET_WHOF__11NetHandlersR11CAOSMachine",
+      "demangled": "NetHandlers::SubCommand_NET_WHOF(CAOSMachine &)"
+    },
+    {
+      "mangled": "SubCommand_NET_WHON__11NetHandlersR11CAOSMachine",
+      "demangled": "NetHandlers::SubCommand_NET_WHON(CAOSMachine &)"
+    },
+    {
+      "mangled": "SubCommand_NET_WHOZ__11NetHandlersR11CAOSMachine",
+      "demangled": "NetHandlers::SubCommand_NET_WHOZ(CAOSMachine &)"
+    },
+    {
+      "mangled": "SubCommand_NET_WRIT__11NetHandlersR11CAOSMachine",
+      "demangled": "NetHandlers::SubCommand_NET_WRIT(CAOSMachine &)"
+    },
+    {
+      "mangled": "SuckData__15CBabelAsyncCore",
+      "demangled": "CBabelAsyncCore::SuckData(void)"
+    },
+    {
+      "mangled": "SuckData__15CBabelAsyncCorei",
+      "demangled": "CBabelAsyncCore::SuckData(int)"
+    },
+    {
+      "mangled": "TestUIN__12CBabelClientR5B_UIN",
+      "demangled": "CBabelClient::TestUIN(B_UIN &)"
+    },
+    {
+      "mangled": "ThreadCore__20CBabelAsyncCoreChild",
+      "demangled": "CBabelAsyncCoreChild::ThreadCore(void)"
+    },
+    {
+      "mangled": "Thread__13MessageThread",
+      "demangled": "MessageThread::Thread(void)"
+    },
+    {
+      "mangled": "ThrowInvalidAgentHandle__11CAOSMachineie",
+      "demangled": "CAOSMachine::ThrowInvalidAgentHandle(int, ...)"
+    },
+    {
+      "mangled": "ThrowRunError__11CAOSMachineRC9exception",
+      "demangled": "CAOSMachine::ThrowRunError(exception const &)"
+    },
+    {
+      "mangled": "ThrowRunError__11CAOSMachineie",
+      "demangled": "CAOSMachine::ThrowRunError(int, ...)"
+    },
+    {
+      "mangled": "ThrowTagRunError__11CAOSMachinePCcie",
+      "demangled": "CAOSMachine::ThrowTagRunError(char const *, int, ...)"
+    },
+    {
+      "mangled": "TicketDispatch__12CBabelClientP10C_TID_BASEP17CBabelDConnection",
+      "demangled": "CBabelClient::TicketDispatch(C_TID_BASE *, CBabelDConnection *)"
+    },
+    {
+      "mangled": "TicketDispatch__17CBabelDConnectionP10C_TID_BASE",
+      "demangled": "CBabelDConnection::TicketDispatch(C_TID_BASE *)"
+    },
+    {
+      "mangled": "Twinned__11NetHandlersG11AgentHandleT1",
+      "demangled": "NetHandlers::Twinned(AgentHandle, AgentHandle)"
+    },
+    {
+      "mangled": "Twinned__15ModuleInterfaceG11AgentHandleT1",
+      "demangled": "ModuleInterface::Twinned(AgentHandle, AgentHandle)"
+    },
+    {
+      "mangled": "Twinned__21NetworkImplementationG11AgentHandleT1",
+      "demangled": "NetworkImplementation::Twinned(AgentHandle, AgentHandle)"
+    },
+    {
+      "mangled": "Type__15CBabelAsyncCore",
+      "demangled": "CBabelAsyncCore::Type(void)"
+    },
+    {
+      "mangled": "UnBlock__11CAOSMachine",
+      "demangled": "CAOSMachine::UnBlock(void)"
+    },
+    {
+      "mangled": "UncheckedSkip__15NetMemoryUnpacki",
+      "demangled": "NetMemoryUnpack::UncheckedSkip(int)"
+    },
+    {
+      "mangled": "UnpackCaosVar__11NetHandlersR15NetMemoryUnpack",
+      "demangled": "NetHandlers::UnpackCaosVar(NetMemoryUnpack &)"
+    },
+    {
+      "mangled": "Unpack__13CBabelMessagePv",
+      "demangled": "CBabelMessage::Unpack(void *)"
+    },
+    {
+      "mangled": "Unpack__17CBabelUserMessagePv",
+      "demangled": "CBabelUserMessage::Unpack(void *)"
+    },
+    {
+      "mangled": "Unpack__25CBabelShortUserDataObjectPv",
+      "demangled": "CBabelShortUserDataObject::Unpack(void *)"
+    },
+    {
+      "mangled": "Update__13MessageThread",
+      "demangled": "MessageThread::Update(void)"
+    },
+    {
+      "mangled": "Update__15ModuleInterfacei",
+      "demangled": "ModuleInterface::Update(int)"
+    },
+    {
+      "mangled": "Update__21NetworkImplementationi",
+      "demangled": "NetworkImplementation::Update(int)"
+    },
+    {
+      "mangled": "UserOffline__17CBabelDConnectionP10C_TID_BASE",
+      "demangled": "CBabelDConnection::UserOffline(C_TID_BASE *)"
+    },
+    {
+      "mangled": "UserOnline__17CBabelDConnectionP10C_TID_BASE",
+      "demangled": "CBabelDConnection::UserOnline(C_TID_BASE *)"
+    },
+    {
+      "mangled": "UserSet__10NetManager",
+      "demangled": "NetManager::UserSet(void)"
+    },
+    {
+      "mangled": "UserToString__12NetUtilitiesRC5B_UIN",
+      "demangled": "NetUtilities::UserToString(B_UIN const &)"
+    },
+    {
+      "mangled": "UsingLink__18CBabelRemoteSwitchP15CBabelRadioLink",
+      "demangled": "CBabelRemoteSwitch::UsingLink(CBabelRadioLink *)"
+    },
+    {
+      "mangled": "VirtualCircuitClose__17CBabelDConnectionP10C_TID_BASE",
+      "demangled": "CBabelDConnection::VirtualCircuitClose(C_TID_BASE *)"
+    },
+    {
+      "mangled": "VirtualCircuitConnect__17CBabelDConnectionP10C_TID_BASE",
+      "demangled": "CBabelDConnection::VirtualCircuitConnect(C_TID_BASE *)"
+    },
+    {
+      "mangled": "VirtualCircuit__17CBabelDConnectionP10C_TID_BASE",
+      "demangled": "CBabelDConnection::VirtualCircuit(C_TID_BASE *)"
+    },
+    {
+      "mangled": "WaitForMoreWork__t11BabelThread1Z13MessageThread",
+      "demangled": "BabelThread<MessageThread>::WaitForMoreWork(void)"
+    },
+    {
+      "mangled": "WaitForMoreWork__t11BabelThread1Z20CBabelAsyncCoreChild",
+      "demangled": "BabelThread<CBabelAsyncCoreChild>::WaitForMoreWork(void)"
+    },
+    {
+      "mangled": "WaitForTicket__23CBabelTransactionTicket",
+      "demangled": "CBabelTransactionTicket::WaitForTicket(void)"
+    },
+    {
+      "mangled": "WaitForTicket__28CBabelRadioTransactionTicket",
+      "demangled": "CBabelRadioTransactionTicket::WaitForTicket(void)"
+    },
+    {
+      "mangled": "WhichPartOfGetOffTheNetworkNowPleaseDidntYouUnderstand__15CBabelAsyncCore",
+      "demangled": "CBabelAsyncCore::WhichPartOfGetOffTheNetworkNowPleaseDidntYouUnderstand(void)"
+    },
+    {
+      "mangled": "WorkerThread__15CBabelAsyncCore",
+      "demangled": "CBabelAsyncCore::WorkerThread(void)"
+    },
+    {
+      "mangled": "WorldEnding__15ModuleInterface",
+      "demangled": "ModuleInterface::WorldEnding(void)"
+    },
+    {
+      "mangled": "WorldEnding__21NetworkImplementation",
+      "demangled": "NetworkImplementation::WorldEnding(void)"
+    },
+    {
+      "mangled": "WorldLoaded__15ModuleInterface",
+      "demangled": "ModuleInterface::WorldLoaded(void)"
+    },
+    {
+      "mangled": "WorldLoaded__21NetworkImplementation",
+      "demangled": "NetworkImplementation::WorldLoaded(void)"
+    },
+    {
+      "mangled": "Writable__15CBabelAsyncCore",
+      "demangled": "CBabelAsyncCore::Writable(void)"
+    },
+    {
+      "mangled": "WriteCreatureHistory__18HistoryTransferOutRC15CreatureHistory",
+      "demangled": "HistoryTransferOut::WriteCreatureHistory(CreatureHistory const &)"
+    },
+    {
+      "mangled": "WriteLifeEvent__18HistoryTransferOutRC9LifeEventi",
+      "demangled": "HistoryTransferOut::WriteLifeEvent(LifeEvent const &, int)"
+    },
+    {
+      "mangled": "WriteMoniker__18HistoryTransferOutRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "HistoryTransferOut::WriteMoniker(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "WriteName__18HistoryTransferOutRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "HistoryTransferOut::WriteName(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "WriteServerList__11NetHandlers",
+      "demangled": "NetHandlers::WriteServerList(void)"
+    },
+    {
+      "mangled": "WriteString__21CBabelReadWriteSocketPCci",
+      "demangled": "CBabelReadWriteSocket::WriteString(char const *, int)"
+    },
+    {
+      "mangled": "WriteString__21CBabelReadWriteSocketPCwi",
+      "demangled": "CBabelReadWriteSocket::WriteString(wchar_t const *, int)"
+    },
+    {
+      "mangled": "WriteUserText__18HistoryTransferOutiRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "HistoryTransferOut::WriteUserText(int, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "Write__11NetHandlersR16CreaturesArchive",
+      "demangled": "NetHandlers::Write(CreaturesArchive &)"
+    },
+    {
+      "mangled": "Write__15ModuleInterfaceR16CreaturesArchive",
+      "demangled": "ModuleInterface::Write(CreaturesArchive &)"
+    },
+    {
+      "mangled": "Write__16CBabelConnection",
+      "demangled": "CBabelConnection::Write(void)"
+    },
+    {
+      "mangled": "Write__16CreaturesArchiveRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "CreaturesArchive::Write(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "Write__16CreaturesArchiveUl",
+      "demangled": "CreaturesArchive::Write(unsigned long)"
+    },
+    {
+      "mangled": "Write__17CBabelDConnectionPCvi",
+      "demangled": "CBabelDConnection::Write(void const *, int)"
+    },
+    {
+      "mangled": "Write__19CBabelUDPConnectionPCvi",
+      "demangled": "CBabelUDPConnection::Write(void const *, int)"
+    },
+    {
+      "mangled": "Write__19CBabelVirtualSocketPCvi",
+      "demangled": "CBabelVirtualSocket::Write(void const *, int)"
+    },
+    {
+      "mangled": "Write__21CBabelReadWriteSocketPCvi",
+      "demangled": "CBabelReadWriteSocket::Write(void const *, int)"
+    },
+    {
+      "mangled": "Write__21NetworkImplementationR16CreaturesArchive",
+      "demangled": "NetworkImplementation::Write(CreaturesArchive &)"
+    },
+    {
+      "mangled": "Write__23CBabelMigrateConnectionPCvi",
+      "demangled": "CBabelMigrateConnection::Write(void const *, int)"
+    },
+    {
+      "mangled": "Zap__12ConfiguratorRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "Configurator::Zap(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "_._10NetManager",
+      "demangled": "NetManager::~NetManager(void)"
+    },
+    {
+      "mangled": "_._11AgentHandle",
+      "demangled": "AgentHandle::~AgentHandle(void)"
+    },
+    {
+      "mangled": "_._12CBabelClient",
+      "demangled": "CBabelClient::~CBabelClient(void)"
+    },
+    {
+      "mangled": "_._12CBabelSocket",
+      "demangled": "CBabelSocket::~CBabelSocket(void)"
+    },
+    {
+      "mangled": "_._12DSNetManager",
+      "demangled": "DSNetManager::~DSNetManager(void)"
+    },
+    {
+      "mangled": "_._13CBabelDHandle",
+      "demangled": "CBabelDHandle::~CBabelDHandle(void)"
+    },
+    {
+      "mangled": "_._13CBabelMessage",
+      "demangled": "CBabelMessage::~CBabelMessage(void)"
+    },
+    {
+      "mangled": "_._13MessageThread",
+      "demangled": "MessageThread::~MessageThread(void)"
+    },
+    {
+      "mangled": "_._13NetDirectLink",
+      "demangled": "NetDirectLink::~NetDirectLink(void)"
+    },
+    {
+      "mangled": "_._13NetMemoryPack",
+      "demangled": "NetMemoryPack::~NetMemoryPack(void)"
+    },
+    {
+      "mangled": "_._13QueuedMessage",
+      "demangled": "QueuedMessage::~QueuedMessage(void)"
+    },
+    {
+      "mangled": "_._13istringstream",
+      "demangled": "istringstream::~istringstream(void)"
+    },
+    {
+      "mangled": "_._13ostringstream",
+      "demangled": "ostringstream::~ostringstream(void)"
+    },
+    {
+      "mangled": "_._14BasicException",
+      "demangled": "BasicException::~BasicException(void)"
+    },
+    {
+      "mangled": "_._15CBabelAsyncCore",
+      "demangled": "CBabelAsyncCore::~CBabelAsyncCore(void)"
+    },
+    {
+      "mangled": "_._15CBabelRadioLink",
+      "demangled": "CBabelRadioLink::~CBabelRadioLink(void)"
+    },
+    {
+      "mangled": "_._15CBabelSwitchBox",
+      "demangled": "CBabelSwitchBox::~CBabelSwitchBox(void)"
+    },
+    {
+      "mangled": "_._15CreatureHistory",
+      "demangled": "CreatureHistory::~CreatureHistory(void)"
+    },
+    {
+      "mangled": "_._15NetMemoryUnpack",
+      "demangled": "NetMemoryUnpack::~NetMemoryUnpack(void)"
+    },
+    {
+      "mangled": "_._16CBabelConnection",
+      "demangled": "CBabelConnection::~CBabelConnection(void)"
+    },
+    {
+      "mangled": "_._16CBabelSyncSocket",
+      "demangled": "CBabelSyncSocket::~CBabelSyncSocket(void)"
+    },
+    {
+      "mangled": "_._17CBabelDConnection",
+      "demangled": "CBabelDConnection::~CBabelDConnection(void)"
+    },
+    {
+      "mangled": "_._17CBabelUserMessage",
+      "demangled": "CBabelUserMessage::~CBabelUserMessage(void)"
+    },
+    {
+      "mangled": "_._18HistoryTransferOut",
+      "demangled": "HistoryTransferOut::~HistoryTransferOut(void)"
+    },
+    {
+      "mangled": "_._19CBabelUDPConnection",
+      "demangled": "CBabelUDPConnection::~CBabelUDPConnection(void)"
+    },
+    {
+      "mangled": "_._19CBabelVirtualSocket",
+      "demangled": "CBabelVirtualSocket::~CBabelVirtualSocket(void)"
+    },
+    {
+      "mangled": "_._20CBabelAsyncCoreChild",
+      "demangled": "CBabelAsyncCoreChild::~CBabelAsyncCoreChild(void)"
+    },
+    {
+      "mangled": "_._20CBabelClientPeerLink",
+      "demangled": "CBabelClientPeerLink::~CBabelClientPeerLink(void)"
+    },
+    {
+      "mangled": "_._20CBabelUserDataObject",
+      "demangled": "CBabelUserDataObject::~CBabelUserDataObject(void)"
+    },
+    {
+      "mangled": "_._20HistoryQueuedMessage",
+      "demangled": "HistoryQueuedMessage::~HistoryQueuedMessage(void)"
+    },
+    {
+      "mangled": "_._21CBabelReadWriteSocket",
+      "demangled": "CBabelReadWriteSocket::~CBabelReadWriteSocket(void)"
+    },
+    {
+      "mangled": "_._21InternalQueuedMessage",
+      "demangled": "InternalQueuedMessage::~InternalQueuedMessage(void)"
+    },
+    {
+      "mangled": "_._21NetworkImplementation",
+      "demangled": "NetworkImplementation::~NetworkImplementation(void)"
+    },
+    {
+      "mangled": "_._23CBabelMigrateConnection",
+      "demangled": "CBabelMigrateConnection::~CBabelMigrateConnection(void)"
+    },
+    {
+      "mangled": "_._25CBabelShortUserDataObject",
+      "demangled": "CBabelShortUserDataObject::~CBabelShortUserDataObject(void)"
+    },
+    {
+      "mangled": "_._6OpSpec",
+      "demangled": "OpSpec::~OpSpec(void)"
+    },
+    {
+      "mangled": "_._8ofstream",
+      "demangled": "ofstream::~ofstream(void)"
+    },
+    {
+      "mangled": "_._9LifeEvent",
+      "demangled": "LifeEvent::~LifeEvent(void)"
+    },
+    {
+      "mangled": "_._9bad_alloc",
+      "demangled": "bad_alloc::~bad_alloc(void)"
+    },
+    {
+      "mangled": "_._9streambuf",
+      "demangled": "streambuf::~streambuf(void)"
+    },
+    {
+      "mangled": "_._9stringbuf",
+      "demangled": "stringbuf::~stringbuf(void)"
+    },
+    {
+      "mangled": "_._Q212AgentManager14DeferredScript",
+      "demangled": "AgentManager::DeferredScript::~DeferredScript(void)"
+    },
+    {
+      "mangled": "_._t11BabelThread1Z13MessageThread",
+      "demangled": "BabelThread<MessageThread>::~BabelThread(void)"
+    },
+    {
+      "mangled": "_._t11BabelThread1Z15CBabelAsyncCore",
+      "demangled": "BabelThread<CBabelAsyncCore>::~BabelThread(void)"
+    },
+    {
+      "mangled": "_._t11BabelThread1Z20CBabelAsyncCoreChild",
+      "demangled": "BabelThread<CBabelAsyncCoreChild>::~BabelThread(void)"
+    },
+    {
+      "mangled": "_._t27MemberFunctionQueuedMessage1Z10NetManager",
+      "demangled": "MemberFunctionQueuedMessage<NetManager>::~MemberFunctionQueuedMessage(void)"
+    },
+    {
+      "mangled": "_._t27MemberFunctionQueuedMessage1Z12DSNetManager",
+      "demangled": "MemberFunctionQueuedMessage<DSNetManager>::~MemberFunctionQueuedMessage(void)"
+    },
+    {
+      "mangled": "_._t3map4ZP12CBabelClientZP10NetManagerZt4less1ZP12CBabelClientZt9allocator1ZP10NetManager",
+      "demangled": "map<CBabelClient *, NetManager *, less<CBabelClient *>, allocator<NetManager *>>::~map(void)"
+    },
+    {
+      "mangled": "_._t3map4ZiZP15CBabelAsyncCoreZt4less1ZiZt9allocator1ZP15CBabelAsyncCore",
+      "demangled": "map<int, CBabelAsyncCore *, less<int>, allocator<CBabelAsyncCore *>>::~map(void)"
+    },
+    {
+      "mangled": "_._t3map4Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZbZt4less1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1Zb",
+      "demangled": "map<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, bool, less<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, allocator<bool>>::~map(void)"
+    },
+    {
+      "mangled": "_._t3map4Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4less1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "map<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, less<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, allocator<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>>::~map(void)"
+    },
+    {
+      "mangled": "_._t3map4Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt3set3Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandleZt4less1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1Zt3set3Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandle",
+      "demangled": "map<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, set<AgentHandle, less<AgentHandle>, allocator<AgentHandle>>, less<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, allocator<set<AgentHandle, less<AgentHandle>, allocator<AgentHandle>>>>::~map(void)"
+    },
+    {
+      "mangled": "_._t3set3Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandle",
+      "demangled": "set<AgentHandle, less<AgentHandle>, allocator<AgentHandle>>::~set(void)"
+    },
+    {
+      "mangled": "_._t3set3Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4less1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "set<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, less<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, allocator<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>>::~set(void)"
+    },
+    {
+      "mangled": "_._t4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Z12PrayChunkPtr",
+      "demangled": "pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, PrayChunkPtr>::~pair(void)"
+    },
+    {
+      "mangled": "_._t4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZP13NetDirectLink",
+      "demangled": "pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, NetDirectLink *>::~pair(void)"
+    },
+    {
+      "mangled": "_._t4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zb",
+      "demangled": "pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, bool>::~pair(void)"
+    },
+    {
+      "mangled": "_._t4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>::~pair(void)"
+    },
+    {
+      "mangled": "_._t4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt3set3Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandle",
+      "demangled": "pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, set<AgentHandle, less<AgentHandle>, allocator<AgentHandle>>>::~pair(void)"
+    },
+    {
+      "mangled": "_._t4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4pair2ZiZt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, pair<int, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>>::~pair(void)"
+    },
+    {
+      "mangled": "_._t4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4pair2Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zi",
+      "demangled": "pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, int>>::~pair(void)"
+    },
+    {
+      "mangled": "_._t4pair2ZiZt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "pair<int, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>::~pair(void)"
+    },
+    {
+      "mangled": "_._t4pair2Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZP13NetDirectLink",
+      "demangled": "pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, NetDirectLink *>::~pair(void)"
+    },
+    {
+      "mangled": "_._t4pair2Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zi",
+      "demangled": "pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, int>::~pair(void)"
+    },
+    {
+      "mangled": "_._t8multimap4Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZP13NetDirectLinkZt4less1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1ZP13NetDirectLink",
+      "demangled": "multimap<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, NetDirectLink *, less<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, allocator<NetDirectLink *>>::~multimap(void)"
+    },
+    {
+      "mangled": "_10NetManager.MESSAGE_BEING_SENT",
+      "demangled": "NetManager::MESSAGE_BEING_SENT"
+    },
+    {
+      "mangled": "_10NetManager.MESSAGE_NONE",
+      "demangled": "NetManager::MESSAGE_NONE"
+    },
+    {
+      "mangled": "_10NetManager.ourOverrideHost",
+      "demangled": "NetManager::ourOverrideHost"
+    },
+    {
+      "mangled": "_10NetManager.ourOverridePort",
+      "demangled": "NetManager::ourOverridePort"
+    },
+    {
+      "mangled": "_11NetHandlers.myHearingMap",
+      "demangled": "NetHandlers::myHearingMap"
+    },
+    {
+      "mangled": "_11NetHandlers.myNickname",
+      "demangled": "NetHandlers::myNickname"
+    },
+    {
+      "mangled": "_11NetHandlers.myPassword",
+      "demangled": "NetHandlers::myPassword"
+    },
+    {
+      "mangled": "_11NetHandlers.myPasswordConfig",
+      "demangled": "NetHandlers::myPasswordConfig"
+    },
+    {
+      "mangled": "_11NetHandlers.myServerConfig",
+      "demangled": "NetHandlers::myServerConfig"
+    },
+    {
+      "mangled": "_11NetHandlers.myUserID",
+      "demangled": "NetHandlers::myUserID"
+    },
+    {
+      "mangled": "_11NetHandlers.myWhoseWantedMap",
+      "demangled": "NetHandlers::myWhoseWantedMap"
+    },
+    {
+      "mangled": "_12CBabelClient.m_nBabelClients",
+      "demangled": "CBabelClient::m_nBabelClients"
+    },
+    {
+      "mangled": "_13QueuedMessage.ourTimestamp",
+      "demangled": "QueuedMessage::ourTimestamp"
+    },
+    {
+      "mangled": "_15CBabelAsyncCore.add_channels_to_delete_cs",
+      "demangled": "CBabelAsyncCore::add_channels_to_delete_cs"
+    },
+    {
+      "mangled": "_15CBabelAsyncCore.channels",
+      "demangled": "CBabelAsyncCore::channels"
+    },
+    {
+      "mangled": "_15CBabelAsyncCore.delete_closed_channels_cs",
+      "demangled": "CBabelAsyncCore::delete_closed_channels_cs"
+    },
+    {
+      "mangled": "_15CBabelAsyncCore.m_Children",
+      "demangled": "CBabelAsyncCore::m_Children"
+    },
+    {
+      "mangled": "_15CBabelAsyncCore.m_Closures",
+      "demangled": "CBabelAsyncCore::m_Closures"
+    },
+    {
+      "mangled": "_15CBabelAsyncCore.our_bMaintain",
+      "demangled": "CBabelAsyncCore::our_bMaintain"
+    },
+    {
+      "mangled": "_GLOBAL_.D.Command_NET__11NetHandlersR11CAOSMachine",
+      "demangled": "global destructors keyed to NetHandlers::Command_NET(CAOSMachine &)"
+    },
+    {
+      "mangled": "_GLOBAL_.D._10NetManager.MESSAGE_BEING_SENT",
+      "demangled": "global destructors keyed to NetManager::MESSAGE_BEING_SENT"
+    },
+    {
+      "mangled": "_GLOBAL_.D._15CBabelAsyncCore.our_bMaintain",
+      "demangled": "global destructors keyed to CBabelAsyncCore::our_bMaintain"
+    },
+    {
+      "mangled": "_GLOBAL_.D.__21NetworkImplementation",
+      "demangled": "global destructors keyed to NetworkImplementation::NetworkImplementation(void)"
+    },
+    {
+      "mangled": "_GLOBAL_.I.Command_NET__11NetHandlersR11CAOSMachine",
+      "demangled": "global constructors keyed to NetHandlers::Command_NET(CAOSMachine &)"
+    },
+    {
+      "mangled": "_GLOBAL_.I.Log__20NetLogImplementationPCc",
+      "demangled": "global constructors keyed to NetLogImplementation::Log(char const *)"
+    },
+    {
+      "mangled": "_GLOBAL_.I._10NetManager.MESSAGE_BEING_SENT",
+      "demangled": "global constructors keyed to NetManager::MESSAGE_BEING_SENT"
+    },
+    {
+      "mangled": "_GLOBAL_.I._15CBabelAsyncCore.our_bMaintain",
+      "demangled": "global constructors keyed to CBabelAsyncCore::our_bMaintain"
+    },
+    {
+      "mangled": "_GLOBAL_.I.__18HistoryTransferOut",
+      "demangled": "global constructors keyed to HistoryTransferOut::HistoryTransferOut(void)"
+    },
+    {
+      "mangled": "_GLOBAL_.I.__21NetworkImplementation",
+      "demangled": "global constructors keyed to NetworkImplementation::NetworkImplementation(void)"
+    },
+    {
+      "mangled": "_M_copy__t8_Rb_tree5Z11AgentHandleZ11AgentHandleZt9_Identity1Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandlePt13_Rb_tree_node1Z11AgentHandleT1",
+      "demangled": "_Rb_tree<AgentHandle, AgentHandle, _Identity<AgentHandle>, less<AgentHandle>, allocator<AgentHandle>>::_M_copy(_Rb_tree_node<AgentHandle> *, _Rb_tree_node<AgentHandle> *)"
+    },
+    {
+      "mangled": "_M_erase__t8_Rb_tree5Z11AgentHandleZ11AgentHandleZt9_Identity1Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandlePt13_Rb_tree_node1Z11AgentHandle",
+      "demangled": "_Rb_tree<AgentHandle, AgentHandle, _Identity<AgentHandle>, less<AgentHandle>, allocator<AgentHandle>>::_M_erase(_Rb_tree_node<AgentHandle> *)"
+    },
+    {
+      "mangled": "_M_erase__t8_Rb_tree5ZP12CBabelClientZt4pair2ZCP12CBabelClientZP10NetManagerZt10_Select1st1Zt4pair2ZCP12CBabelClientZP10NetManagerZt4less1ZP12CBabelClientZt9allocator1ZP10NetManagerPt13_Rb_tree_node1Zt4pair2ZCP12CBabelClientZP10NetManager",
+      "demangled": "_Rb_tree<CBabelClient *, pair<CBabelClient *const, NetManager *>, _Select1st<pair<CBabelClient *const, NetManager *>>, less<CBabelClient *>, allocator<NetManager *>>::_M_erase(_Rb_tree_node<pair<CBabelClient *const, NetManager *>> *)"
+    },
+    {
+      "mangled": "_M_erase__t8_Rb_tree5ZiZt4pair2ZCiZP15CBabelAsyncCoreZt10_Select1st1Zt4pair2ZCiZP15CBabelAsyncCoreZt4less1ZiZt9allocator1ZP15CBabelAsyncCorePt13_Rb_tree_node1Zt4pair2ZCiZP15CBabelAsyncCore",
+      "demangled": "_Rb_tree<int, pair<int const, CBabelAsyncCore *>, _Select1st<pair<int const, CBabelAsyncCore *>>, less<int>, allocator<CBabelAsyncCore *>>::_M_erase(_Rb_tree_node<pair<int const, CBabelAsyncCore *>> *)"
+    },
+    {
+      "mangled": "_M_erase__t8_Rb_tree5Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9_Identity1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4less1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Pt13_Rb_tree_node1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "_Rb_tree<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, _Identity<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, less<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, allocator<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>>::_M_erase(_Rb_tree_node<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>> *)"
+    },
+    {
+      "mangled": "_M_erase__t8_Rb_tree5Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Z12PrayChunkPtrZt10_Select1st1Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Z12PrayChunkPtrZt4less1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1Z12PrayChunkPtrPt13_Rb_tree_node1Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Z12PrayChunkPtr",
+      "demangled": "_Rb_tree<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, PrayChunkPtr>, _Select1st<pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, PrayChunkPtr>>, less<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, allocator<PrayChunkPtr>>::_M_erase(_Rb_tree_node<pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, PrayChunkPtr>> *)"
+    },
+    {
+      "mangled": "_M_erase__t8_Rb_tree5Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZP13NetDirectLinkZt10_Select1st1Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZP13NetDirectLinkZt4less1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1ZP13NetDirectLinkPt13_Rb_tree_node1Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZP13NetDirectLink",
+      "demangled": "_Rb_tree<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, NetDirectLink *>, _Select1st<pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, NetDirectLink *>>, less<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, allocator<NetDirectLink *>>::_M_erase(_Rb_tree_node<pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, NetDirectLink *>> *)"
+    },
+    {
+      "mangled": "_M_erase__t8_Rb_tree5Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZbZt10_Select1st1Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZbZt4less1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1ZbPt13_Rb_tree_node1Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zb",
+      "demangled": "_Rb_tree<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, bool>, _Select1st<pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, bool>>, less<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, allocator<bool>>::_M_erase(_Rb_tree_node<pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, bool>> *)"
+    },
+    {
+      "mangled": "_M_erase__t8_Rb_tree5Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt10_Select1st1Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4less1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Pt13_Rb_tree_node1Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "_Rb_tree<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, _Select1st<pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>>, less<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, allocator<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>>::_M_erase(_Rb_tree_node<pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>> *)"
+    },
+    {
+      "mangled": "_M_erase__t8_Rb_tree5Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt3set3Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandleZt10_Select1st1Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt3set3Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandleZt4less1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1Zt3set3Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandlePt13_Rb_tree_node1Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt3set3Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandle",
+      "demangled": "_Rb_tree<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, set<AgentHandle, less<AgentHandle>, allocator<AgentHandle>>>, _Select1st<pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, set<AgentHandle, less<AgentHandle>, allocator<AgentHandle>>>>, less<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, allocator<set<AgentHandle, less<AgentHandle>, allocator<AgentHandle>>>>::_M_erase(_Rb_tree_node<pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, set<AgentHandle, less<AgentHandle>, allocator<AgentHandle>>>> *)"
+    },
+    {
+      "mangled": "_M_erase__t8_Rb_tree5Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4pair2ZiZt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt10_Select1st1Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4pair2ZiZt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4less1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1Zt4pair2ZiZt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Pt13_Rb_tree_node1Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4pair2ZiZt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "_Rb_tree<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, pair<int, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>>, _Select1st<pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, pair<int, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>>>, less<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, allocator<pair<int, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>>>::_M_erase(_Rb_tree_node<pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, pair<int, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>>> *)"
+    },
+    {
+      "mangled": "_M_erase__t8_Rb_tree5Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4pair2Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZiZt10_Select1st1Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4pair2Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZiZt4less1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1Zt4pair2Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZiPt13_Rb_tree_node1Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4pair2Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zi",
+      "demangled": "_Rb_tree<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, int>>, _Select1st<pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, int>>>, less<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, allocator<pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, int>>>::_M_erase(_Rb_tree_node<pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, int>>> *)"
+    },
+    {
+      "mangled": "_M_insert__t8_Rb_tree5Z11AgentHandleZ11AgentHandleZt9_Identity1Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandleP18_Rb_tree_node_baseT1RC11AgentHandle",
+      "demangled": "_Rb_tree<AgentHandle, AgentHandle, _Identity<AgentHandle>, less<AgentHandle>, allocator<AgentHandle>>::_M_insert(_Rb_tree_node_base *, _Rb_tree_node_base *, AgentHandle const &)"
+    },
+    {
+      "mangled": "_M_insert__t8_Rb_tree5ZP12CBabelClientZt4pair2ZCP12CBabelClientZP10NetManagerZt10_Select1st1Zt4pair2ZCP12CBabelClientZP10NetManagerZt4less1ZP12CBabelClientZt9allocator1ZP10NetManagerP18_Rb_tree_node_baseT1RCt4pair2ZCP12CBabelClientZP10NetManager",
+      "demangled": "_Rb_tree<CBabelClient *, pair<CBabelClient *const, NetManager *>, _Select1st<pair<CBabelClient *const, NetManager *>>, less<CBabelClient *>, allocator<NetManager *>>::_M_insert(_Rb_tree_node_base *, _Rb_tree_node_base *, pair<CBabelClient *const, NetManager *> const &)"
+    },
+    {
+      "mangled": "_M_insert__t8_Rb_tree5ZiZt4pair2ZCiZP15CBabelAsyncCoreZt10_Select1st1Zt4pair2ZCiZP15CBabelAsyncCoreZt4less1ZiZt9allocator1ZP15CBabelAsyncCoreP18_Rb_tree_node_baseT1RCt4pair2ZCiZP15CBabelAsyncCore",
+      "demangled": "_Rb_tree<int, pair<int const, CBabelAsyncCore *>, _Select1st<pair<int const, CBabelAsyncCore *>>, less<int>, allocator<CBabelAsyncCore *>>::_M_insert(_Rb_tree_node_base *, _Rb_tree_node_base *, pair<int const, CBabelAsyncCore *> const &)"
+    },
+    {
+      "mangled": "_M_insert__t8_Rb_tree5Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9_Identity1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4less1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0P18_Rb_tree_node_baseT1RCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "_Rb_tree<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, _Identity<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, less<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, allocator<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>>::_M_insert(_Rb_tree_node_base *, _Rb_tree_node_base *, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "_M_insert__t8_Rb_tree5Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZP13NetDirectLinkZt10_Select1st1Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZP13NetDirectLinkZt4less1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1ZP13NetDirectLinkP18_Rb_tree_node_baseT1RCt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZP13NetDirectLink",
+      "demangled": "_Rb_tree<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, NetDirectLink *>, _Select1st<pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, NetDirectLink *>>, less<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, allocator<NetDirectLink *>>::_M_insert(_Rb_tree_node_base *, _Rb_tree_node_base *, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, NetDirectLink *> const &)"
+    },
+    {
+      "mangled": "_M_insert__t8_Rb_tree5Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZbZt10_Select1st1Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZbZt4less1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1ZbP18_Rb_tree_node_baseT1RCt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zb",
+      "demangled": "_Rb_tree<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, bool>, _Select1st<pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, bool>>, less<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, allocator<bool>>::_M_insert(_Rb_tree_node_base *, _Rb_tree_node_base *, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, bool> const &)"
+    },
+    {
+      "mangled": "_M_insert__t8_Rb_tree5Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt3set3Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandleZt10_Select1st1Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt3set3Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandleZt4less1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1Zt3set3Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandleP18_Rb_tree_node_baseT1RCt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt3set3Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandle",
+      "demangled": "_Rb_tree<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, set<AgentHandle, less<AgentHandle>, allocator<AgentHandle>>>, _Select1st<pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, set<AgentHandle, less<AgentHandle>, allocator<AgentHandle>>>>, less<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, allocator<set<AgentHandle, less<AgentHandle>, allocator<AgentHandle>>>>::_M_insert(_Rb_tree_node_base *, _Rb_tree_node_base *, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, set<AgentHandle, less<AgentHandle>, allocator<AgentHandle>>> const &)"
+    },
+    {
+      "mangled": "_M_insert_aux__t6vector2Z11AgentHandleZt9allocator1Z11AgentHandleP11AgentHandleRC11AgentHandle",
+      "demangled": "vector<AgentHandle, allocator<AgentHandle>>::_M_insert_aux(AgentHandle *, AgentHandle const &)"
+    },
+    {
+      "mangled": "_M_insert_aux__t6vector2Z16CBabelServerInfoZt9allocator1Z16CBabelServerInfoP16CBabelServerInfoRC16CBabelServerInfo",
+      "demangled": "vector<CBabelServerInfo, allocator<CBabelServerInfo>>::_M_insert_aux(CBabelServerInfo *, CBabelServerInfo const &)"
+    },
+    {
+      "mangled": "_M_insert_aux__t6vector2Z5B_UINZt9allocator1Z5B_UINP5B_UINRC5B_UIN",
+      "demangled": "vector<B_UIN, allocator<B_UIN>>::_M_insert_aux(B_UIN *, B_UIN const &)"
+    },
+    {
+      "mangled": "_M_insert_aux__t6vector2Z9LifeEventZt9allocator1Z9LifeEventP9LifeEventRC9LifeEvent",
+      "demangled": "vector<LifeEvent, allocator<LifeEvent>>::_M_insert_aux(LifeEvent *, LifeEvent const &)"
+    },
+    {
+      "mangled": "_M_insert_aux__t6vector2ZP13CBabelMessageZt9allocator1ZP13CBabelMessagePP13CBabelMessageRCP13CBabelMessage",
+      "demangled": "vector<CBabelMessage *, allocator<CBabelMessage *>>::_M_insert_aux(CBabelMessage **, CBabelMessage *const &)"
+    },
+    {
+      "mangled": "_M_insert_aux__t6vector2ZP15CBabelAsyncCoreZt9allocator1ZP15CBabelAsyncCorePP15CBabelAsyncCoreRCP15CBabelAsyncCore",
+      "demangled": "vector<CBabelAsyncCore *, allocator<CBabelAsyncCore *>>::_M_insert_aux(CBabelAsyncCore **, CBabelAsyncCore *const &)"
+    },
+    {
+      "mangled": "_M_insert_aux__t6vector2ZP15CBabelRadioLinkZt9allocator1ZP15CBabelRadioLinkPP15CBabelRadioLinkRCP15CBabelRadioLink",
+      "demangled": "vector<CBabelRadioLink *, allocator<CBabelRadioLink *>>::_M_insert_aux(CBabelRadioLink **, CBabelRadioLink *const &)"
+    },
+    {
+      "mangled": "_M_insert_aux__t6vector2ZP16CBabelConnectionZt9allocator1ZP16CBabelConnectionPP16CBabelConnectionRCP16CBabelConnection",
+      "demangled": "vector<CBabelConnection *, allocator<CBabelConnection *>>::_M_insert_aux(CBabelConnection **, CBabelConnection *const &)"
+    },
+    {
+      "mangled": "_M_insert_aux__t6vector2ZP18CBabelRemoteSwitchZt9allocator1ZP18CBabelRemoteSwitchPP18CBabelRemoteSwitchRCP18CBabelRemoteSwitch",
+      "demangled": "vector<CBabelRemoteSwitch *, allocator<CBabelRemoteSwitch *>>::_M_insert_aux(CBabelRemoteSwitch **, CBabelRemoteSwitch *const &)"
+    },
+    {
+      "mangled": "_M_insert_aux__t6vector2ZP19CBabelVirtualSocketZt9allocator1ZP19CBabelVirtualSocketPP19CBabelVirtualSocketRCP19CBabelVirtualSocket",
+      "demangled": "vector<CBabelVirtualSocket *, allocator<CBabelVirtualSocket *>>::_M_insert_aux(CBabelVirtualSocket **, CBabelVirtualSocket *const &)"
+    },
+    {
+      "mangled": "_M_insert_aux__t6vector2ZP20CBabelAsyncCoreChildZt9allocator1ZP20CBabelAsyncCoreChildPP20CBabelAsyncCoreChildRCP20CBabelAsyncCoreChild",
+      "demangled": "vector<CBabelAsyncCoreChild *, allocator<CBabelAsyncCoreChild *>>::_M_insert_aux(CBabelAsyncCoreChild **, CBabelAsyncCoreChild *const &)"
+    },
+    {
+      "mangled": "_M_insert_aux__t6vector2ZP23CBabelTransactionTicketZt9allocator1ZP23CBabelTransactionTicketPP23CBabelTransactionTicketRCP23CBabelTransactionTicket",
+      "demangled": "vector<CBabelTransactionTicket *, allocator<CBabelTransactionTicket *>>::_M_insert_aux(CBabelTransactionTicket **, CBabelTransactionTicket *const &)"
+    },
+    {
+      "mangled": "_M_insert_aux__t6vector2ZP25CBabelShortUserDataObjectZt9allocator1ZP25CBabelShortUserDataObjectPP25CBabelShortUserDataObjectRCP25CBabelShortUserDataObject",
+      "demangled": "vector<CBabelShortUserDataObject *, allocator<CBabelShortUserDataObject *>>::_M_insert_aux(CBabelShortUserDataObject **, CBabelShortUserDataObject *const &)"
+    },
+    {
+      "mangled": "_M_insert_aux__t6vector2ZP28CBabelRadioTransactionTicketZt9allocator1ZP28CBabelRadioTransactionTicketPP28CBabelRadioTransactionTicketRCP28CBabelRadioTransactionTicket",
+      "demangled": "vector<CBabelRadioTransactionTicket *, allocator<CBabelRadioTransactionTicket *>>::_M_insert_aux(CBabelRadioTransactionTicket **, CBabelRadioTransactionTicket *const &)"
+    },
+    {
+      "mangled": "_M_insert_aux__t6vector2ZQ211NetMessages11MessageTypeZt9allocator1ZQ211NetMessages11MessageTypePQ211NetMessages11MessageTypeRCQ211NetMessages11MessageType",
+      "demangled": "vector<NetMessages::MessageType, allocator<NetMessages::MessageType>>::_M_insert_aux(NetMessages::MessageType *, NetMessages::MessageType const &)"
+    },
+    {
+      "mangled": "_M_insert_aux__t6vector2ZiZt9allocator1ZiPiRCi",
+      "demangled": "vector<int, allocator<int>>::_M_insert_aux(int *, int const &)"
+    },
+    {
+      "mangled": "_M_insert_aux__t6vector2Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Pt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0RCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "vector<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, allocator<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>>::_M_insert_aux(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> *, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "_S_chunk_alloc__t24__default_alloc_template2b1i0UiRi",
+      "demangled": "__default_alloc_template<true, 0>::_S_chunk_alloc(unsigned int, int &)"
+    },
+    {
+      "mangled": "_S_oom_malloc__t23__malloc_alloc_template1i0Ui",
+      "demangled": "__malloc_alloc_template<0>::_S_oom_malloc(unsigned int)"
+    },
+    {
+      "mangled": "_S_refill__t24__default_alloc_template2b1i0Ui",
+      "demangled": "__default_alloc_template<true, 0>::_S_refill(unsigned int)"
+    },
+    {
+      "mangled": "__10NetManagerP15NetLogInterface",
+      "demangled": "NetManager::NetManager(NetLogInterface *)"
+    },
+    {
+      "mangled": "__11AgentHandle",
+      "demangled": "AgentHandle::AgentHandle(void)"
+    },
+    {
+      "mangled": "__11AgentHandleRC11AgentHandle",
+      "demangled": "AgentHandle::AgentHandle(AgentHandle const &)"
+    },
+    {
+      "mangled": "__11fstreambaseiPCcii",
+      "demangled": "fstreambase::fstreambase(int, char const *, int, int)"
+    },
+    {
+      "mangled": "__12CBabelClient",
+      "demangled": "CBabelClient::CBabelClient(void)"
+    },
+    {
+      "mangled": "__12CBabelClientPFP12CBabelClientUiii_vb",
+      "demangled": "CBabelClient::CBabelClient(void (*)(CBabelClient *, unsigned int, int, int), bool)"
+    },
+    {
+      "mangled": "__12CBabelClientb",
+      "demangled": "CBabelClient::CBabelClient(bool)"
+    },
+    {
+      "mangled": "__12DSNetManagerP15NetLogInterface",
+      "demangled": "DSNetManager::DSNetManager(NetLogInterface *)"
+    },
+    {
+      "mangled": "__13CBabelMessage",
+      "demangled": "CBabelMessage::CBabelMessage(void)"
+    },
+    {
+      "mangled": "__13CBabelMessageb",
+      "demangled": "CBabelMessage::CBabelMessage(bool)"
+    },
+    {
+      "mangled": "__13MessageThreadP10NetManager",
+      "demangled": "MessageThread::MessageThread(NetManager *)"
+    },
+    {
+      "mangled": "__13NetDirectLinkP10NetManagerP12CBabelClient",
+      "demangled": "NetDirectLink::NetDirectLink(NetManager *, CBabelClient *)"
+    },
+    {
+      "mangled": "__13NetDirectLinkP10NetManagerP12CBabelSocketP12CBabelClient",
+      "demangled": "NetDirectLink::NetDirectLink(NetManager *, CBabelSocket *, CBabelClient *)"
+    },
+    {
+      "mangled": "__13NetMemoryPack",
+      "demangled": "NetMemoryPack::NetMemoryPack(void)"
+    },
+    {
+      "mangled": "__13NetMemoryPackRC13NetMemoryPack",
+      "demangled": "NetMemoryPack::NetMemoryPack(NetMemoryPack const &)"
+    },
+    {
+      "mangled": "__13NetMemoryPacki",
+      "demangled": "NetMemoryPack::NetMemoryPack(int)"
+    },
+    {
+      "mangled": "__13QueuedMessage",
+      "demangled": "QueuedMessage::QueuedMessage(void)"
+    },
+    {
+      "mangled": "__14BasicExceptionRC14BasicException",
+      "demangled": "BasicException::BasicException(BasicException const &)"
+    },
+    {
+      "mangled": "__15CBabelAsyncCore",
+      "demangled": "CBabelAsyncCore::CBabelAsyncCore(void)"
+    },
+    {
+      "mangled": "__15CBabelRadioLinkP12CBabelClient",
+      "demangled": "CBabelRadioLink::CBabelRadioLink(CBabelClient *)"
+    },
+    {
+      "mangled": "__15CBabelRadioLinkP12CBabelSocketP12CBabelClient",
+      "demangled": "CBabelRadioLink::CBabelRadioLink(CBabelSocket *, CBabelClient *)"
+    },
+    {
+      "mangled": "__15CBabelSwitchBox",
+      "demangled": "CBabelSwitchBox::CBabelSwitchBox(void)"
+    },
+    {
+      "mangled": "__15CreatureHistory",
+      "demangled": "CreatureHistory::CreatureHistory(void)"
+    },
+    {
+      "mangled": "__15NetMemoryUnpack",
+      "demangled": "NetMemoryUnpack::NetMemoryUnpack(void)"
+    },
+    {
+      "mangled": "__15NetMemoryUnpackPCvi",
+      "demangled": "NetMemoryUnpack::NetMemoryUnpack(void const *, int)"
+    },
+    {
+      "mangled": "__16CBabelServerInfoRC16CBabelServerInfo",
+      "demangled": "CBabelServerInfo::CBabelServerInfo(CBabelServerInfo const &)"
+    },
+    {
+      "mangled": "__16CBabelSyncSocketi",
+      "demangled": "CBabelSyncSocket::CBabelSyncSocket(int)"
+    },
+    {
+      "mangled": "__17CBabelDConnection",
+      "demangled": "CBabelDConnection::CBabelDConnection(void)"
+    },
+    {
+      "mangled": "__17CBabelDConnectionP21CBabelReadWriteSocketP12CBabelClient",
+      "demangled": "CBabelDConnection::CBabelDConnection(CBabelReadWriteSocket *, CBabelClient *)"
+    },
+    {
+      "mangled": "__17CBabelUserMessage",
+      "demangled": "CBabelUserMessage::CBabelUserMessage(void)"
+    },
+    {
+      "mangled": "__17CBabelUserMessagePvi",
+      "demangled": "CBabelUserMessage::CBabelUserMessage(void *, int)"
+    },
+    {
+      "mangled": "__17NetDebugListUsers",
+      "demangled": "NetDebugListUsers::NetDebugListUsers(void)"
+    },
+    {
+      "mangled": "__18HistoryTransferOut",
+      "demangled": "HistoryTransferOut::HistoryTransferOut(void)"
+    },
+    {
+      "mangled": "__19CBabelUDPConnection",
+      "demangled": "CBabelUDPConnection::CBabelUDPConnection(void)"
+    },
+    {
+      "mangled": "__19CBabelVirtualSocketP12CBabelClient",
+      "demangled": "CBabelVirtualSocket::CBabelVirtualSocket(CBabelClient *)"
+    },
+    {
+      "mangled": "__20CBabelAsyncCoreChildP15CBabelAsyncCore",
+      "demangled": "CBabelAsyncCoreChild::CBabelAsyncCoreChild(CBabelAsyncCore *)"
+    },
+    {
+      "mangled": "__20CBabelClientPeerLinkP12CBabelClient",
+      "demangled": "CBabelClientPeerLink::CBabelClientPeerLink(CBabelClient *)"
+    },
+    {
+      "mangled": "__20CBabelClientPeerLinkiP12CBabelClient",
+      "demangled": "CBabelClientPeerLink::CBabelClientPeerLink(int, CBabelClient *)"
+    },
+    {
+      "mangled": "__20CBabelUserDataObject",
+      "demangled": "CBabelUserDataObject::CBabelUserDataObject(void)"
+    },
+    {
+      "mangled": "__21CBabelReadWriteSocketi",
+      "demangled": "CBabelReadWriteSocket::CBabelReadWriteSocket(int)"
+    },
+    {
+      "mangled": "__21NetworkImplementation",
+      "demangled": "NetworkImplementation::NetworkImplementation(void)"
+    },
+    {
+      "mangled": "__23CBabelMigrateConnectionP15CBabelAsyncCore",
+      "demangled": "CBabelMigrateConnection::CBabelMigrateConnection(CBabelAsyncCore *)"
+    },
+    {
+      "mangled": "__25CBabelShortUserDataObject",
+      "demangled": "CBabelShortUserDataObject::CBabelShortUserDataObject(void)"
+    },
+    {
+      "mangled": "__25CBabelShortUserDataObjectRC25CBabelShortUserDataObject",
+      "demangled": "CBabelShortUserDataObject::CBabelShortUserDataObject(CBabelShortUserDataObject const &)"
+    },
+    {
+      "mangled": "__6OpSpecRC6OpSpec",
+      "demangled": "OpSpec::OpSpec(OpSpec const &)"
+    },
+    {
+      "mangled": "__7CAOSVarRC7CAOSVar",
+      "demangled": "CAOSVar::CAOSVar(CAOSVar const &)"
+    },
+    {
+      "mangled": "__7istreamiP9streambufP7ostream",
+      "demangled": "istream::istream(int, streambuf *, ostream *)"
+    },
+    {
+      "mangled": "__7ostreamiP9streambufP7ostream",
+      "demangled": "ostream::ostream(int, streambuf *, ostream *)"
+    },
+    {
+      "mangled": "__9LifeEventRC9LifeEvent",
+      "demangled": "LifeEvent::LifeEvent(LifeEvent const &)"
+    },
+    {
+      "mangled": "__9streambufi",
+      "demangled": "streambuf::streambuf(int)"
+    },
+    {
+      "mangled": "__as__11AgentHandleRC11AgentHandle",
+      "demangled": "AgentHandle::operator=(AgentHandle const &)"
+    },
+    {
+      "mangled": "__as__15CreatureHistoryRC15CreatureHistory",
+      "demangled": "CreatureHistory::operator=(CreatureHistory const &)"
+    },
+    {
+      "mangled": "__as__16CBabelServerInfoRC16CBabelServerInfo",
+      "demangled": "CBabelServerInfo::operator=(CBabelServerInfo const &)"
+    },
+    {
+      "mangled": "__as__25CBabelShortUserDataObjectRC25CBabelShortUserDataObject",
+      "demangled": "CBabelShortUserDataObject::operator=(CBabelShortUserDataObject const &)"
+    },
+    {
+      "mangled": "__as__9LifeEventRC9LifeEvent",
+      "demangled": "LifeEvent::operator=(LifeEvent const &)"
+    },
+    {
+      "mangled": "__as__t6vector2Z16CBabelServerInfoZt9allocator1Z16CBabelServerInfoRCt6vector2Z16CBabelServerInfoZt9allocator1Z16CBabelServerInfo",
+      "demangled": "vector<CBabelServerInfo, allocator<CBabelServerInfo>>::operator=(vector<CBabelServerInfo, allocator<CBabelServerInfo>> const &)"
+    },
+    {
+      "mangled": "__as__t6vector2Z9LifeEventZt9allocator1Z9LifeEventRCt6vector2Z9LifeEventZt9allocator1Z9LifeEvent",
+      "demangled": "vector<LifeEvent, allocator<LifeEvent>>::operator=(vector<LifeEvent, allocator<LifeEvent>> const &)"
+    },
+    {
+      "mangled": "__as__t6vector2ZQ211NetMessages11MessageTypeZt9allocator1ZQ211NetMessages11MessageTypeRCt6vector2ZQ211NetMessages11MessageTypeZt9allocator1ZQ211NetMessages11MessageType",
+      "demangled": "vector<NetMessages::MessageType, allocator<NetMessages::MessageType>>::operator=(vector<NetMessages::MessageType, allocator<NetMessages::MessageType>> const &)"
+    },
+    {
+      "mangled": "__as__t8_Rb_tree5Z11AgentHandleZ11AgentHandleZt9_Identity1Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandleRCt8_Rb_tree5Z11AgentHandleZ11AgentHandleZt9_Identity1Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandle",
+      "demangled": "_Rb_tree<AgentHandle, AgentHandle, _Identity<AgentHandle>, less<AgentHandle>, allocator<AgentHandle>>::operator=(_Rb_tree<AgentHandle, AgentHandle, _Identity<AgentHandle>, less<AgentHandle>, allocator<AgentHandle>> const &)"
+    },
+    {
+      "mangled": "__eq__C11AgentHandleRC11AgentHandle",
+      "demangled": "AgentHandle::operator==(AgentHandle const &) const"
+    },
+    {
+      "mangled": "__length_error__FPCc",
+      "demangled": "__length_error(char const *)"
+    },
+    {
+      "mangled": "__ls__7ostreamPCc",
+      "demangled": "ostream::operator<<(char const *)"
+    },
+    {
+      "mangled": "__ls__7ostreamUi",
+      "demangled": "ostream::operator<<(unsigned int)"
+    },
+    {
+      "mangled": "__ls__7ostreamUl",
+      "demangled": "ostream::operator<<(unsigned long)"
+    },
+    {
+      "mangled": "__ls__7ostreami",
+      "demangled": "ostream::operator<<(int)"
+    },
+    {
+      "mangled": "__ls__FR16CreaturesArchiveRC11AgentHandle",
+      "demangled": "operator<<(CreaturesArchive &, AgentHandle const &)"
+    },
+    {
+      "mangled": "__ls__H1Z11AgentHandle_R16CreaturesArchiveRCt3set3ZX01Zt4less1ZX01Zt9allocator1ZX01_R16CreaturesArchive",
+      "demangled": "CreaturesArchive & operator<<<AgentHandle>(CreaturesArchive &, set<AgentHandle, less<AgentHandle>, allocator<AgentHandle>> const &)"
+    },
+    {
+      "mangled": "__lt__C11AgentHandleRC11AgentHandle",
+      "demangled": "AgentHandle::operator<(AgentHandle const &) const"
+    },
+    {
+      "mangled": "__out_of_range__FPCc",
+      "demangled": "__out_of_range(char const *)"
+    },
+    {
+      "mangled": "__rs__7istreamRUl",
+      "demangled": "istream::operator>>(unsigned long &)"
+    },
+    {
+      "mangled": "__rs__7istreamRc",
+      "demangled": "istream::operator>>(char &)"
+    },
+    {
+      "mangled": "__rs__7istreamRi",
+      "demangled": "istream::operator>>(int &)"
+    },
+    {
+      "mangled": "__rs__FR16CreaturesArchiveR11AgentHandle",
+      "demangled": "operator>>(CreaturesArchive &, AgentHandle &)"
+    },
+    {
+      "mangled": "__t11BabelThread1Z13MessageThread",
+      "demangled": "BabelThread<MessageThread>::BabelThread(void)"
+    },
+    {
+      "mangled": "__t11BabelThread1Z15CBabelAsyncCore",
+      "demangled": "BabelThread<CBabelAsyncCore>::BabelThread(void)"
+    },
+    {
+      "mangled": "__t11BabelThread1Z20CBabelAsyncCoreChild",
+      "demangled": "BabelThread<CBabelAsyncCoreChild>::BabelThread(void)"
+    },
+    {
+      "mangled": "__t27MemberFunctionQueuedMessage1Z10NetManagerP10NetManagerPM10NetManagerFP10NetManager_v",
+      "demangled": "MemberFunctionQueuedMessage<NetManager>::MemberFunctionQueuedMessage(NetManager *, void (NetManager::*)(NetManager *))"
+    },
+    {
+      "mangled": "__t27MemberFunctionQueuedMessage1Z12DSNetManagerP12DSNetManagerPM12DSNetManagerFP12DSNetManager_v",
+      "demangled": "MemberFunctionQueuedMessage<DSNetManager>::MemberFunctionQueuedMessage(DSNetManager *, void (DSNetManager::*)(DSNetManager *))"
+    },
+    {
+      "mangled": "__t4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZP13NetDirectLinkRCt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZP13NetDirectLink",
+      "demangled": "pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, NetDirectLink *>::pair(pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, NetDirectLink *> const &)"
+    },
+    {
+      "mangled": "__t4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZbRCt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zb",
+      "demangled": "pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, bool>::pair(pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, bool> const &)"
+    },
+    {
+      "mangled": "__t4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt3set3Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandleRCt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt3set3Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandle",
+      "demangled": "pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, set<AgentHandle, less<AgentHandle>, allocator<AgentHandle>>>::pair(pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, set<AgentHandle, less<AgentHandle>, allocator<AgentHandle>>> const &)"
+    },
+    {
+      "mangled": "__tf10NetManager",
+      "demangled": "NetManager type_info function"
+    },
+    {
+      "mangled": "__tf12CBabelSocket",
+      "demangled": "CBabelSocket type_info function"
+    },
+    {
+      "mangled": "__tf12DSNetManager",
+      "demangled": "DSNetManager type_info function"
+    },
+    {
+      "mangled": "__tf13CBabelDHandle",
+      "demangled": "CBabelDHandle type_info function"
+    },
+    {
+      "mangled": "__tf13CBabelMessage",
+      "demangled": "CBabelMessage type_info function"
+    },
+    {
+      "mangled": "__tf13MessageThread",
+      "demangled": "MessageThread type_info function"
+    },
+    {
+      "mangled": "__tf13NetDirectLink",
+      "demangled": "NetDirectLink type_info function"
+    },
+    {
+      "mangled": "__tf13PrayException",
+      "demangled": "PrayException type_info function"
+    },
+    {
+      "mangled": "__tf13QueuedMessage",
+      "demangled": "QueuedMessage type_info function"
+    },
+    {
+      "mangled": "__tf13istringstream",
+      "demangled": "istringstream type_info function"
+    },
+    {
+      "mangled": "__tf13ostringstream",
+      "demangled": "ostringstream type_info function"
+    },
+    {
+      "mangled": "__tf14BasicException",
+      "demangled": "BasicException type_info function"
+    },
+    {
+      "mangled": "__tf15CBabelAsyncCore",
+      "demangled": "CBabelAsyncCore type_info function"
+    },
+    {
+      "mangled": "__tf15CBabelRadioLink",
+      "demangled": "CBabelRadioLink type_info function"
+    },
+    {
+      "mangled": "__tf15ModuleInterface",
+      "demangled": "ModuleInterface type_info function"
+    },
+    {
+      "mangled": "__tf15NetLogInterface",
+      "demangled": "NetLogInterface type_info function"
+    },
+    {
+      "mangled": "__tf16CBabelConnection",
+      "demangled": "CBabelConnection type_info function"
+    },
+    {
+      "mangled": "__tf16CBabelSyncSocket",
+      "demangled": "CBabelSyncSocket type_info function"
+    },
+    {
+      "mangled": "__tf16NetworkInterface",
+      "demangled": "NetworkInterface type_info function"
+    },
+    {
+      "mangled": "__tf17CBabelDConnection",
+      "demangled": "CBabelDConnection type_info function"
+    },
+    {
+      "mangled": "__tf19CBabelUDPConnection",
+      "demangled": "CBabelUDPConnection type_info function"
+    },
+    {
+      "mangled": "__tf19CBabelVirtualSocket",
+      "demangled": "CBabelVirtualSocket type_info function"
+    },
+    {
+      "mangled": "__tf20CBabelClientPeerLink",
+      "demangled": "CBabelClientPeerLink type_info function"
+    },
+    {
+      "mangled": "__tf20CBabelUserDataObject",
+      "demangled": "CBabelUserDataObject type_info function"
+    },
+    {
+      "mangled": "__tf20HistoryQueuedMessage",
+      "demangled": "HistoryQueuedMessage type_info function"
+    },
+    {
+      "mangled": "__tf20NetLogImplementation",
+      "demangled": "NetLogImplementation type_info function"
+    },
+    {
+      "mangled": "__tf21CBabelReadWriteSocket",
+      "demangled": "CBabelReadWriteSocket type_info function"
+    },
+    {
+      "mangled": "__tf21InternalQueuedMessage",
+      "demangled": "InternalQueuedMessage type_info function"
+    },
+    {
+      "mangled": "__tf21NetworkImplementation",
+      "demangled": "NetworkImplementation type_info function"
+    },
+    {
+      "mangled": "__tf23CBabelMigrateConnection",
+      "demangled": "CBabelMigrateConnection type_info function"
+    },
+    {
+      "mangled": "__tf25CBabelShortUserDataObject",
+      "demangled": "CBabelShortUserDataObject type_info function"
+    },
+    {
+      "mangled": "__tf7istream",
+      "demangled": "istream type_info function"
+    },
+    {
+      "mangled": "__tf7ostream",
+      "demangled": "ostream type_info function"
+    },
+    {
+      "mangled": "__tf9exception",
+      "demangled": "exception type_info function"
+    },
+    {
+      "mangled": "__tf9streambuf",
+      "demangled": "streambuf type_info function"
+    },
+    {
+      "mangled": "__tf9stringbuf",
+      "demangled": "stringbuf type_info function"
+    },
+    {
+      "mangled": "__tft27MemberFunctionQueuedMessage1Z10NetManager",
+      "demangled": "MemberFunctionQueuedMessage<NetManager> type_info function"
+    },
+    {
+      "mangled": "__tft27MemberFunctionQueuedMessage1Z12DSNetManager",
+      "demangled": "MemberFunctionQueuedMessage<DSNetManager> type_info function"
+    },
+    {
+      "mangled": "__thunk_172__._13ostringstream",
+      "demangled": "virtual function thunk (delta:-172) for ostringstream::~ostringstream(void)"
+    },
+    {
+      "mangled": "__thunk_176__._13istringstream",
+      "demangled": "virtual function thunk (delta:-176) for istringstream::~istringstream(void)"
+    },
+    {
+      "mangled": "__thunk_96_Close__17CBabelDConnection",
+      "demangled": "virtual function thunk (delta:-96) for CBabelDConnection::Close(void)"
+    },
+    {
+      "mangled": "__thunk_96_Read__17CBabelDConnectionPvi",
+      "demangled": "virtual function thunk (delta:-96) for CBabelDConnection::Read(void *, int)"
+    },
+    {
+      "mangled": "__thunk_96_Write__17CBabelDConnectionPCvi",
+      "demangled": "virtual function thunk (delta:-96) for CBabelDConnection::Write(void const *, int)"
+    },
+    {
+      "mangled": "__thunk_96__._17CBabelDConnection",
+      "demangled": "virtual function thunk (delta:-96) for CBabelDConnection::~CBabelDConnection(void)"
+    },
+    {
+      "mangled": "__ti10NetManager",
+      "demangled": "NetManager type_info node"
+    },
+    {
+      "mangled": "__ti12CBabelSocket",
+      "demangled": "CBabelSocket type_info node"
+    },
+    {
+      "mangled": "__ti12DSNetManager",
+      "demangled": "DSNetManager type_info node"
+    },
+    {
+      "mangled": "__ti12stringstream",
+      "demangled": "stringstream type_info node"
+    },
+    {
+      "mangled": "__ti13CBabelDHandle",
+      "demangled": "CBabelDHandle type_info node"
+    },
+    {
+      "mangled": "__ti13CBabelMessage",
+      "demangled": "CBabelMessage type_info node"
+    },
+    {
+      "mangled": "__ti13MessageThread",
+      "demangled": "MessageThread type_info node"
+    },
+    {
+      "mangled": "__ti13NetDirectLink",
+      "demangled": "NetDirectLink type_info node"
+    },
+    {
+      "mangled": "__ti13PrayException",
+      "demangled": "PrayException type_info node"
+    },
+    {
+      "mangled": "__ti13QueuedMessage",
+      "demangled": "QueuedMessage type_info node"
+    },
+    {
+      "mangled": "__ti13istringstream",
+      "demangled": "istringstream type_info node"
+    },
+    {
+      "mangled": "__ti13ostringstream",
+      "demangled": "ostringstream type_info node"
+    },
+    {
+      "mangled": "__ti14BasicException",
+      "demangled": "BasicException type_info node"
+    },
+    {
+      "mangled": "__ti15CBabelAsyncCore",
+      "demangled": "CBabelAsyncCore type_info node"
+    },
+    {
+      "mangled": "__ti15CBabelRadioLink",
+      "demangled": "CBabelRadioLink type_info node"
+    },
+    {
+      "mangled": "__ti15ModuleInterface",
+      "demangled": "ModuleInterface type_info node"
+    },
+    {
+      "mangled": "__ti15NetLogInterface",
+      "demangled": "NetLogInterface type_info node"
+    },
+    {
+      "mangled": "__ti16CBabelConnection",
+      "demangled": "CBabelConnection type_info node"
+    },
+    {
+      "mangled": "__ti16CBabelSyncSocket",
+      "demangled": "CBabelSyncSocket type_info node"
+    },
+    {
+      "mangled": "__ti16NetworkInterface",
+      "demangled": "NetworkInterface type_info node"
+    },
+    {
+      "mangled": "__ti16PersistentObject",
+      "demangled": "PersistentObject type_info node"
+    },
+    {
+      "mangled": "__ti17CBabelDConnection",
+      "demangled": "CBabelDConnection type_info node"
+    },
+    {
+      "mangled": "__ti19CAOSMachineRunError",
+      "demangled": "CAOSMachineRunError type_info node"
+    },
+    {
+      "mangled": "__ti19CBabelUDPConnection",
+      "demangled": "CBabelUDPConnection type_info node"
+    },
+    {
+      "mangled": "__ti19CBabelVirtualSocket",
+      "demangled": "CBabelVirtualSocket type_info node"
+    },
+    {
+      "mangled": "__ti20AgentHandleException",
+      "demangled": "AgentHandleException type_info node"
+    },
+    {
+      "mangled": "__ti20CBabelClientPeerLink",
+      "demangled": "CBabelClientPeerLink type_info node"
+    },
+    {
+      "mangled": "__ti20CBabelUserDataObject",
+      "demangled": "CBabelUserDataObject type_info node"
+    },
+    {
+      "mangled": "__ti20HistoryQueuedMessage",
+      "demangled": "HistoryQueuedMessage type_info node"
+    },
+    {
+      "mangled": "__ti20NetLogImplementation",
+      "demangled": "NetLogImplementation type_info node"
+    },
+    {
+      "mangled": "__ti21CBabelReadWriteSocket",
+      "demangled": "CBabelReadWriteSocket type_info node"
+    },
+    {
+      "mangled": "__ti21InternalQueuedMessage",
+      "demangled": "InternalQueuedMessage type_info node"
+    },
+    {
+      "mangled": "__ti21NetworkImplementation",
+      "demangled": "NetworkImplementation type_info node"
+    },
+    {
+      "mangled": "__ti23CBabelMigrateConnection",
+      "demangled": "CBabelMigrateConnection type_info node"
+    },
+    {
+      "mangled": "__ti25CBabelShortUserDataObject",
+      "demangled": "CBabelShortUserDataObject type_info node"
+    },
+    {
+      "mangled": "__ti7istream",
+      "demangled": "istream type_info node"
+    },
+    {
+      "mangled": "__ti7ostream",
+      "demangled": "ostream type_info node"
+    },
+    {
+      "mangled": "__ti8iostream",
+      "demangled": "iostream type_info node"
+    },
+    {
+      "mangled": "__ti9exception",
+      "demangled": "exception type_info node"
+    },
+    {
+      "mangled": "__ti9streambuf",
+      "demangled": "streambuf type_info node"
+    },
+    {
+      "mangled": "__ti9stringbuf",
+      "demangled": "stringbuf type_info node"
+    },
+    {
+      "mangled": "__tiQ211CAOSMachine18InvalidAgentHandle",
+      "demangled": "CAOSMachine::InvalidAgentHandle type_info node"
+    },
+    {
+      "mangled": "__tiQ216CreaturesArchive9Exception",
+      "demangled": "CreaturesArchive::Exception type_info node"
+    },
+    {
+      "mangled": "__tiQ221CBabelReadWriteSocket1X",
+      "demangled": "CBabelReadWriteSocket::X type_info node"
+    },
+    {
+      "mangled": "__tiQ221CBabelReadWriteSocket5XRead",
+      "demangled": "CBabelReadWriteSocket::XRead type_info node"
+    },
+    {
+      "mangled": "__tiQ221CBabelReadWriteSocket6XWrite",
+      "demangled": "CBabelReadWriteSocket::XWrite type_info node"
+    },
+    {
+      "mangled": "__tiQ27CAOSVar7TypeErr",
+      "demangled": "CAOSVar::TypeErr type_info node"
+    },
+    {
+      "mangled": "__tiQ28FilePath17FilePathException",
+      "demangled": "FilePath::FilePathException type_info node"
+    },
+    {
+      "mangled": "__tiQ29Catalogue3Err",
+      "demangled": "Catalogue::Err type_info node"
+    },
+    {
+      "mangled": "__tit27MemberFunctionQueuedMessage1Z10NetManager",
+      "demangled": "MemberFunctionQueuedMessage<NetManager> type_info node"
+    },
+    {
+      "mangled": "__tit27MemberFunctionQueuedMessage1Z12DSNetManager",
+      "demangled": "MemberFunctionQueuedMessage<DSNetManager> type_info node"
+    },
+    {
+      "mangled": "__vt_10NetManager",
+      "demangled": "NetManager virtual table"
+    },
+    {
+      "mangled": "__vt_12CBabelSocket",
+      "demangled": "CBabelSocket virtual table"
+    },
+    {
+      "mangled": "__vt_12DSNetManager",
+      "demangled": "DSNetManager virtual table"
+    },
+    {
+      "mangled": "__vt_13CBabelDHandle",
+      "demangled": "CBabelDHandle virtual table"
+    },
+    {
+      "mangled": "__vt_13CBabelMessage",
+      "demangled": "CBabelMessage virtual table"
+    },
+    {
+      "mangled": "__vt_13MessageThread",
+      "demangled": "MessageThread virtual table"
+    },
+    {
+      "mangled": "__vt_13NetDirectLink",
+      "demangled": "NetDirectLink virtual table"
+    },
+    {
+      "mangled": "__vt_13QueuedMessage",
+      "demangled": "QueuedMessage virtual table"
+    },
+    {
+      "mangled": "__vt_13istringstream.3ios",
+      "demangled": "istringstream::ios virtual table"
+    },
+    {
+      "mangled": "__vt_13ostringstream.3ios",
+      "demangled": "ostringstream::ios virtual table"
+    },
+    {
+      "mangled": "__vt_14BasicException",
+      "demangled": "BasicException virtual table"
+    },
+    {
+      "mangled": "__vt_15CBabelAsyncCore",
+      "demangled": "CBabelAsyncCore virtual table"
+    },
+    {
+      "mangled": "__vt_15CBabelRadioLink",
+      "demangled": "CBabelRadioLink virtual table"
+    },
+    {
+      "mangled": "__vt_15ModuleInterface",
+      "demangled": "ModuleInterface virtual table"
+    },
+    {
+      "mangled": "__vt_15NetLogInterface",
+      "demangled": "NetLogInterface virtual table"
+    },
+    {
+      "mangled": "__vt_16CBabelConnection",
+      "demangled": "CBabelConnection virtual table"
+    },
+    {
+      "mangled": "__vt_16CBabelSyncSocket",
+      "demangled": "CBabelSyncSocket virtual table"
+    },
+    {
+      "mangled": "__vt_16NetworkInterface",
+      "demangled": "NetworkInterface virtual table"
+    },
+    {
+      "mangled": "__vt_17CBabelDConnection",
+      "demangled": "CBabelDConnection virtual table"
+    },
+    {
+      "mangled": "__vt_17CBabelDConnection.12CBabelSocket",
+      "demangled": "CBabelDConnection::CBabelSocket virtual table"
+    },
+    {
+      "mangled": "__vt_19CBabelUDPConnection",
+      "demangled": "CBabelUDPConnection virtual table"
+    },
+    {
+      "mangled": "__vt_19CBabelVirtualSocket",
+      "demangled": "CBabelVirtualSocket virtual table"
+    },
+    {
+      "mangled": "__vt_20CBabelClientPeerLink",
+      "demangled": "CBabelClientPeerLink virtual table"
+    },
+    {
+      "mangled": "__vt_20CBabelUserDataObject",
+      "demangled": "CBabelUserDataObject virtual table"
+    },
+    {
+      "mangled": "__vt_20HistoryQueuedMessage",
+      "demangled": "HistoryQueuedMessage virtual table"
+    },
+    {
+      "mangled": "__vt_20NetLogImplementation",
+      "demangled": "NetLogImplementation virtual table"
+    },
+    {
+      "mangled": "__vt_21CBabelReadWriteSocket",
+      "demangled": "CBabelReadWriteSocket virtual table"
+    },
+    {
+      "mangled": "__vt_21InternalQueuedMessage",
+      "demangled": "InternalQueuedMessage virtual table"
+    },
+    {
+      "mangled": "__vt_21NetworkImplementation",
+      "demangled": "NetworkImplementation virtual table"
+    },
+    {
+      "mangled": "__vt_23CBabelMigrateConnection",
+      "demangled": "CBabelMigrateConnection virtual table"
+    },
+    {
+      "mangled": "__vt_25CBabelShortUserDataObject",
+      "demangled": "CBabelShortUserDataObject virtual table"
+    },
+    {
+      "mangled": "__vt_3ios",
+      "demangled": "ios virtual table"
+    },
+    {
+      "mangled": "__vt_7CAOSVar",
+      "demangled": "CAOSVar virtual table"
+    },
+    {
+      "mangled": "__vt_7istream.3ios",
+      "demangled": "istream::ios virtual table"
+    },
+    {
+      "mangled": "__vt_7ostream.3ios",
+      "demangled": "ostream::ios virtual table"
+    },
+    {
+      "mangled": "__vt_8ofstream.3ios",
+      "demangled": "ofstream::ios virtual table"
+    },
+    {
+      "mangled": "__vt_9bad_alloc",
+      "demangled": "bad_alloc virtual table"
+    },
+    {
+      "mangled": "__vt_9exception",
+      "demangled": "exception virtual table"
+    },
+    {
+      "mangled": "__vt_9stringbuf",
+      "demangled": "stringbuf virtual table"
+    },
+    {
+      "mangled": "__vt_t27MemberFunctionQueuedMessage1Z10NetManager",
+      "demangled": "MemberFunctionQueuedMessage<NetManager> virtual table"
+    },
+    {
+      "mangled": "__vt_t27MemberFunctionQueuedMessage1Z12DSNetManager",
+      "demangled": "MemberFunctionQueuedMessage<DSNetManager> virtual table"
+    },
+    {
+      "mangled": "_t12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0.nilRep",
+      "demangled": "basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>::nilRep"
+    },
+    {
+      "mangled": "_t12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0.npos",
+      "demangled": "basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>::npos"
+    },
+    {
+      "mangled": "_t23__malloc_alloc_template1i0.__malloc_alloc_oom_handler",
+      "demangled": "__malloc_alloc_template<0>::__malloc_alloc_oom_handler"
+    },
+    {
+      "mangled": "_t24__default_alloc_template2b1i0._S_end_free",
+      "demangled": "__default_alloc_template<true, 0>::_S_end_free"
+    },
+    {
+      "mangled": "_t24__default_alloc_template2b1i0._S_free_list",
+      "demangled": "__default_alloc_template<true, 0>::_S_free_list"
+    },
+    {
+      "mangled": "_t24__default_alloc_template2b1i0._S_heap_size",
+      "demangled": "__default_alloc_template<true, 0>::_S_heap_size"
+    },
+    {
+      "mangled": "_t24__default_alloc_template2b1i0._S_node_allocator_lock",
+      "demangled": "__default_alloc_template<true, 0>::_S_node_allocator_lock"
+    },
+    {
+      "mangled": "_t24__default_alloc_template2b1i0._S_start_free",
+      "demangled": "__default_alloc_template<true, 0>::_S_start_free"
+    },
+    {
+      "mangled": "accept__15CBabelAsyncCoreP8sockaddrPUi",
+      "demangled": "CBabelAsyncCore::accept(sockaddr *, unsigned int *)"
+    },
+    {
+      "mangled": "alloc__t12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Uib",
+      "demangled": "basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>::alloc(unsigned int, bool)"
+    },
+    {
+      "mangled": "bind__15CBabelAsyncCoreP8sockaddrUi",
+      "demangled": "CBabelAsyncCore::bind(sockaddr *, unsigned int)"
+    },
+    {
+      "mangled": "clear__t10_List_base2ZPC13QueuedMessageZt9allocator1ZPC13QueuedMessage",
+      "demangled": "_List_base<QueuedMessage const *, allocator<QueuedMessage const *>>::clear(void)"
+    },
+    {
+      "mangled": "clear__t10_List_base2ZQ212AgentManager14DeferredScriptZt9allocator1ZQ212AgentManager14DeferredScript",
+      "demangled": "_List_base<AgentManager::DeferredScript, allocator<AgentManager::DeferredScript>>::clear(void)"
+    },
+    {
+      "mangled": "clear__t10_List_base2Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "_List_base<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, allocator<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>>::clear(void)"
+    },
+    {
+      "mangled": "clone__Q2t12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0_3Rep",
+      "demangled": "basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>::Rep::clone(void)"
+    },
+    {
+      "mangled": "close__15CBabelAsyncCore",
+      "demangled": "CBabelAsyncCore::close(void)"
+    },
+    {
+      "mangled": "compare__Ct12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0PCcUiUi",
+      "demangled": "basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>::compare(char const *, unsigned int, unsigned int) const"
+    },
+    {
+      "mangled": "compare__Ct12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0RCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0UiUi",
+      "demangled": "basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>::compare(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &, unsigned int, unsigned int) const"
+    },
+    {
+      "mangled": "connect__15CBabelAsyncCoreP8sockaddrUi",
+      "demangled": "CBabelAsyncCore::connect(sockaddr *, unsigned int)"
+    },
+    {
+      "mangled": "doallocate__9streambuf",
+      "demangled": "streambuf::doallocate(void)"
+    },
+    {
+      "mangled": "endl__FR7ostream",
+      "demangled": "endl(ostream &)"
+    },
+    {
+      "mangled": "erase__t8_Rb_tree5Z11AgentHandleZ11AgentHandleZt9_Identity1Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandleGt17_Rb_tree_iterator3Z11AgentHandleZR11AgentHandleZP11AgentHandleT1",
+      "demangled": "_Rb_tree<AgentHandle, AgentHandle, _Identity<AgentHandle>, less<AgentHandle>, allocator<AgentHandle>>::erase(_Rb_tree_iterator<AgentHandle, AgentHandle &, AgentHandle *>, _Rb_tree_iterator<AgentHandle, AgentHandle &, AgentHandle *>)"
+    },
+    {
+      "mangled": "erase__t8_Rb_tree5Z11AgentHandleZ11AgentHandleZt9_Identity1Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandleRC11AgentHandle",
+      "demangled": "_Rb_tree<AgentHandle, AgentHandle, _Identity<AgentHandle>, less<AgentHandle>, allocator<AgentHandle>>::erase(AgentHandle const &)"
+    },
+    {
+      "mangled": "erase__t8_Rb_tree5ZiZt4pair2ZCiZP15CBabelAsyncCoreZt10_Select1st1Zt4pair2ZCiZP15CBabelAsyncCoreZt4less1ZiZt9allocator1ZP15CBabelAsyncCoreGt17_Rb_tree_iterator3Zt4pair2ZCiZP15CBabelAsyncCoreZRt4pair2ZCiZP15CBabelAsyncCoreZPt4pair2ZCiZP15CBabelAsyncCoreT1",
+      "demangled": "_Rb_tree<int, pair<int const, CBabelAsyncCore *>, _Select1st<pair<int const, CBabelAsyncCore *>>, less<int>, allocator<CBabelAsyncCore *>>::erase(_Rb_tree_iterator<pair<int const, CBabelAsyncCore *>, pair<int const, CBabelAsyncCore *> &, pair<int const, CBabelAsyncCore *> *>, _Rb_tree_iterator<pair<int const, CBabelAsyncCore *>, pair<int const, CBabelAsyncCore *> &, pair<int const, CBabelAsyncCore *> *>)"
+    },
+    {
+      "mangled": "erase__t8_Rb_tree5ZiZt4pair2ZCiZP15CBabelAsyncCoreZt10_Select1st1Zt4pair2ZCiZP15CBabelAsyncCoreZt4less1ZiZt9allocator1ZP15CBabelAsyncCoreRCi",
+      "demangled": "_Rb_tree<int, pair<int const, CBabelAsyncCore *>, _Select1st<pair<int const, CBabelAsyncCore *>>, less<int>, allocator<CBabelAsyncCore *>>::erase(int const &)"
+    },
+    {
+      "mangled": "find__Ct8_Rb_tree5Z11AgentHandleZ11AgentHandleZt9_Identity1Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandleRC11AgentHandle",
+      "demangled": "_Rb_tree<AgentHandle, AgentHandle, _Identity<AgentHandle>, less<AgentHandle>, allocator<AgentHandle>>::find(AgentHandle const &) const"
+    },
+    {
+      "mangled": "find__Ct8_Rb_tree5ZiZt4pair2ZCiZt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt10_Select1st1Zt4pair2ZCiZt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4less1ZiZt9allocator1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0RCi",
+      "demangled": "_Rb_tree<int, pair<int const, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, _Select1st<pair<int const, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>>, less<int>, allocator<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>>::find(int const &) const"
+    },
+    {
+      "mangled": "find__Ct8_Rb_tree5Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9_Identity1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4less1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0RCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "_Rb_tree<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, _Identity<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, less<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, allocator<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>>::find(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &) const"
+    },
+    {
+      "mangled": "find__Ct8_Rb_tree5Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZQ29Catalogue9TagStructZt10_Select1st1Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZQ29Catalogue9TagStructZt4less1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1ZQ29Catalogue9TagStructRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "_Rb_tree<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, Catalogue::TagStruct>, _Select1st<pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, Catalogue::TagStruct>>, less<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, allocator<Catalogue::TagStruct>>::find(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &) const"
+    },
+    {
+      "mangled": "find__Ct8_Rb_tree5Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt10_Select1st1Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4less1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0RCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "_Rb_tree<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, _Select1st<pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>>, less<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, allocator<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>>::find(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &) const"
+    },
+    {
+      "mangled": "find__H2ZPP16CBabelConnectionZP16CBabelConnection_X01X01RCX11G26random_access_iterator_tag_X01",
+      "demangled": "CBabelConnection ** find<CBabelConnection **, CBabelConnection *>(CBabelConnection **, CBabelConnection **, CBabelConnection * const &, random_access_iterator_tag)"
+    },
+    {
+      "mangled": "find__t8_Rb_tree5ZP12CBabelClientZt4pair2ZCP12CBabelClientZP10NetManagerZt10_Select1st1Zt4pair2ZCP12CBabelClientZP10NetManagerZt4less1ZP12CBabelClientZt9allocator1ZP10NetManagerRCP12CBabelClient",
+      "demangled": "_Rb_tree<CBabelClient *, pair<CBabelClient *const, NetManager *>, _Select1st<pair<CBabelClient *const, NetManager *>>, less<CBabelClient *>, allocator<NetManager *>>::find(CBabelClient *const &)"
+    },
+    {
+      "mangled": "find__t8_Rb_tree5Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZP13NetDirectLinkZt10_Select1st1Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZP13NetDirectLinkZt4less1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1ZP13NetDirectLinkRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "_Rb_tree<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, NetDirectLink *>, _Select1st<pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, NetDirectLink *>>, less<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, allocator<NetDirectLink *>>::find(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "find__t8_Rb_tree5Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZbZt10_Select1st1Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZbZt4less1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1ZbRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "_Rb_tree<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, bool>, _Select1st<pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, bool>>, less<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, allocator<bool>>::find(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "find__t8_Rb_tree5Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt3set3Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandleZt10_Select1st1Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt3set3Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandleZt4less1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1Zt3set3Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandleRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "_Rb_tree<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, set<AgentHandle, less<AgentHandle>, allocator<AgentHandle>>>, _Select1st<pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, set<AgentHandle, less<AgentHandle>, allocator<AgentHandle>>>>, less<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, allocator<set<AgentHandle, less<AgentHandle>, allocator<AgentHandle>>>>::find(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "find_last_of__Ct12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0PCcUiUi",
+      "demangled": "basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>::find_last_of(char const *, unsigned int, unsigned int) const"
+    },
+    {
+      "mangled": "imbue__9streambufPv",
+      "demangled": "streambuf::imbue(void *)"
+    },
+    {
+      "mangled": "insert__t6vector2Z16CBabelServerInfoZt9allocator1Z16CBabelServerInfoP16CBabelServerInfoUiRC16CBabelServerInfo",
+      "demangled": "vector<CBabelServerInfo, allocator<CBabelServerInfo>>::insert(CBabelServerInfo *, unsigned int, CBabelServerInfo const &)"
+    },
+    {
+      "mangled": "insert__t6vector2Z25CBabelShortUserDataObjectZt9allocator1Z25CBabelShortUserDataObjectP25CBabelShortUserDataObjectUiRC25CBabelShortUserDataObject",
+      "demangled": "vector<CBabelShortUserDataObject, allocator<CBabelShortUserDataObject>>::insert(CBabelShortUserDataObject *, unsigned int, CBabelShortUserDataObject const &)"
+    },
+    {
+      "mangled": "insert__t6vector2ZcZt9allocator1ZcPcUiRCc",
+      "demangled": "vector<char, allocator<char>>::insert(char *, unsigned int, char const &)"
+    },
+    {
+      "mangled": "insert_equal__t8_Rb_tree5Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZP13NetDirectLinkZt10_Select1st1Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZP13NetDirectLinkZt4less1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1ZP13NetDirectLinkRCt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZP13NetDirectLink",
+      "demangled": "_Rb_tree<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, NetDirectLink *>, _Select1st<pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, NetDirectLink *>>, less<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, allocator<NetDirectLink *>>::insert_equal(pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, NetDirectLink *> const &)"
+    },
+    {
+      "mangled": "insert_unique__t8_Rb_tree5Z11AgentHandleZ11AgentHandleZt9_Identity1Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandleRC11AgentHandle",
+      "demangled": "_Rb_tree<AgentHandle, AgentHandle, _Identity<AgentHandle>, less<AgentHandle>, allocator<AgentHandle>>::insert_unique(AgentHandle const &)"
+    },
+    {
+      "mangled": "insert_unique__t8_Rb_tree5ZP12CBabelClientZt4pair2ZCP12CBabelClientZP10NetManagerZt10_Select1st1Zt4pair2ZCP12CBabelClientZP10NetManagerZt4less1ZP12CBabelClientZt9allocator1ZP10NetManagerGt17_Rb_tree_iterator3Zt4pair2ZCP12CBabelClientZP10NetManagerZRt4pair2ZCP12CBabelClientZP10NetManagerZPt4pair2ZCP12CBabelClientZP10NetManagerRCt4pair2ZCP12CBabelClientZP10NetManager",
+      "demangled": "_Rb_tree<CBabelClient *, pair<CBabelClient *const, NetManager *>, _Select1st<pair<CBabelClient *const, NetManager *>>, less<CBabelClient *>, allocator<NetManager *>>::insert_unique(_Rb_tree_iterator<pair<CBabelClient *const, NetManager *>, pair<CBabelClient *const, NetManager *> &, pair<CBabelClient *const, NetManager *> *>, pair<CBabelClient *const, NetManager *> const &)"
+    },
+    {
+      "mangled": "insert_unique__t8_Rb_tree5ZP12CBabelClientZt4pair2ZCP12CBabelClientZP10NetManagerZt10_Select1st1Zt4pair2ZCP12CBabelClientZP10NetManagerZt4less1ZP12CBabelClientZt9allocator1ZP10NetManagerRCt4pair2ZCP12CBabelClientZP10NetManager",
+      "demangled": "_Rb_tree<CBabelClient *, pair<CBabelClient *const, NetManager *>, _Select1st<pair<CBabelClient *const, NetManager *>>, less<CBabelClient *>, allocator<NetManager *>>::insert_unique(pair<CBabelClient *const, NetManager *> const &)"
+    },
+    {
+      "mangled": "insert_unique__t8_Rb_tree5ZiZt4pair2ZCiZP15CBabelAsyncCoreZt10_Select1st1Zt4pair2ZCiZP15CBabelAsyncCoreZt4less1ZiZt9allocator1ZP15CBabelAsyncCoreGt17_Rb_tree_iterator3Zt4pair2ZCiZP15CBabelAsyncCoreZRt4pair2ZCiZP15CBabelAsyncCoreZPt4pair2ZCiZP15CBabelAsyncCoreRCt4pair2ZCiZP15CBabelAsyncCore",
+      "demangled": "_Rb_tree<int, pair<int const, CBabelAsyncCore *>, _Select1st<pair<int const, CBabelAsyncCore *>>, less<int>, allocator<CBabelAsyncCore *>>::insert_unique(_Rb_tree_iterator<pair<int const, CBabelAsyncCore *>, pair<int const, CBabelAsyncCore *> &, pair<int const, CBabelAsyncCore *> *>, pair<int const, CBabelAsyncCore *> const &)"
+    },
+    {
+      "mangled": "insert_unique__t8_Rb_tree5ZiZt4pair2ZCiZP15CBabelAsyncCoreZt10_Select1st1Zt4pair2ZCiZP15CBabelAsyncCoreZt4less1ZiZt9allocator1ZP15CBabelAsyncCoreRCt4pair2ZCiZP15CBabelAsyncCore",
+      "demangled": "_Rb_tree<int, pair<int const, CBabelAsyncCore *>, _Select1st<pair<int const, CBabelAsyncCore *>>, less<int>, allocator<CBabelAsyncCore *>>::insert_unique(pair<int const, CBabelAsyncCore *> const &)"
+    },
+    {
+      "mangled": "insert_unique__t8_Rb_tree5Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9_Identity1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4less1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0RCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "_Rb_tree<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, _Identity<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, less<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, allocator<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>>::insert_unique(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "insert_unique__t8_Rb_tree5Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZbZt10_Select1st1Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZbZt4less1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1ZbGt17_Rb_tree_iterator3Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZbZRt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZbZPt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZbRCt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zb",
+      "demangled": "_Rb_tree<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, bool>, _Select1st<pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, bool>>, less<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, allocator<bool>>::insert_unique(_Rb_tree_iterator<pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, bool>, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, bool> &, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, bool> *>, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, bool> const &)"
+    },
+    {
+      "mangled": "insert_unique__t8_Rb_tree5Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZbZt10_Select1st1Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZbZt4less1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1ZbRCt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zb",
+      "demangled": "_Rb_tree<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, bool>, _Select1st<pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, bool>>, less<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, allocator<bool>>::insert_unique(pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, bool> const &)"
+    },
+    {
+      "mangled": "insert_unique__t8_Rb_tree5Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt3set3Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandleZt10_Select1st1Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt3set3Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandleZt4less1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1Zt3set3Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandleGt17_Rb_tree_iterator3Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt3set3Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandleZRt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt3set3Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandleZPt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt3set3Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandleRCt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt3set3Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandle",
+      "demangled": "_Rb_tree<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, set<AgentHandle, less<AgentHandle>, allocator<AgentHandle>>>, _Select1st<pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, set<AgentHandle, less<AgentHandle>, allocator<AgentHandle>>>>, less<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, allocator<set<AgentHandle, less<AgentHandle>, allocator<AgentHandle>>>>::insert_unique(_Rb_tree_iterator<pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, set<AgentHandle, less<AgentHandle>, allocator<AgentHandle>>>, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, set<AgentHandle, less<AgentHandle>, allocator<AgentHandle>>> &, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, set<AgentHandle, less<AgentHandle>, allocator<AgentHandle>>> *>, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, set<AgentHandle, less<AgentHandle>, allocator<AgentHandle>>> const &)"
+    },
+    {
+      "mangled": "insert_unique__t8_Rb_tree5Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt3set3Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandleZt10_Select1st1Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt3set3Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandleZt4less1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1Zt3set3Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandleRCt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt3set3Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandle",
+      "demangled": "_Rb_tree<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, set<AgentHandle, less<AgentHandle>, allocator<AgentHandle>>>, _Select1st<pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, set<AgentHandle, less<AgentHandle>, allocator<AgentHandle>>>>, less<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, allocator<set<AgentHandle, less<AgentHandle>, allocator<AgentHandle>>>>::insert_unique(pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, set<AgentHandle, less<AgentHandle>, allocator<AgentHandle>>> const &)"
+    },
+    {
+      "mangled": "listen__15CBabelAsyncCoreUi",
+      "demangled": "CBabelAsyncCore::listen(unsigned int)"
+    },
+    {
+      "mangled": "lower_bound__t8_Rb_tree5ZP12CBabelClientZt4pair2ZCP12CBabelClientZP10NetManagerZt10_Select1st1Zt4pair2ZCP12CBabelClientZP10NetManagerZt4less1ZP12CBabelClientZt9allocator1ZP10NetManagerRCP12CBabelClient",
+      "demangled": "_Rb_tree<CBabelClient *, pair<CBabelClient *const, NetManager *>, _Select1st<pair<CBabelClient *const, NetManager *>>, less<CBabelClient *>, allocator<NetManager *>>::lower_bound(CBabelClient *const &)"
+    },
+    {
+      "mangled": "lower_bound__t8_Rb_tree5ZiZt4pair2ZCiZP15CBabelAsyncCoreZt10_Select1st1Zt4pair2ZCiZP15CBabelAsyncCoreZt4less1ZiZt9allocator1ZP15CBabelAsyncCoreRCi",
+      "demangled": "_Rb_tree<int, pair<int const, CBabelAsyncCore *>, _Select1st<pair<int const, CBabelAsyncCore *>>, less<int>, allocator<CBabelAsyncCore *>>::lower_bound(int const &)"
+    },
+    {
+      "mangled": "lower_bound__t8_Rb_tree5Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZP13NetDirectLinkZt10_Select1st1Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZP13NetDirectLinkZt4less1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1ZP13NetDirectLinkRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "_Rb_tree<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, NetDirectLink *>, _Select1st<pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, NetDirectLink *>>, less<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, allocator<NetDirectLink *>>::lower_bound(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "lower_bound__t8_Rb_tree5Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZbZt10_Select1st1Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZbZt4less1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1ZbRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "_Rb_tree<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, bool>, _Select1st<pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, bool>>, less<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, allocator<bool>>::lower_bound(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "lower_bound__t8_Rb_tree5Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt3set3Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandleZt10_Select1st1Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt3set3Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandleZt4less1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1Zt3set3Z11AgentHandleZt4less1Z11AgentHandleZt9allocator1Z11AgentHandleRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "_Rb_tree<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, set<AgentHandle, less<AgentHandle>, allocator<AgentHandle>>>, _Select1st<pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, set<AgentHandle, less<AgentHandle>, allocator<AgentHandle>>>>, less<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, allocator<set<AgentHandle, less<AgentHandle>, allocator<AgentHandle>>>>::lower_bound(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "overflow__9stringbufi",
+      "demangled": "stringbuf::overflow(int)"
+    },
+    {
+      "mangled": "pbackfail__9stringbufi",
+      "demangled": "stringbuf::pbackfail(int)"
+    },
+    {
+      "mangled": "rH__C19CBabelVirtualSocket",
+      "demangled": "CBabelVirtualSocket::rH(void) const"
+    },
+    {
+      "mangled": "recv__15CBabelAsyncCorePcUii",
+      "demangled": "CBabelAsyncCore::recv(char *, unsigned int, int)"
+    },
+    {
+      "mangled": "remove__16CBabelConnection",
+      "demangled": "CBabelConnection::remove(void)"
+    },
+    {
+      "mangled": "replace__t12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0UiUiPCcUi",
+      "demangled": "basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>::replace(unsigned int, unsigned int, char const *, unsigned int)"
+    },
+    {
+      "mangled": "replace__t12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0UiUiRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0UiUi",
+      "demangled": "basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>::replace(unsigned int, unsigned int, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &, unsigned int, unsigned int)"
+    },
+    {
+      "mangled": "replace__t12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0UiUiUic",
+      "demangled": "basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>::replace(unsigned int, unsigned int, unsigned int, char)"
+    },
+    {
+      "mangled": "resize__t12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Uic",
+      "demangled": "basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>::resize(unsigned int, char)"
+    },
+    {
+      "mangled": "seekoff__9stringbufxQ23ios8seek_diri",
+      "demangled": "stringbuf::seekoff(long long, ios::seek_dir, int)"
+    },
+    {
+      "mangled": "seekpos__9stringbufxi",
+      "demangled": "stringbuf::seekpos(long long, int)"
+    },
+    {
+      "mangled": "send__15CBabelAsyncCorePCcUii",
+      "demangled": "CBabelAsyncCore::send(char const *, unsigned int, int)"
+    },
+    {
+      "mangled": "setbuf__9stringbufPci",
+      "demangled": "stringbuf::setbuf(char *, int)"
+    },
+    {
+      "mangled": "showmanyc__9streambuf",
+      "demangled": "streambuf::showmanyc(void)"
+    },
+    {
+      "mangled": "str__9stringbufRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "stringbuf::str(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "str__C9stringbuf",
+      "demangled": "stringbuf::str(void) const"
+    },
+    {
+      "mangled": "sync__9streambuf",
+      "demangled": "streambuf::sync(void)"
+    },
+    {
+      "mangled": "sys_close__9streambuf",
+      "demangled": "streambuf::sys_close(void)"
+    },
+    {
+      "mangled": "sys_read__9streambufPci",
+      "demangled": "streambuf::sys_read(char *, int)"
+    },
+    {
+      "mangled": "sys_seek__9streambufxQ23ios8seek_dir",
+      "demangled": "streambuf::sys_seek(long long, ios::seek_dir)"
+    },
+    {
+      "mangled": "sys_stat__9streambufPv",
+      "demangled": "streambuf::sys_stat(void *)"
+    },
+    {
+      "mangled": "sys_write__9streambufPCci",
+      "demangled": "streambuf::sys_write(char const *, int)"
+    },
+    {
+      "mangled": "terminate__Fv",
+      "demangled": "terminate(void)"
+    },
+    {
+      "mangled": "uflow__9stringbuf",
+      "demangled": "stringbuf::uflow(void)"
+    },
+    {
+      "mangled": "underflow__9stringbuf",
+      "demangled": "stringbuf::underflow(void)"
+    },
+    {
+      "mangled": "upper_bound__t8_Rb_tree5Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZP13NetDirectLinkZt10_Select1st1Zt4pair2ZCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0ZP13NetDirectLinkZt4less1Zt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0Zt9allocator1ZP13NetDirectLinkRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0",
+      "demangled": "_Rb_tree<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>, pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, NetDirectLink *>, _Select1st<pair<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const, NetDirectLink *>>, less<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>>>, allocator<NetDirectLink *>>::upper_bound(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)"
+    },
+    {
+      "mangled": "what__C14BasicException",
+      "demangled": "BasicException::what(void) const"
+    },
+    {
+      "mangled": "write__7ostreamPCci",
+      "demangled": "ostream::write(char const *, int)"
+    },
+    {
+      "mangled": "xsgetn__9streambufPci",
+      "demangled": "streambuf::xsgetn(char *, int)"
+    },
+    {
+      "mangled": "xsputn__9streambufPCci",
+      "demangled": "streambuf::xsputn(char const *, int)"
+    }
+  ]
+}

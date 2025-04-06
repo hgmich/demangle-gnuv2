@@ -80,3 +80,7 @@ devenv.local.nix
 
 # pre-commit
 .pre-commit-config.yaml
+
+results.json
+
+pyo3/

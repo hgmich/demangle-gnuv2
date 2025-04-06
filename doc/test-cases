@@ -27,3 +27,6 @@ AgentManager::DeferredScript::~DeferredScript(void)
 
 EncodeAsUniqueFilename__10NetManagerRCt12basic_string3ZcZt18string_char_traits1ZcZt24__default_alloc_template2b1i0T1
 NetManager::EncodeAsUniqueFilename(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0>> const &)
+
+GetSolidLifeEvent__15CreatureHistoryGQ215CreatureHistory10SolidIndex
+CreatureHistory::GetSolidLifeEvent(CreatureHistory::SolidIndex)
