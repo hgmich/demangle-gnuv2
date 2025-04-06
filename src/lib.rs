@@ -55,7 +55,7 @@ pub struct DemangleStyle {
 }
 
 /// Types that can be encoded in the signatures of mangled functions.
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 enum TypeKind {
     None,
     Pointer,
@@ -999,8 +999,26 @@ impl DemanglerState {
                     value: ty_k,
                     mangled,
                 } = self.do_type(mangled, &mut temp)?;
+                log::debug!("is_type = {is_type}");
+                // Change here is because we don't want to have to do a weird dance with Cell to reborrow
+                // tname mutably during this scope.
+                // Arguably there was an overgeneralization in the original C code anyway.
+                if !is_type {
+                    let mut s = Vec::new();
+                    ConsumeVal { mangled, .. } =
+                        self.demangle_template_value_parm(mangled, &mut s, ty_k)?;
 
-                todo!("implement value parameter demangle");
+                    self.tmpl_argvec.push(s.clone());
+                    tname.extend(&*s);
+                } else {
+                    ConsumeVal { mangled, .. } =
+                        self.demangle_template_value_parm(mangled, tname, ty_k)?;
+                }
+
+                if log::log_enabled!(log::Level::Debug) {
+                    let tname_s = std::str::from_utf8(tname).expect("failed to deserialize tname");
+                    log::debug!("tname = {tname_s}");
+                }
             }
             need_comma = true;
         }
@@ -1009,6 +1027,10 @@ impl DemanglerState {
 
         if is_type && remember {
             if let Some(idx) = bindex {
+                if log::log_enabled!(log::Level::Debug) {
+                    let tname_s = std::str::from_utf8(tname).expect("failed to deserialize tname");
+                    log::debug!("demangle_template: remembering type {tname_s}");
+                }
                 self.btypes.remember(idx, tname);
             }
         }
@@ -1341,6 +1363,11 @@ impl DemanglerState {
                     let mut btype = vec![];
                     ConsumeVal { mangled, .. } =
                         self.demangle_template(mangled, &mut btype, None, true, true)?;
+                    if log::log_enabled!(log::Level::Debug) {
+                        let btype_s =
+                            std::str::from_utf8(&btype).expect("failed to deserialize btype");
+                        log::debug!("btype after fund type: {btype_s}");
+                    }
                     result.extend(&btype);
                 }
                 _ => return None,
@@ -1866,6 +1893,107 @@ impl DemanglerState {
         self.types.push(start[..idx].into());
 
         Some(ConsumeVal { mangled, value: () })
+    }
+
+    fn demangle_template_value_parm<'a>(
+        &mut self,
+        mut mangled: &'a [u8],
+        s: &mut Vec<u8>,
+        ty_k: TypeKind,
+    ) -> Option<ConsumeVal<'a, ()>> {
+        log::debug!("debug_template_value_parm: start");
+
+        if !mangled.is_empty() && mangled[0] == b'Y' {
+            log::debug!("debug_template_value_parm: template parameter");
+            todo!("implement demangle_template_value_parm for template");
+        } else if ty_k == TypeKind::Integral {
+            ConsumeVal { mangled, .. } = self.demangle_integral_value(mangled, s)?;
+        } else if ty_k == TypeKind::Char {
+            todo!("implement demangle_template_value_parm for char");
+        } else if ty_k == TypeKind::Bool {
+            let value;
+            ConsumeVal { mangled, value } = consume_count(mangled)?;
+            let bool_val = match value {
+                0 => &b"false"[..],
+                1 => &b"true"[..],
+                _ => return None,
+            };
+            s.extend(bool_val);
+            if log::log_enabled!(log::Level::Debug) {
+                let s_s = std::str::from_utf8(mangled).expect("failed to deserialize s");
+                log::debug!("s after bool: {s_s}");
+            }
+        } else if ty_k == TypeKind::Real {
+            todo!("implement demangle_template_value_parm for floats");
+        } else if [TypeKind::Pointer, TypeKind::Reference].contains(&ty_k) {
+            if mangled[0] == b'Q' {
+                ConsumeVal { mangled, .. } = self.demangle_qualified(mangled, s, false, true)?;
+            } else {
+                todo!("implement demangle_template_value_parm for unqualified types");
+            }
+        }
+
+        log::debug!("debug_template_value_parm: done");
+
+        Some(ConsumeVal { mangled, value: () })
+    }
+
+    fn demangle_integral_value<'a>(
+        &mut self,
+        mut mangled: &'a [u8],
+        s: &mut Vec<u8>,
+    ) -> Option<ConsumeVal<'a, ()>> {
+        log::debug!("demangle_integral_value: begin");
+
+        if mangled.is_empty() {
+            log::error!("demangle_integral_value: end of mangled string");
+            return None;
+        }
+
+        if mangled[0] == b'E' {
+            log::debug!("demangle_integral_value: E");
+            let mut need_operator = false;
+            s.push(b'(');
+            mangled = &mangled[1..];
+
+            while !mangled.is_empty() && mangled[0] != b'W' {
+                if need_operator {
+                    todo!("implement demangle_integral_value operator");
+                } else {
+                    need_operator = true;
+                }
+
+                ConsumeVal { mangled, .. } =
+                    self.demangle_template_value_parm(mangled, s, TypeKind::Integral)?;
+            }
+
+            if mangled.is_empty() || mangled[0] != b'W' {
+                return None;
+            } else {
+                s.push(b')');
+                mangled = &mangled[1..];
+            }
+        } else if b"QK".contains(&mangled[0]) {
+            ConsumeVal { mangled, .. } = self.demangle_qualified(mangled, s, false, true)?;
+        } else {
+            let mut have_digit = false;
+
+            if mangled[0] == b'm' {
+                s.push(b'-');
+            }
+
+            while !mangled.is_empty() && mangled[0].is_ascii_digit() {
+                s.push(mangled[0]);
+                mangled = &mangled[1..];
+                have_digit = true;
+            }
+
+            if !have_digit {
+                return None;
+            }
+        }
+
+        return Some(ConsumeVal { mangled, value: () });
     }
 }
 
