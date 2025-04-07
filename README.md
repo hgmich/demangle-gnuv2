@@ -16,4 +16,10 @@ of `libiberty` as included in [rz-libdemangle][rz-libdemangle-gh]. As such:
 
 **NOTE:** Currently under development and not fully usable.
 
+## Minimum Supported Rust Version policy
+
+The MSRV will be set according to the current version of Rust that ships with
+the current Debian Linux "oldstable" release. As of writing, this is
+Rust 1.78.0.
+
 [rz-libdemangle-gh]: https://github.com/rizinorg/rz-libdemangle

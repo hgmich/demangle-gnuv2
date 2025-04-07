@@ -4,6 +4,7 @@ version = { workspace = true }
 authors = { workspace = true }
 license = { workspace = true }
 edition = { workspace = true }
+rust-version = { workspace = true }
 description = "A structured demangler for the GNU v2 C++ mangling scheme"
 
 [dependencies]
@@ -21,6 +22,7 @@ edition = "2021"
 version = "0.1.0"
 authors = ["Michael Gaver-Holmes <i.am@ceph3.us>"]
 license = "LGPL-2.0+"
+rust-version = "1.78"
 
 [workspace.dependencies]
 thiserror = "2.0.12"
