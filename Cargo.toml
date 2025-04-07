@@ -17,7 +17,7 @@ thiserror = { workspace = true }
 members = ["demangle-gnuv2-py"]
 
 [workspace.package]
-edition = "2024"
+edition = "2021"
 version = "0.1.0"
 authors = ["Michael Gaver-Holmes <i.am@ceph3.us>"]
 license = "LGPL-2.0+"

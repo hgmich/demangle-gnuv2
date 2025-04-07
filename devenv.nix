@@ -5,7 +5,7 @@
   inputs,
   ...
 }: {
-  packages = [pkgs.git pkgs.gh pkgs.alejandra];
+  packages = [pkgs.git pkgs.gh pkgs.alejandra pkgs.rustup];
 
   languages.rust.enable = true;
   languages.rust.channel = "stable";
