@@ -1601,7 +1601,9 @@ impl DemanglerState {
                         ConsumeVal { mangled, .. } = self.demangle_class(mangled, declp)?;
                         self.types.push(oldmangled.into());
 
-                        if (style.auto() || style.gnu() || style.edg()) && mangled[0] == b'F' {
+                        if (style.auto() || style.gnu() || style.edg())
+                            && mangled.get(0) == Some(b'F')
+                        {
                             expect_func = true;
                         }
                     }
