@@ -893,12 +893,139 @@ impl DemanglerState {
 
     fn demangle_qualified<'a>(
         &mut self,
-        mangled: &'a [u8],
+        mut mangled: &'a [u8],
         result: &'_ mut Vec<u8>,
         isfuncname: bool,
         append: bool,
     ) -> Option<ConsumeVal<'a, ()>> {
-        todo!("implement demangle_qualified")
+        let style = self.opts.style();
+        let mut temp: Vec<u8> = vec![];
+        let mut last_name: Vec<u8> = vec![];
+        let mut qualifier_count = 0usize;
+
+        let bindex = self.btypes.register();
+
+        // Only use isfuncname if the entity is a constructor or destructor.
+        let isfuncname = isfuncname && ((self.constructor & 1) > 0 || (self.destructor & 1) > 0);
+
+        if !mangled.is_empty() && mangled[0] == b'K' {
+            let idx;
+            // Squangling qualified name reuse
+            mangled = &mangled[1..];
+            ConsumeVal {
+                mangled,
+                value: idx,
+            } = consume_count_with_underscores(mangled)?;
+
+            if idx >= self.ktypes.len() {
+                log::error!("Referenced unknown Ktype index {idx}");
+                return None;
+            }
+            temp.extend(&self.ktypes[idx]);
+        } else {
+            if mangled.len() >= 2 {
+                match mangled[1] {
+                    b'_' => {
+                        // GNU mangled name with more than 9 classes
+                        todo!("Implement GNU mangled name with more than 9 classes");
+                    }
+                    c @ b'1'..=b'9' => {
+                        qualifier_count = std::str::from_utf8(&[c]).ok()?.parse().ok()?;
+
+                        // If there is an underscore after the digit, skip it.  This is
+                        // said to be for ARM-qualified names, but the ARM makes no
+                        // mention of such an underscore.  Perhaps cfront uses one.
+                        if mangled.len() >= 3 && mangled[2] == b'_' {
+                            mangled = &mangled[1..];
+                        }
+                        mangled = &mangled[2..];
+                    }
+                    _ => return None,
+                }
+            }
+        }
+
+        for _ in 0..qualifier_count {
+            let mut remember_k = true;
+            last_name.clear();
+
+            if !mangled.is_empty() && mangled[0] == b'_' {
+                mangled = &mangled[1..];
+            }
+
+            if !mangled.is_empty() {
+                if mangled[0] == b't' {
+                    // Here we always append to TEMP since we will want to use
+                    // the template name without the template parameters as a
+                    // constructor or destructor name.  The appropriate
+                    // (parameter-less) value is returned by demangle_template
+                    // in LAST_NAME.  We do not remember the template type here,
+                    // in order to match the G++ mangling algorithm.
+                    ConsumeVal { mangled, .. } = self.demangle_template(
+                        mangled,
+                        &mut temp,
+                        Some(&mut last_name),
+                        true,
+                        false,
+                    )?;
+                } else if mangled[0] == b'K' {
+                    let idx;
+                    mangled = &mangled[1..];
+                    ConsumeVal {
+                        mangled,
+                        value: idx,
+                    } = consume_count_with_underscores(mangled)?;
+                    if idx >= self.ktypes.len() {
+                        return None;
+                    } else {
+                        temp.extend(&self.ktypes[idx]);
+                    }
+                    remember_k = false;
+                } else {
+                    if style.edg() {
+                        todo!("implement EDG recursive demangling");
+                    } else {
+                        ConsumeVal { mangled, .. } = self.do_type(mangled, &mut last_name)?;
+                        temp.extend(&last_name);
+                    }
+                }
+            }
+
+            if remember_k {
+                self.ktypes.push(temp.clone());
+            }
+
+            if qualifier_count > 0 {
+                temp.extend(self.scope_str());
+            }
+        }
+
+        self.btypes.remember(bindex, &temp)?;
+
+        // If we are using the result as a function name, we need to append
+        // the appropriate '::' separated constructor or destructor name.
+        // We do this here because this is the most convenient place, where
+        // we already have a pointer to the name and the length of the name.
+        if isfuncname {
+            temp.extend(self.scope_str());
+            if (self.destructor & 1) > 0 {
+                temp.push(b'~');
+            }
+            temp.extend(&last_name);
+        }
+
+        // Now either prepend the temp buffer to the result, or append it,
+        // depending upon the state of the append flag.
+        if append {
+            result.extend(&temp);
+        } else {
+            if !result.is_empty() {
+                temp.extend(self.scope_str());
+            }
+            result.prepend(&temp);
+        }
+
+        Some(ConsumeVal { mangled, value: () })
     }
 
     fn demangle_template<'a>(
@@ -1139,7 +1266,8 @@ impl DemanglerState {
         match mangled[0] {
             b'Q' | b'K' => {
                 log::debug!("do_type: qualified type");
-                self.demangle_qualified(mangled, result, false, true)?;
+                ConsumeVal { mangled, .. } =
+                    self.demangle_qualified(mangled, result, false, true)?;
             }
             b'B' => {
                 log::debug!("do_type: backref");
