@@ -1678,7 +1678,32 @@ impl DemanglerState {
                 }
                 b'_' => {
                     log::debug!("demangle signature: param _");
-                    todo!("implement demangle _");
+
+                    if self.opts.style().gnu() && expect_return_type {
+                        let mut return_type: Vec<u8> = vec![];
+                        mangled = &mangled[1..];
+                        ConsumeVal { mangled, .. } = self.do_type(mangled, &mut return_type)?;
+                        append_blank(&mut return_type);
+
+                        declp.prepend(&return_type);
+                    } else {
+                        // At the outermost level, we cannot have a return type specified,
+                        // so if we run into another '_' at this point we are dealing with
+                        // a mangled name that is either bogus, or has been mangled by
+                        // some algorithm we don't know how to deal with.  So just
+                        // reject the entire demangling.
+                        // However, "_nnn" is an expected suffix for alternate entry point
+                        // numbered nnn for a function, with HP aCC, so skip over that
+                        // without reporting failure. pai/1997-09-04
+                        if self.opts.style().hp() {
+                            mangled = &mangled[1..];
+                            while !mangled.is_empty() && mangled[0].is_ascii_digit() {
+                                mangled = &mangled[1..];
+                            }
+                        } else {
+                            return None;
+                        }
+                    }
                 }
                 b'H' => {
                     log::debug!("demangle signature: param H");
