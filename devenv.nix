@@ -26,7 +26,7 @@
     "workspace:fmt".exec = "cargo fmt";
     "pyext:develop".exec = "cd \"$DEVENV_ROOT/demangle-gnuv2-py\" && maturin develop";
     "test:symbols" = {
-      before = ["pyext:develop"];
+      after = ["pyext:develop"];
       exec = ''
         set -euo pipefail
         python test/test_demangle.py -Cj -o results.json | tee "$DEVENV_TASK_OUTPUT_FILE"
