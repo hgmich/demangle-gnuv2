@@ -1635,8 +1635,24 @@ impl DemanglerState {
                     todo!("implement demangle B");
                 }
                 b'F' => {
-                    log::debug!("demangle signature: param F");
-                    todo!("implement demangle F");
+                    log::debug!("demangle signature: param function");
+                    oldmangled = None;
+                    func_done = true;
+                    mangled = &mangled[1..];
+
+                    if style.lucid() || style.arm() || style.hp() || style.edg() {
+                        todo!("implement forget_types");
+                    }
+
+                    ConsumeVal { mangled, .. } = self.demangle_args(mangled, declp)?;
+
+                    if (style.auto() || style.edg()) && !mangled.is_empty() && mangled[0] == b'_' {
+                        mangled = &mangled[1..];
+                        // At this level, we don't care about the return type.
+                        let mut tname = Vec::new();
+                        self.do_type(mangled, &mut tname);
+                        drop(tname);
+                    }
                 }
                 b't' => {
                     log::debug!("demangle signature: param t");
@@ -1679,7 +1695,7 @@ impl DemanglerState {
                 b'_' => {
                     log::debug!("demangle signature: param _");
 
-                    if self.opts.style().gnu() && expect_return_type {
+                    if style.gnu() && expect_return_type {
                         let mut return_type: Vec<u8> = vec![];
                         mangled = &mangled[1..];
                         ConsumeVal { mangled, .. } = self.do_type(mangled, &mut return_type)?;
@@ -1695,7 +1711,7 @@ impl DemanglerState {
                         // However, "_nnn" is an expected suffix for alternate entry point
                         // numbered nnn for a function, with HP aCC, so skip over that
                         // without reporting failure. pai/1997-09-04
-                        if self.opts.style().hp() {
+                        if style.hp() {
                             mangled = &mangled[1..];
                             while !mangled.is_empty() && mangled[0].is_ascii_digit() {
                                 mangled = &mangled[1..];
