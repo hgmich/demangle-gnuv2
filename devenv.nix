@@ -4,8 +4,16 @@
   config,
   inputs,
   ...
-}: {
-  packages = [pkgs.git pkgs.gh pkgs.alejandra pkgs.rustup];
+}: let
+  checkFailReasonsScript = pkgs.writeShellScriptBin "fail-reasons" ''
+    jq="${pkgs.jq}/bin/jq"
+    sort="${pkgs.coreutils}/bin/sort"
+    uniq="${pkgs.coreutils}/bin/uniq"
+
+    "$jq" '.results[] | select(.success == false) | select(.fail_reason == "PANIC") | select(.exc_info | test("^not yet implemented")) | .exc_info' < results.json | $sort | $uniq -c
+  '';
+in {
+  packages = [pkgs.git pkgs.gh pkgs.alejandra pkgs.rustup checkFailReasonsScript];
 
   languages.rust.enable = true;
   languages.rust.channel = "stable";
