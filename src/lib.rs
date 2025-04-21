@@ -1794,7 +1794,7 @@ impl DemanglerState {
         let style = self.opts.style();
         let success = true;
         let mut expect_func = false;
-        let expect_return_type = false;
+        let mut expect_return_type = false;
         let mut func_done = false;
         let mut oldmangled = None;
 
@@ -1947,7 +1947,14 @@ impl DemanglerState {
                 }
                 b'H' => {
                     log::debug!("demangle signature: param H");
-                    todo!("implement demangle g++ template function");
+                    if style.gnu() {
+                        ConsumeVal { mangled, .. } =
+                            self.demangle_template(mangled, declp, None, false, false)?;
+                        if (self.constructor & 1) == 0 {
+                            expect_return_type = true;
+                        }
+                        mangled = &mangled[1..];
+                    }
                 }
                 _ => {
                     log::debug!("demangle signature: outermost function");
