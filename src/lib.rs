@@ -1620,7 +1620,41 @@ impl DemanglerState {
                 }
                 b't' => {
                     log::debug!("demangle signature: param t");
-                    todo!("implement demangle g++ template");
+                    let mut trawname: Vec<u8> = vec![];
+                    let mut tname: Vec<u8> = vec![];
+                    let oldmangled2 = if let Some(bs) = oldmangled {
+                        bs
+                    } else {
+                        mangled
+                    };
+
+                    ConsumeVal { mangled, .. } = self.demangle_template(
+                        mangled,
+                        &mut tname,
+                        Some(&mut trawname),
+                        true,
+                        true,
+                    )?;
+
+                    self.types.push(oldmangled2.into());
+
+                    tname.extend(self.scope_str());
+                    declp.prepend(&*tname);
+
+                    if (self.destructor & 1) > 0 {
+                        trawname.prepend(b"~");
+                        declp.extend(&trawname);
+                        self.destructor -= 1;
+                    }
+                    // TODO: is this logic originally from the C demangler actually correct?
+                    // it _feels_ incorrect
+                    if (self.constructor & 1) > 0 || (self.destructor & 1) > 0 {
+                        declp.extend(&trawname);
+                        self.constructor -= 1;
+                    }
+
+                    oldmangled = None;
+                    expect_func = true;
                 }
                 b'_' => {
                     log::debug!("demangle signature: param _");
