@@ -1602,7 +1602,7 @@ impl DemanglerState {
                         self.types.push(oldmangled.into());
 
                         if (style.auto() || style.gnu() || style.edg())
-                            && mangled.get(0) == Some(b'F')
+                            && mangled.get(0) == Some(&b'F')
                         {
                             expect_func = true;
                         }
