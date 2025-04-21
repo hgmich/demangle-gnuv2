@@ -301,6 +301,16 @@ impl TypeQualifiers {
             _ => "",
         }
     }
+    fn from_code(code: u8) -> Self {
+        let res = Self::new();
+
+        match code {
+            b'C' => res.with_const_(true),
+            b'V' => res.with_volatile(true),
+            b'u' => res.with_restrict(true),
+            _ => res,
+        }
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -386,6 +396,7 @@ struct DemanglerState {
     previous_argument: Vec<u8>,
     nrepeats: i32,
     symbol_kind: StateSymbolKind,
+    type_quals: TypeQualifiers,
 }
 
 #[derive(Debug)]
@@ -1583,12 +1594,21 @@ impl DemanglerState {
                     todo!("implement demangle S");
                 }
                 b'C' | b'V' | b'u' => {
-                    log::debug!("demangle signature: param C/V/u");
-                    todo!("implement demangle qualifiers");
+                    log::debug!("demangle signature: ansi qualifiers");
+                    self.type_quals = TypeQualifiers::from_bits(
+                        self.type_quals.into_bits()
+                            | TypeQualifiers::from_code(mangled[0]).into_bits(),
+                    );
+
+                    // A qualified member function
+                    if oldmangled.is_none() {
+                        oldmangled = Some(mangled);
+                    }
+                    mangled = &mangled[1..];
                 }
                 b'L' => {
-                    log::debug!("demangle signature: param L");
-                    todo!("implement demangle L");
+                    log::debug!("demangle signature: local class name");
+                    todo!("implement demangle local class name");
                 }
                 c if c.is_ascii_digit() => {
                     log::debug!("demangle signature: param class name");
