@@ -1210,6 +1210,8 @@ impl DemanglerState {
         let mut ty_k = TypeKind::None;
         let btype: Vec<u8> = vec![];
         let mut decl: Vec<u8> = vec![];
+        let mut type_quals = TypeQualifiers::new();
+
         result.clear();
         log::debug!("do_type: enter");
 
@@ -1260,7 +1262,63 @@ impl DemanglerState {
                 }
                 b'M' => {
                     log::debug!("do_type: member");
-                    todo!("finish implementing member type");
+                    type_quals = TypeQualifiers::new();
+                    let member = !mangled.is_empty() && mangled[0] == b'M';
+                    mangled = &mangled[1..];
+                    decl.push(b')');
+                    decl.prepend(self.scope_str());
+                    match mangled.get(0) {
+                        Some(c) if c.is_ascii_digit() => {
+                            let n;
+                            ConsumeVal { mangled, value: n } = consume_count(mangled)?;
+                            if mangled.len() < n {
+                                return None;
+                            }
+                            decl.prepend(&mangled[..n]);
+                            mangled = &mangled[n..];
+                        }
+                        Some(b'X') | Some(b'Y') => {
+                            let mut temp = vec![];
+                            ConsumeVal { mangled, .. } = self.do_type(mangled, &mut temp)?;
+                            decl.prepend(&temp);
+                        }
+                        Some(b't') => {
+                            let mut temp = vec![];
+                            ConsumeVal { mangled, .. } =
+                                self.demangle_template(mangled, &mut temp, None, true, true)?;
+                            decl.prepend(&temp);
+                            temp.clear();
+                        }
+                        _ => return None,
+                    }
+
+                    decl.prepend(b"(");
+                    if member {
+                        match mangled.get(0) {
+                            Some(c @ b'C') | Some(c @ b'V') | Some(c @ b'u') => {
+                                type_quals = TypeQualifiers::from_bits(
+                                    type_quals.into_bits()
+                                        | TypeQualifiers::from_code(*c).into_bits(),
+                                );
+                                mangled = &mangled[1..];
+                            }
+                            Some(b'F') => return None,
+                            _ => {}
+                        }
+
+                        mangled = &mangled[1..];
+                    }
+
+                    if (member && !self.demangle_nested_args(mangled, &mut decl))
+                        || mangled.get(0) != Some(&b'_')
+                    {
+                        return None;
+                    }
+
+                    if self.opts.ansi() && type_quals.into_bits() != 0 {
+                        append_blank(&mut decl);
+                        decl.extend(type_quals.to_str().as_bytes());
+                    }
                 }
                 b'G' => {
                     log::debug!("do_type: ?");
@@ -2240,6 +2298,10 @@ impl DemanglerState {
         }
 
         return Some(ConsumeVal { mangled, value: () });
+    }
+
+    fn demangle_nested_args(&mut self, mut mangled: &[u8], decl: &mut Vec<u8>) -> bool {
+        todo!("implement demangle_nested_args");
     }
 }
 
