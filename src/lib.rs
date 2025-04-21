@@ -829,7 +829,27 @@ impl DemanglerState {
 
                 mangled
             }
-            GnuMangleCase::VirtualThunk => todo!("implement general symbol demangling first"),
+            GnuMangleCase::VirtualThunk => {
+                let delta;
+                mangled = &mangled[8..];
+                ConsumeVal {
+                    mangled,
+                    value: delta,
+                } = consume_count(mangled)?;
+
+                mangled = &mangled[1..];
+                let method = self.internal_demangle(mangled);
+
+                if method.is_empty() {
+                    return None;
+                }
+
+                declp.extend(format!("virtual function thunk (delta:{delta}) for ").as_bytes());
+                declp.extend(&method);
+                mangled = &mangled[mangled.len()..];
+
+                mangled
+            }
             GnuMangleCase::TypeInfo => {
                 let (sym_k, p) = match mangled[0] {
                     b'i' => (StateSymbolKind::TypeInfoNode, &b" type_info node"[..]),
