@@ -1528,11 +1528,12 @@ impl DemanglerState {
             // type conversion operator
             log::debug!("demangle_function_name: type conversion operator");
             todo!("implement type conversion operator demangle");
-        } else if declp[0..4] == b"__op"[..] {
+        } else if declp.len() >= 4 && declp[0..4] == b"__op"[..] {
             // ansi type conversion operator
             log::debug!("demangle_function_name: ansi type conversion operator");
             todo!("implement ansi type conversion operator demangle");
-        } else if declp[0..2] == b"__"[..]
+        } else if declp.len() >= 4
+            && declp[0..2] == b"__"[..]
             && declp[2].is_ascii_lowercase()
             && declp[3].is_ascii_lowercase()
         {
