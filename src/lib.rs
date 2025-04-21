@@ -1254,7 +1254,22 @@ impl DemanglerState {
                 }
                 b'F' => {
                     log::debug!("do_type: function");
-                    todo!("finish implementing function type");
+
+                    mangled = &mangled[1..];
+                    if !decl.is_empty() && [b'*', b'&'].contains(&decl[0]) {
+                        decl.prepend(b"(");
+                        decl.extend(b")");
+                    }
+
+                    ConsumeVal { mangled, .. } = self.demangle_nested_args(mangled, &mut decl)?;
+
+                    if !mangled.is_empty() && mangled[0] != b'_' {
+                        return None;
+                    }
+
+                    if !mangled.is_empty() && mangled[0] != b'_' {
+                        mangled = &mangled[1..];
+                    }
                 }
                 b'O' => {
                     log::debug!("do_type: rvalue reference");
@@ -1309,9 +1324,12 @@ impl DemanglerState {
                         mangled = &mangled[1..];
                     }
 
-                    if (member && !self.demangle_nested_args(mangled, &mut decl))
-                        || mangled.get(0) != Some(&b'_')
-                    {
+                    if member {
+                        ConsumeVal { mangled, .. } =
+                            self.demangle_nested_args(mangled, &mut decl)?;
+                    }
+
+                    if mangled.get(0) != Some(&b'_') {
                         return None;
                     }
 
@@ -2300,8 +2318,32 @@ impl DemanglerState {
         return Some(ConsumeVal { mangled, value: () });
     }
 
-    fn demangle_nested_args(&mut self, mut mangled: &[u8], decl: &mut Vec<u8>) -> bool {
-        todo!("implement demangle_nested_args");
+    fn demangle_nested_args<'a>(
+        &'_ mut self,
+        mut mangled: &'a [u8],
+        declp: &mut Vec<u8>,
+    ) -> Option<ConsumeVal<'a, ()>> {
+        // The G++ name-mangling algorithm does not remember types on nested
+        // argument lists, unless -fsquangling is used, and in that case the
+        // type vector updated by remember_type is not used.  So, we turn
+        // off remembering of types here.
+        self.forgetting_types += 1;
+
+        let saved_previous_argument = self.previous_argument.clone();
+        let saved_nrepeats = self.nrepeats;
+
+        self.previous_argument = vec![];
+        self.nrepeats = 0;
+
+        // Actually demangle the args
+        self.demangle_args(mangled, declp)?;
+
+        // Restore the previous_argument field.
+        self.previous_argument = saved_previous_argument;
+        self.forgetting_types -= 1;
+        self.nrepeats = saved_nrepeats;
+
+        return Some(ConsumeVal { mangled, value: () });
     }
 }
 
