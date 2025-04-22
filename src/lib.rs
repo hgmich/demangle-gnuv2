@@ -639,7 +639,7 @@ impl DemanglerState {
                 // names like __Q2_3foo3bar for nested type names.  So don't accept
                 // this style of constructor for cfront demangling.  A GNU
                 // style member-template constructor starts with 'H'
-                if style.lucid() || style.arm() || style.hp() || style.edg() {
+                if !(style.lucid() || style.arm() || style.hp() || style.edg()) {
                     self.constructor += 1;
                 }
                 mangled = &scan[2..];
@@ -2033,6 +2033,7 @@ impl DemanglerState {
                 }
                 _ => {
                     log::debug!("demangle signature: outermost function");
+                    self.symbol_kind = StateSymbolKind::Function;
                     if style.auto() || style.gnu() {
                         func_done = true;
                         ConsumeVal { mangled, .. } = self.demangle_args(mangled, declp)?;
