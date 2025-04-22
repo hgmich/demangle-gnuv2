@@ -1833,7 +1833,7 @@ impl DemanglerState {
             && declp[3].is_ascii_lowercase()
         {
             log::debug!("demangle_function_name: operators");
-            if declp.len() == 5 {
+            if declp.len() == 4 {
                 // operator
                 log::debug!("demangle_function_name: alt operator");
                 todo!("implement alt operator demangle");
