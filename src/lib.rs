@@ -276,7 +276,7 @@ struct TypeQualifiers {
         non_snake_case,
         reason = "needed to avoid keyword clash, violating members are internal to macro"
     )]
-    const_: bool,
+    r#const: bool,
 
     /// Type is qualified with `volatile`.
     volatile: bool,
@@ -290,7 +290,7 @@ struct TypeQualifiers {
 
 impl TypeQualifiers {
     fn to_str(&self) -> &'static str {
-        match (self.const_(), self.volatile(), self.restrict()) {
+        match (self.r#const(), self.volatile(), self.restrict()) {
             (true, true, true) => "const volatile __restrict",
             (false, true, true) => "volatile __restrict",
             (true, false, true) => "const __restrict",
@@ -305,7 +305,7 @@ impl TypeQualifiers {
         let res = Self::new();
 
         match code {
-            b'C' => res.with_const_(true),
+            b'C' => res.with_const(true),
             b'V' => res.with_volatile(true),
             b'u' => res.with_restrict(true),
             _ => res,
