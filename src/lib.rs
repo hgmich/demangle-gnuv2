@@ -965,7 +965,7 @@ impl DemanglerState {
             }
         }
 
-        for _ in 0..qualifier_count {
+        for i in (0..qualifier_count).into_iter().rev() {
             let mut remember_k = true;
             last_name.clear();
 
@@ -1015,7 +1015,7 @@ impl DemanglerState {
                 self.ktypes.push(temp.clone());
             }
 
-            if qualifier_count > 0 {
+            if i > 0 {
                 temp.extend(self.scope_str());
             }
         }
