@@ -1652,7 +1652,9 @@ impl DemanglerState {
                     ConsumeVal { mangled, .. } = self.demangle_class_name(mangled, &mut btype)?;
                     append_blank(result);
                     result.extend(&btype);
-                    self.btypes.remember(bindex, &btype);
+                    self.btypes
+                        .remember(bindex, &btype)
+                        .context("failed to remember btype")?;
                 }
                 b't' => {
                     log::debug!("fundamental type: template");
