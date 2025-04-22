@@ -131,8 +131,9 @@ fn cplus_demangle_v2(
         .with_ansi(ansi)
         .with_params(params);
 
-    let rust = demangle_gnuv2::cplus_demangle_v2(symbol.as_bytes(), opts)
-        .map_err(|_| PyErr::new::<exceptions::PyTypeError, _>("Failed to demangle"))?;
+    let rust = demangle_gnuv2::cplus_demangle_v2(symbol.as_bytes(), opts).map_err(|e| {
+        PyErr::new::<exceptions::PyTypeError, _>(format!("Failed to demangle: {e}"))
+    })?;
 
     DemangledSymbol::from_rust(py, rust)
 }
