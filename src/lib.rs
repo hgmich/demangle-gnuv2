@@ -658,6 +658,30 @@ impl DemanglerState {
                 && arm_special(mangled, declp).is_err()
             {
                 log::debug!("Not arm special");
+                let mut scan = scan;
+                while !scan.is_empty() && scan[0] != b'_' {
+                    scan = &scan[1..];
+                }
+                let scan_idx =
+                    memmem::find(scan, b"__").context("failed to locate underscore prefix")?;
+                scan = &scan[scan_idx..];
+
+                log::debug!("demangle prefix: function name");
+                self.symbol_kind = StateSymbolKind::Function;
+
+                // Look for the LAST occurrence of __, allowing names to
+                // have the '__' sequence embedded in them.
+                if !(style.arm() || style.hp()) {
+                    let scan_idx =
+                        memmem::rfind(scan, b"__").context("failed to locate underscore suffix")?;
+                    scan = &scan[scan_idx..];
+                }
+
+                if scan.len() <= 2 {
+                    anyhow::bail!("malformed symbol: no name following __prefix__");
+                }
+
+                ConsumeVal { mangled, .. } = self.demangle_function_name(mangled, declp, scan)?;
             }
         } else if scan.len() > 2 {
             // Mangled name does not start with "__" but does have one somewhere
