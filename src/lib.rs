@@ -562,12 +562,14 @@ impl DemanglerState {
         let style = self.opts.style();
 
         if mangled.starts_with(b"__imp_") || mangled.starts_with(b"_imp__") {
+            log::debug!("demangle prefix: import symbol");
             // it's a symbol imported from a PE dynamic library.
             // Check for both new style prefix _imp__ and legacy __imp_
             // used by older versions of dlltool.
             mangled = &mangled[6..];
             self.dllimported = true;
         } else if mangled.len() >= 11 && mangled.starts_with(b"_GLOBAL_") {
+            log::debug!("demangle prefix: global constructor/destructor");
             let marker = CPLUS_MARKERS.iter().find(|&&c| c == mangled[8]);
             match (marker, mangled[10]) {
                 (Some(&c), b'D') if c == mangled[10] => {
@@ -589,6 +591,7 @@ impl DemanglerState {
                 _ => {}
             }
         } else if style.arm() || style.hp() || style.edg() {
+            log::debug!("demangle prefix: arm style global ctor/dtor");
             if mangled.starts_with(b"__std__") {
                 // Global destructor (ARM style)
                 mangled = &mangled[7..];
@@ -620,7 +623,7 @@ impl DemanglerState {
             // But cfront mangles local variables by prepending __<nesting_level>
             // to them. As an extension to ARM demangling we handle this case.
             if style.lucid() || style.arm() || style.hp() && scan[2].is_ascii_digit() {
-                log::debug!("demangle_prefix: cfront local variable");
+                log::debug!("demangle prefix: cfront local variable");
                 mangled = &scan[2..];
                 ConsumeVal { mangled, .. } = consume_count(mangled)?;
                 declp.extend(mangled);
@@ -1805,6 +1808,7 @@ impl DemanglerState {
             && declp[2].is_ascii_lowercase()
             && declp[3].is_ascii_lowercase()
         {
+            log::debug!("demangle_function_name: operators");
             if declp.len() == 5 {
                 // operator
                 log::debug!("demangle_function_name: alt operator");
