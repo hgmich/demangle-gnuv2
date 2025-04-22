@@ -466,7 +466,7 @@ pub fn cplus_demangle_v2(mangled: &[u8], opts: DemangleOpts) -> Result<Demangled
         ..Default::default()
     };
 
-    let declp = state.internal_demangle(mangled);
+    let declp = state.internal_demangle(mangled)?;
 
     let kind = state.extract_symbol_info()?;
 
@@ -519,12 +519,12 @@ impl DemanglerState {
         })
     }
 
-    fn internal_demangle(&mut self, mangled: &[u8]) -> Vec<u8> {
+    fn internal_demangle(&mut self, mangled: &[u8]) -> Result<Vec<u8>> {
         let style = self.opts.style();
 
         let mut declp = vec![];
         if mangled == b"" {
-            return declp;
+            return Ok(declp);
         }
 
         let result = if style.auto() || style.gnu() {
@@ -542,15 +542,15 @@ impl DemanglerState {
             result
         };
 
-        let result = match result {
+        match result {
             Ok(ConsumeVal { mangled, .. }) if !mangled.is_empty() => {
                 log::debug!("signature demangle");
                 self.demangle_signature(mangled, &mut declp)
             }
             _ => result,
-        };
+        }?;
 
-        declp
+        Ok(declp)
     }
 
     fn demangle_prefix<'a>(
@@ -843,7 +843,7 @@ impl DemanglerState {
                 } = consume_count(mangled)?;
 
                 mangled = &mangled[1..];
-                let method = self.internal_demangle(mangled);
+                let method = self.internal_demangle(mangled)?;
 
                 if method.is_empty() {
                     anyhow::bail!("failed to get method name for virtual thunk");
@@ -1333,6 +1333,7 @@ impl DemanglerState {
                         None => anyhow::bail!("unexpected end of symbol"),
                     }
 
+                    self.symbol_kind = StateSymbolKind::Function;
                     decl.prepend(b"(");
                     if member {
                         match mangled.get(0) {
@@ -1952,6 +1953,7 @@ impl DemanglerState {
                     log::debug!("demangle signature: param _");
 
                     if style.gnu() && expect_return_type {
+                        log::debug!("demangle signature: gnu");
                         let mut return_type: Vec<u8> = vec![];
                         mangled = &mangled[1..];
                         ConsumeVal { mangled, .. } = self.do_type(mangled, &mut return_type)?;
@@ -1973,6 +1975,7 @@ impl DemanglerState {
                                 mangled = &mangled[1..];
                             }
                         } else {
+                            log::error!("demangle_signature: param _: unknown case");
                             anyhow::bail!("param _: unknown case");
                         }
                     }
