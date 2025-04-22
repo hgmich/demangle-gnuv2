@@ -8,6 +8,7 @@ rust-version = { workspace = true }
 description = "A structured demangler for the GNU v2 C++ mangling scheme"
 
 [dependencies]
+anyhow = "1.0.98"
 bitfield-struct = { workspace = true }
 env_logger = "0.11.7"
 log = "0.4.27"
