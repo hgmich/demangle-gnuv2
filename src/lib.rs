@@ -2067,10 +2067,9 @@ impl DemanglerState {
             if self.static_type {
                 declp.extend(b" static");
             }
-            // if self.type_quals.none
-            if false {
+            if self.type_quals.into_bits() != 0 {
                 append_blank(declp);
-                // decl.extend(qualifier_string(self.type_quals))
+                declp.extend(self.type_quals.to_str().as_bytes())
             }
         }
 
