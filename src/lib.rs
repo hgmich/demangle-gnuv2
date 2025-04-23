@@ -541,7 +541,8 @@ impl DemanglerState {
             Err(anyhow::anyhow!("wrong style"))
         };
 
-        let result = if result.is_err() {
+        let result = if let Err(e) = result {
+            log::debug!("gnu special failed: {e}");
             log::debug!("prefix demangle");
             self.demangle_prefix(mangled, &mut declp)
         } else {
@@ -625,6 +626,7 @@ impl DemanglerState {
                 || (scan[2] == b'K')
                 || (scan[2] == b'H'))
         {
+            log::debug!("demangle prefix: prefix found");
             // The ARM says nothing about the mangling of local variables.
             // But cfront mangles local variables by prepending __<nesting_level>
             // to them. As an extension to ARM demangling we handle this case.
@@ -718,6 +720,7 @@ impl DemanglerState {
         mut mangled: &'a [u8],
         declp: &mut Vec<u8>,
     ) -> Result<ConsumeVal<'a, ()>> {
+        log::debug!("gnu special: start");
         let case: GnuMangleCase;
         (mangled, case) = match mangled {
             // GNU style destructor (_$_ or other markers)
