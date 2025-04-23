@@ -874,7 +874,6 @@ impl DemanglerState {
             }
             GnuMangleCase::VirtualThunk => {
                 let delta;
-                mangled = &mangled[8..];
                 ConsumeVal {
                     mangled,
                     value: delta,
@@ -887,7 +886,7 @@ impl DemanglerState {
                     anyhow::bail!("failed to get method name for virtual thunk");
                 }
 
-                declp.extend(format!("virtual function thunk (delta:{delta}) for ").as_bytes());
+                declp.extend(format!("virtual function thunk (delta:-{delta}) for ").as_bytes());
                 declp.extend(&method);
                 mangled = &mangled[mangled.len()..];
 
