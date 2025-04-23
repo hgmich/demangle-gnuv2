@@ -637,6 +637,8 @@ impl DemanglerState {
                 declp.extend(mangled);
                 mangled = &mangled[mangled.len()..];
             } else {
+                log::debug!("demangle prefix: gnu style constructor");
+                self.symbol_kind = StateSymbolKind::Function;
                 // A GNU style constructor starts with __[0-9Qt].  But cfront uses
                 // names like __Q2_3foo3bar for nested type names.  So don't accept
                 // this style of constructor for cfront demangling.  A GNU
