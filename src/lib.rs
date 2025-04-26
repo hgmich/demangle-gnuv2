@@ -2,6 +2,13 @@ use anyhow::{Context, Result};
 use bitfield_struct::bitfield;
 use memchr::memmem;
 
+fn debug_log_bytes(bs: &[u8], name: &'static str) {
+    if log::log_enabled!(log::Level::Debug) {
+        let bs_s = std::str::from_utf8(&bs).expect(&format!("failed to deserialize {name}"));
+        log::debug!("{name}: {bs_s}");
+    }
+}
+
 /// Options for controlling demangling.
 #[bitfield(u32)]
 pub struct DemangleOpts {
@@ -874,6 +881,7 @@ impl DemanglerState {
             }
             GnuMangleCase::VirtualThunk => {
                 let delta;
+                debug_log_bytes(mangled, "mangled");
                 ConsumeVal {
                     mangled,
                     value: delta,
@@ -921,19 +929,11 @@ impl DemanglerState {
                     _ => {
                         log::debug!("typeinfo: fundamental type");
                         ConsumeVal { mangled, .. } = self.demangle_fund_type(mangled, declp)?;
-                        if log::log_enabled!(log::Level::Debug) {
-                            let declp_s =
-                                std::str::from_utf8(&*declp).expect("failed to deserialize declp");
-                            log::debug!("Declp after fund type: {declp_s}");
-                        }
+                        debug_log_bytes(&*declp, "declp");
                     }
                 }
 
-                if log::log_enabled!(log::Level::Debug) {
-                    let mangled_s =
-                        std::str::from_utf8(mangled).expect("failed to deserialize mangled");
-                    log::debug!("mangled after fund type: {mangled_s}");
-                }
+                debug_log_bytes(mangled, "mangled typeinfo");
 
                 if success && mangled != b"" {
                     log::debug!("demangle failed");
@@ -950,10 +950,7 @@ impl DemanglerState {
             _ => mangled,
         };
 
-        if log::log_enabled!(log::Level::Debug) {
-            let mangled_s = std::str::from_utf8(mangled).expect("failed to deserialize mangled");
-            log::debug!("mangled after fund type: {mangled_s}");
-        }
+        debug_log_bytes(mangled, "mangled after fund type");
 
         Ok(ConsumeVal { value: (), mangled })
     }
@@ -1133,6 +1130,7 @@ impl DemanglerState {
             } else {
                 log::debug!("demangle template: is type, NOT template param");
 
+                debug_log_bytes(mangled, "mangled in demangle_template (non-template param)");
                 let r;
                 ConsumeVal { value: r, mangled } = consume_count(mangled)?;
 
@@ -1166,16 +1164,9 @@ impl DemanglerState {
             self.ntmpl_args = r as i32;
         }
 
-        if log::log_enabled!(log::Level::Debug) {
-            let tname_s = std::str::from_utf8(&*tname).context("failed to deserialize tname")?;
-            log::debug!("tname: {tname_s}");
-        }
+        debug_log_bytes(&*tname, "tname");
 
-        if log::log_enabled!(log::Level::Debug) {
-            let mangled_s =
-                std::str::from_utf8(mangled).context("failed to deserialize mangled")?;
-            log::debug!("mangled: {mangled_s}");
-        }
+        debug_log_bytes(mangled, "mangled in template");
 
         for i in 0..r {
             log::debug!("demangle template: param {i}");
@@ -1227,10 +1218,7 @@ impl DemanglerState {
                         self.demangle_template_value_parm(mangled, tname, ty_k)?;
                 }
 
-                if log::log_enabled!(log::Level::Debug) {
-                    let tname_s = std::str::from_utf8(tname).expect("failed to deserialize tname");
-                    log::debug!("tname = {tname_s}");
-                }
+                debug_log_bytes(tname, "tname in demangle_template");
             }
             need_comma = true;
         }
@@ -1239,11 +1227,10 @@ impl DemanglerState {
 
         if is_type && remember {
             if let Some(idx) = bindex {
-                if log::log_enabled!(log::Level::Debug) {
-                    let tname_s = std::str::from_utf8(tname).expect("failed to deserialize tname");
-                    log::debug!("demangle_template: remembering type {tname_s}");
-                }
-                self.btypes.remember(idx, tname);
+                debug_log_bytes(tname, "tname in demangle_template remember btype");
+                self.btypes
+                    .remember(idx, tname)
+                    .context("remember btype in demangle_template")?;
             }
         }
 
@@ -1270,6 +1257,7 @@ impl DemanglerState {
         log::debug!("do_type: enter");
 
         while !done {
+            debug_log_bytes(mangled, "do_type mangled");
             match mangled[0] {
                 // pointer types
                 b'p' | b'P' => {
@@ -1316,6 +1304,8 @@ impl DemanglerState {
                     }
 
                     ConsumeVal { mangled, .. } = self.demangle_nested_args(mangled, &mut decl)?;
+
+                    debug_log_bytes(mangled, "mangled post demangle nested args");
 
                     if !mangled.is_empty() && mangled[0] != b'_' {
                         anyhow::bail!("malformed function type");
@@ -1478,7 +1468,7 @@ impl DemanglerState {
         }
 
         if ty_k == TypeKind::None {
-            log::debug!("do_type: no type sepcified, assuming integral");
+            log::debug!("do_type: no type specified, assuming integral");
             // If unknown, assume integral
             ty_k = TypeKind::Integral;
         }
@@ -1650,7 +1640,7 @@ impl DemanglerState {
                     result.extend(format!("int{dec}_t").into_bytes());
                 }
                 c if c.is_ascii_digit() => {
-                    log::debug!("fundamental type: class");
+                    log::debug!("fundamental type: explicit");
                     let bindex = self.btypes.register();
                     let mut btype = vec![];
                     ConsumeVal { mangled, .. } = self.demangle_class_name(mangled, &mut btype)?;
@@ -1665,11 +1655,7 @@ impl DemanglerState {
                     let mut btype = vec![];
                     ConsumeVal { mangled, .. } =
                         self.demangle_template(mangled, &mut btype, None, true, true)?;
-                    if log::log_enabled!(log::Level::Debug) {
-                        let btype_s =
-                            std::str::from_utf8(&btype).expect("failed to deserialize btype");
-                        log::debug!("btype after fund type: {btype_s}");
-                    }
+                    debug_log_bytes(&btype, "btype in demangle_fund_type template");
                     result.extend(&btype);
                 }
                 c => {
@@ -1681,7 +1667,7 @@ impl DemanglerState {
             }
         }
 
-        log::debug!("fundamental type demangled");
+        log::debug!("demangle fund type: done");
         Ok(ConsumeVal {
             value: ty_kind,
             mangled,
@@ -1693,17 +1679,17 @@ impl DemanglerState {
         mut mangled: &'a [u8],
         declp: &mut Vec<u8>,
     ) -> Result<ConsumeVal<'a, ()>> {
-        log::debug!("demangle class type");
+        log::debug!("demangle class name: start");
 
         let n;
         ConsumeVal { value: n, mangled } = consume_count(mangled)?;
 
         if mangled.len() >= n {
-            log::debug!("parse class name");
             ConsumeVal { mangled, .. } = self.demangle_arm_hp_template(mangled, n, declp)?;
+            log::debug!("demangle class name: end (success=1)");
             Ok(ConsumeVal { value: (), mangled })
         } else {
-            log::debug!("malformed class type slug");
+            log::debug!("demangle class name: end (success=0)");
             anyhow::bail!("malformed class type slug");
         }
     }
@@ -1716,12 +1702,13 @@ impl DemanglerState {
     ) -> Result<ConsumeVal<'a, ()>> {
         let mut p = vec![];
         let mut args = vec![];
+        log::debug!("demangle arm/hp template: start");
 
         if self.opts.style().hp() && mangled[n] == b'X' {
-            log::debug!("demangle template as HP cfront style");
+            log::debug!("demangle arm/hp template: hp acc");
             todo!("implement hp cfront demangling");
         } else if self.arm_pt(mangled, n, &mut p, &mut args).is_ok() {
-            log::debug!("demangle template as arm/extended HP cfront style");
+            log::debug!("demangle arm/hp template: arm/cfront");
             todo!("implement arm_pt demangling");
         } else if n > 10
             && mangled.starts_with(b"_GLOBAL_")
@@ -1729,11 +1716,11 @@ impl DemanglerState {
             && mangled[8] == mangled[10]
             && CPLUS_MARKERS.contains(&mangled[8])
         {
-            log::debug!("demangle template as anonymous namespace member");
+            log::debug!("demangle arm/hp template: anonymous");
 
             declp.extend(b"{anonymous}");
         } else {
-            log::debug!("demangle class name");
+            log::debug!("demangle arm/hp template: fallthrough");
             // check that this is a non-recursive call
             if self.temp_start == -1 {
                 // disable in recursive calls
@@ -1741,6 +1728,8 @@ impl DemanglerState {
             }
             declp.extend(&mangled[..n]);
         }
+
+        log::debug!("demangle arm/hp template: done");
 
         mangled = &mangled[n..];
         Ok(ConsumeVal { value: (), mangled })
@@ -1755,7 +1744,7 @@ impl DemanglerState {
     ) -> Result<ConsumeVal<'a, ()>> {
         let style = self.opts.style();
 
-        log::debug!("arm_pt");
+        log::debug!("arm_pt: start");
 
         if style.arm() || style.hp() {
             log::debug!("arm_pt: arm/hp style");
@@ -1768,6 +1757,7 @@ impl DemanglerState {
                 } = consume_count(mangled)?;
                 if args[len..] == mangled[n..] && args[0] == b'_' {
                     args.splice(0..1, b"".iter().cloned());
+                    log::debug!("arm_pt: done (success=1)");
                     return Ok(ConsumeVal { value: (), mangled });
                 }
             }
@@ -1776,6 +1766,7 @@ impl DemanglerState {
             todo!("arm_pt: implement edg");
         }
 
+        log::debug!("arm_pt: done (success=0)");
         anyhow::bail!("arm_pt: unhandled case")
     }
 
@@ -2086,7 +2077,7 @@ impl DemanglerState {
         mut mangled: &'a [u8],
         declp: &mut Vec<u8>,
     ) -> Result<ConsumeVal<'a, ()>> {
-        log::debug!("demangle args");
+        log::debug!("demangle args: start");
         let style = self.opts.style();
         let mut arg: Vec<u8> = vec![];
         let mut need_comma = false;
@@ -2128,9 +2119,15 @@ impl DemanglerState {
                     // count but it's impossible to demangle that case properly
                     // anyway. Eg if we already have 12 types is T12Pc "(..., type1,
                     // Pc, ...)"  or "(..., type12, char *, ...)"
-                    ConsumeVal { mangled, value: t } = consume_count(mangled)?;
+                    ConsumeVal { mangled, value: t } = consume_count(mangled).map_err(|e| {
+                        log::debug!("demangle args: fail (couldn't consume count - hp/arm/edg)");
+                        e
+                    })?;
                 } else {
-                    ConsumeVal { mangled, value: t } = get_count(mangled)?;
+                    ConsumeVal { mangled, value: t } = get_count(mangled).map_err(|e| {
+                        log::debug!("demangle args: fail (couldn't consume count)");
+                        e
+                    })?;
                 }
                 if style.lucid() || style.arm() || style.hp() || style.edg() {
                     t -= 1;
@@ -2164,11 +2161,7 @@ impl DemanglerState {
                     declp.extend(b", ");
                 }
 
-                if log::log_enabled!(log::Level::Debug) {
-                    let mangled_s =
-                        std::str::from_utf8(mangled).expect("failed to deserialize mangled");
-                    log::debug!("mangled after fund type: {mangled_s}");
-                }
+                debug_log_bytes(mangled, "mangled in demangle_args non-parameterised type");
 
                 ConsumeVal { mangled, .. } = self.do_arg(mangled, &mut arg)?;
 
@@ -2196,6 +2189,9 @@ impl DemanglerState {
         if self.opts.params() {
             declp.push(b')');
         }
+
+        debug_log_bytes(mangled, "mangled post demangle_args");
+        log::debug!("demangle_args: end (success)");
 
         Ok(ConsumeVal { mangled, value: () })
     }
@@ -2243,7 +2239,7 @@ impl DemanglerState {
         mut mangled: &'a [u8],
         result: &mut Vec<u8>,
     ) -> Result<ConsumeVal<'a, ()>> {
-        log::debug!("do_arg");
+        log::debug!("do_arg: start");
         let start = mangled;
 
         if self.nrepeats > 0 {
@@ -2331,10 +2327,6 @@ impl DemanglerState {
                 i => anyhow::bail!("invalid boolean literal value {i}"),
             };
             s.extend(bool_val);
-            if log::log_enabled!(log::Level::Debug) {
-                let s_s = std::str::from_utf8(mangled).expect("failed to deserialize s");
-                log::debug!("s after bool: {s_s}");
-            }
         } else if ty_k == TypeKind::Real {
             todo!("implement demangle_template_value_parm for floats");
         } else if [TypeKind::Pointer, TypeKind::Reference].contains(&ty_k) {
@@ -2413,6 +2405,7 @@ impl DemanglerState {
         mut mangled: &'a [u8],
         declp: &mut Vec<u8>,
     ) -> Result<ConsumeVal<'a, ()>> {
+        log::debug!("demangle nested args: start");
         // The G++ name-mangling algorithm does not remember types on nested
         // argument lists, unless -fsquangling is used, and in that case the
         // type vector updated by remember_type is not used.  So, we turn
@@ -2426,12 +2419,17 @@ impl DemanglerState {
         self.nrepeats = 0;
 
         // Actually demangle the args
-        self.demangle_args(mangled, declp)?;
+        ConsumeVal { mangled, .. } = self.demangle_args(mangled, declp).map_err(|e| {
+            log::debug!("demangle nested args: done (success=0)");
+            e
+        })?;
 
         // Restore the previous_argument field.
         self.previous_argument = saved_previous_argument;
         self.forgetting_types -= 1;
         self.nrepeats = saved_nrepeats;
+
+        log::debug!("demangle nested args: done (success=1)");
 
         return Ok(ConsumeVal { mangled, value: () });
     }
