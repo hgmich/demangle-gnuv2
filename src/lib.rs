@@ -1311,7 +1311,7 @@ impl DemanglerState {
                         anyhow::bail!("malformed function type");
                     }
 
-                    if !mangled.is_empty() && mangled[0] != b'_' {
+                    if !mangled.is_empty() && mangled[0] == b'_' {
                         mangled = &mangled[1..];
                     }
                 }
@@ -1371,21 +1371,25 @@ impl DemanglerState {
                                 );
                                 mangled = &mangled[1..];
                             }
-                            Some(b'F') => anyhow::bail!("unexpected F, expected nothing or C/V/u"),
-                            _ => {}
+                            Some(b'F') => {}
+                            _ => anyhow::bail!("expected F or C/V/u qualifier"),
                         }
 
                         mangled = &mangled[1..];
                     }
 
-                    if member {
+                    if member || (!mangled.is_empty() && mangled[0] != b'_') {
                         ConsumeVal { mangled, .. } =
                             self.demangle_nested_args(mangled, &mut decl)?;
                     }
 
-                    if mangled.get(0) != Some(&b'_') {
-                        anyhow::bail!("expected to end with underscore");
+                    debug_log_bytes(mangled, "mangled after demangle_nested_args");
+
+                    if member && mangled.get(0) != Some(&b'_') {
+                        anyhow::bail!("expected function return type");
                     }
+
+                    mangled = &mangled[1..];
 
                     if self.opts.ansi() && type_quals.into_bits() != 0 {
                         append_blank(&mut decl);
