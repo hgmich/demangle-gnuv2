@@ -1688,6 +1688,8 @@ impl DemanglerState {
         let n;
         ConsumeVal { value: n, mangled } = consume_count(mangled)?;
 
+        debug_log_bytes(mangled, "mangled in demangle_class_name");
+
         if mangled.len() >= n {
             ConsumeVal { mangled, .. } = self.demangle_arm_hp_template(mangled, n, declp)?;
             log::debug!("demangle class name: end (success=1)");
@@ -2104,13 +2106,14 @@ impl DemanglerState {
             }
 
             if b == b'N' || b == b'T' {
-                mangled = &mangled[1..];
                 log::debug!("demangle_args: type parameter");
-                temptype = *premangled
-                    .get(1)
+                temptype = *mangled
+                    .get(0)
                     .context("missing character following arg prefix")?;
+                mangled = &mangled[1..];
 
                 if temptype == b'N' {
+                    log::debug!("demangle_args: N repeat");
                     ConsumeVal { mangled, value: r } = get_count(mangled)?;
                 } else {
                     r = 1;
@@ -2224,7 +2227,7 @@ impl DemanglerState {
         }
 
         self.ktypes.push(class_name.clone());
-        self.btypes.remember(bindex, &class_name);
+        self.btypes.remember(bindex, &class_name)?;
         declp.prepend(self.scope_str());
         declp.prepend(&class_name);
 
