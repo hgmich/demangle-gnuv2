@@ -347,6 +347,9 @@ pub enum SymbolKind {
     StaticMember,
     /// Symbol is type reflection information.
     TypeInfo(TypeInfoKind),
+    GlobalConstructor,
+    GlobalDestructor,
+    DllImportStub,
 }
 
 /// Specifies what variety of type info this is.
@@ -390,6 +393,9 @@ enum StateSymbolKind {
     StaticMember,
     TypeInfoNode,
     TypeInfoFunction,
+    GlobalConstructor,
+    GlobalDestructor,
+    DllImportStub,
 }
 
 // TODO: remove and rename internal state fields as appropriate
@@ -483,11 +489,24 @@ pub fn cplus_demangle_v2(mangled: &[u8], opts: DemangleOpts) -> Result<Demangled
 
     let kind = state.extract_symbol_info()?;
 
+    let qualified_name_base = String::from_utf8(declp).map_err(|e| {
+        log::error!("failed to decode declp: {e:?}");
+        anyhow::anyhow!("failed to decode symbol from utf-8")
+    })?;
+
+    let qualified_name = match kind {
+        SymbolKind::GlobalConstructor => {
+            format!("global constructors keyed to {qualified_name_base}")
+        }
+        SymbolKind::GlobalDestructor => {
+            format!("global destructors keyed to {qualified_name_base}")
+        }
+        SymbolKind::DllImportStub => format!("import stub for {qualified_name_base}"),
+        _ => qualified_name_base,
+    };
+
     Ok(DemangledSymbol {
-        qualified_name: String::from_utf8(declp).map_err(|e| {
-            log::error!("failed to decode declp: {e:?}");
-            anyhow::anyhow!("failed to decode symbol from utf-8")
-        })?,
+        qualified_name,
         kind,
     })
 }
@@ -520,6 +539,9 @@ impl DemanglerState {
             StateSymbolKind::TypeInfoNode => Ok(SymbolKind::TypeInfo(TypeInfoKind::Node)),
             StateSymbolKind::TypeInfoFunction => Ok(SymbolKind::TypeInfo(TypeInfoKind::Function)),
             StateSymbolKind::Function => self.extract_function_info(),
+            StateSymbolKind::GlobalConstructor => Ok(SymbolKind::GlobalConstructor),
+            StateSymbolKind::GlobalDestructor => Ok(SymbolKind::GlobalDestructor),
+            StateSymbolKind::DllImportStub => Ok(SymbolKind::DllImportStub),
             sym => unimplemented!("output translation not implemented for symbol {sym:?}"),
         }
     }
@@ -563,6 +585,17 @@ impl DemanglerState {
             }
             _ => result,
         }?;
+
+        if self.constructor == 2 {
+            self.symbol_kind = StateSymbolKind::GlobalConstructor;
+            self.constructor = 0;
+        } else if self.destructor == 2 {
+            self.symbol_kind = StateSymbolKind::GlobalDestructor;
+            self.destructor = 0;
+        } else if self.dllimported {
+            self.symbol_kind = StateSymbolKind::DllImportStub;
+            self.dllimported = false;
+        }
 
         Ok(declp)
     }

@@ -41,6 +41,12 @@ enum SymbolType {
     StaticMember(),
     /// Symbol is type reflection information.
     TypeInfo { r#type: TypeInfoType },
+    /// Symbol is a global constructor for a static value.
+    GlobalConstructor(),
+    /// Symbol is a global destructor for a static value.
+    GlobalDestructor(),
+    /// Symbol is a stub for a symbol dllimported from another module.
+    DllImportStub(),
 }
 
 impl SymbolType {
@@ -59,6 +65,9 @@ impl SymbolType {
             SymbolKind::TypeInfo(ty_info) => Ok(Self::TypeInfo {
                 r#type: TypeInfoType::from_rust(py, ty_info)?,
             }),
+            SymbolKind::GlobalConstructor => Ok(Self::GlobalConstructor()),
+            SymbolKind::GlobalDestructor => Ok(Self::GlobalDestructor()),
+            SymbolKind::DllImportStub => Ok(Self::DllImportStub()),
             other => {
                 return Err(PyErr::new::<exceptions::PyTypeError, _>(format!(
                     "unknown symbol type {other:?}"
