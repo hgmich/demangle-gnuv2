@@ -585,16 +585,19 @@ impl DemanglerState {
         } else if mangled.len() >= 11 && mangled.starts_with(b"_GLOBAL_") {
             log::debug!("demangle prefix: global constructor/destructor");
             let marker = CPLUS_MARKERS.iter().find(|&&c| c == mangled[8]);
-            match (marker, mangled[10]) {
+            match (marker, mangled[9]) {
                 (Some(&c), b'D') if c == mangled[10] => {
+                    log::debug!("demangle prefix: global destructor");
                     // Global destructor called at exit
                     mangled = &mangled[11..];
                     self.destructor = 2;
                     if let res @ Ok(_) = self.gnu_special(mangled, declp) {
+                        log::debug!("demangle prefix: end\t[global dtor]\t(success=1)");
                         return res;
                     }
                 }
                 (Some(&c), b'I') if c == mangled[10] => {
+                    log::debug!("demangle prefix: global constructor");
                     // Global constructor called at init
                     mangled = &mangled[11..];
                     self.constructor = 2;
