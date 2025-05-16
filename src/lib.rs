@@ -1,3 +1,5 @@
+#![deny(unused_must_use)]
+
 use anyhow::{Context, Result};
 use bitfield_struct::bitfield;
 use memchr::memmem;
@@ -525,6 +527,7 @@ enum GnuMangleCase {
 ///
 /// `mangled` indicates the unconsumed part of the mangled symbol.
 /// `value` indicates the value produced by consuming part of the mangled symbol.
+#[must_use]
 struct ConsumeVal<'a, Inner> {
     mangled: &'a [u8],
     value: Inner,
@@ -578,7 +581,7 @@ impl DemanglerState {
             result
         };
 
-        match result {
+        let _ = match result {
             Ok(ConsumeVal { mangled, .. }) if !mangled.is_empty() => {
                 log::debug!("signature demangle");
                 self.demangle_signature(mangled, &mut declp)
@@ -600,6 +603,7 @@ impl DemanglerState {
         Ok(declp)
     }
 
+    #[must_use]
     fn demangle_prefix<'a>(
         &mut self,
         mut mangled: &'a [u8],
@@ -760,6 +764,7 @@ impl DemanglerState {
         Ok(ConsumeVal { mangled, value: () })
     }
 
+    #[must_use]
     fn gnu_special<'a>(
         &mut self,
         mut mangled: &'a [u8],
@@ -821,6 +826,7 @@ impl DemanglerState {
                 mangled
             }
             GnuMangleCase::Vtable => {
+                log::debug!("gnu special: demangle vtbl");
                 while mangled != b"" {
                     match mangled[0] {
                         b'Q' | b'K' => {
@@ -876,6 +882,7 @@ impl DemanglerState {
                 mangled
             }
             GnuMangleCase::StaticMember => {
+                log::debug!("gnu special: demangle static member");
                 let mut mangled = mangled;
                 let p = strpbrk(mangled, CPLUS_MARKERS);
 
@@ -937,6 +944,7 @@ impl DemanglerState {
                 mangled
             }
             GnuMangleCase::TypeInfo => {
+                log::debug!("gnu special: demangle typeinfo");
                 let (sym_k, p) = match mangled[0] {
                     b'i' => (StateSymbolKind::TypeInfoNode, &b" type_info node"[..]),
                     b'f' => (
@@ -991,6 +999,7 @@ impl DemanglerState {
         Ok(ConsumeVal { value: (), mangled })
     }
 
+    #[must_use]
     fn demangle_qualified<'a>(
         &mut self,
         mut mangled: &'a [u8],
@@ -1004,6 +1013,8 @@ impl DemanglerState {
         let mut qualifier_count = 0usize;
 
         let bindex = self.btypes.register();
+
+        log::debug!("demangle qualified: start");
 
         // Only use isfuncname if the entity is a constructor or destructor.
         let isfuncname = isfuncname && ((self.constructor & 1) > 0 || (self.destructor & 1) > 0);
@@ -1128,9 +1139,12 @@ impl DemanglerState {
             result.prepend(&temp);
         }
 
+        log::debug!("demangle qualified: done");
+
         Ok(ConsumeVal { mangled, value: () })
     }
 
+    #[must_use]
     fn demangle_template<'a>(
         &mut self,
         mangled: &'a [u8],
@@ -1278,6 +1292,7 @@ impl DemanglerState {
         })
     }
 
+    #[must_use]
     fn do_type<'a>(
         &mut self,
         mut mangled: &'a [u8],
@@ -1521,6 +1536,7 @@ impl DemanglerState {
         })
     }
 
+    #[must_use]
     fn demangle_fund_type<'a>(
         &mut self,
         mut mangled: &'a [u8],
@@ -1684,6 +1700,7 @@ impl DemanglerState {
                     let bindex = self.btypes.register();
                     let mut btype = vec![];
                     ConsumeVal { mangled, .. } = self.demangle_class_name(mangled, &mut btype)?;
+                    debug_log_bytes(mangled, "post-class mangled");
                     append_blank(result);
                     result.extend(&btype);
                     self.btypes
@@ -1714,6 +1731,7 @@ impl DemanglerState {
         })
     }
 
+    #[must_use]
     fn demangle_class_name<'a>(
         &mut self,
         mut mangled: &'a [u8],
@@ -1736,6 +1754,7 @@ impl DemanglerState {
         }
     }
 
+    #[must_use]
     fn demangle_arm_hp_template<'a>(
         &mut self,
         mut mangled: &'a [u8],
@@ -1777,6 +1796,7 @@ impl DemanglerState {
         Ok(ConsumeVal { value: (), mangled })
     }
 
+    #[must_use]
     fn arm_pt<'a>(
         &'_ mut self,
         mut mangled: &'a [u8],
@@ -1812,6 +1832,7 @@ impl DemanglerState {
         anyhow::bail!("arm_pt: unhandled case")
     }
 
+    #[must_use]
     fn demangle_function_name<'a>(
         &mut self,
         mut mangled: &'a [u8],
@@ -1896,6 +1917,7 @@ impl DemanglerState {
         Ok(ConsumeVal { mangled, value: () })
     }
 
+    #[must_use]
     fn demangle_signature<'a>(
         &mut self,
         mut mangled: &'a [u8],
@@ -1913,7 +1935,7 @@ impl DemanglerState {
                 b'Q' => {
                     oldmangled = Some(mangled);
 
-                    self.demangle_qualified(mangled, declp, true, false)?;
+                    ConsumeVal { mangled, .. } = self.demangle_qualified(mangled, declp, true, false)?;
                     // self.types.push(value);
                     if style.auto() || style.gnu() {
                         expect_func = true;
@@ -1984,7 +2006,7 @@ impl DemanglerState {
                         mangled = &mangled[1..];
                         // At this level, we don't care about the return type.
                         let mut tname = Vec::new();
-                        self.do_type(mangled, &mut tname)?;
+                        ConsumeVal { mangled, .. } = self.do_type(mangled, &mut tname)?;
                         drop(tname);
                     }
                 }
@@ -2114,6 +2136,7 @@ impl DemanglerState {
         Ok(ConsumeVal { mangled, value: () })
     }
 
+    #[must_use]
     fn demangle_args<'a>(
         &mut self,
         mut mangled: &'a [u8],
@@ -2127,7 +2150,9 @@ impl DemanglerState {
         let mut r;
         let mut temptype: u8;
 
+
         if self.opts.params() {
+            debug_log_bytes(mangled, "remaining args mangled");
             declp.push(b'(');
             if mangled.is_empty() {
                 declp.extend(b"void");
@@ -2239,6 +2264,7 @@ impl DemanglerState {
         Ok(ConsumeVal { mangled, value: () })
     }
 
+    #[must_use]
     fn demangle_class<'a>(
         &mut self,
         mut mangled: &'a [u8],
@@ -2277,6 +2303,7 @@ impl DemanglerState {
         }
     }
 
+    #[must_use]
     fn do_arg<'a>(
         &mut self,
         mut mangled: &'a [u8],
@@ -2346,6 +2373,7 @@ impl DemanglerState {
         Ok(ConsumeVal { mangled, value: () })
     }
 
+    #[must_use]
     fn demangle_template_value_parm<'a>(
         &mut self,
         mut mangled: &'a [u8],
@@ -2385,6 +2413,7 @@ impl DemanglerState {
         Ok(ConsumeVal { mangled, value: () })
     }
 
+    #[must_use]
     fn demangle_integral_value<'a>(
         &mut self,
         mut mangled: &'a [u8],
@@ -2443,6 +2472,7 @@ impl DemanglerState {
         return Ok(ConsumeVal { mangled, value: () });
     }
 
+    #[must_use]
     fn demangle_nested_args<'a>(
         &'_ mut self,
         mut mangled: &'a [u8],
@@ -2495,6 +2525,7 @@ fn demangle_qualifier(qualifier: u8) -> &'static [u8] {
     }
 }
 
+#[must_use]
 fn consume_count(mangled: &[u8]) -> Result<ConsumeVal<'_, usize>> {
     let digit_count = mangled.iter().take_while(|&b| b.is_ascii_digit()).count();
 
@@ -2510,6 +2541,7 @@ fn consume_count(mangled: &[u8]) -> Result<ConsumeVal<'_, usize>> {
     })
 }
 
+#[must_use]
 fn consume_count_with_underscores(mangled: &[u8]) -> Result<ConsumeVal<'_, usize>> {
     if mangled.starts_with(b"_") && mangled.ends_with(b"_") && mangled.len() > 1 {
         let end = 0.max(mangled.len() - 1);
@@ -2520,6 +2552,7 @@ fn consume_count_with_underscores(mangled: &[u8]) -> Result<ConsumeVal<'_, usize
     }
 }
 
+#[must_use]
 fn get_count(mangled: &[u8]) -> Result<ConsumeVal<'_, usize>> {
     let digit = mangled[0];
 
@@ -2549,6 +2582,7 @@ fn strpbrk<'a>(s: &'a [u8], accept: &[u8]) -> Option<&'a [u8]> {
 
 const ARM_VTABLE_STRING: &[u8] = b"__vtbl__";
 
+#[must_use]
 fn arm_special<'a>(mut mangled: &'a [u8], declp: &mut Vec<u8>) -> Result<ConsumeVal<'a, ()>> {
     let mut n = 0;
 
