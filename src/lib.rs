@@ -2548,7 +2548,14 @@ fn consume_count_with_underscores(mangled: &[u8]) -> Result<ConsumeVal<'_, usize
 
         consume_count(&mangled[1..end])
     } else {
-        anyhow::bail!("could not find surrounding underscores");
+  		if mangled.len() == 0 || mangled[0] < b'0' || mangled[0] > b'9' {
+            anyhow::bail!("could not find surrounding underscores or count");
+        }
+
+        Ok(ConsumeVal {
+            mangled: &mangled[1..],
+            value: (mangled[0] - b'0') as usize,
+        })
     }
 }
 
