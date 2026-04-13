@@ -19,11 +19,11 @@ thiserror = { workspace = true }
 members = ["demangle-gnuv2-py"]
 
 [workspace.package]
-edition = "2021"
-version = "0.1.0"
+edition = "2024"
+version = "0.0.0"
 authors = ["Michael Gaver-Holmes <i.am@ceph3.us>"]
 license = "LGPL-2.0+"
-rust-version = "1.78"
+rust-version = "1.85"
 
 [workspace.dependencies]
 thiserror = "2.0.12"

@@ -20,6 +20,8 @@
     "$jq" '.results[] | select(.success == false)' < results.json
   '';
 in {
+  env.JJ_PRE_PUSH_CHECKER = "prek";
+
   packages = [pkgs.git pkgs.gh pkgs.alejandra pkgs.rustup checkPanicReasonsScript checkFailuresScript];
 
   languages.rust.enable = true;
@@ -27,7 +29,7 @@ in {
   languages.python.enable = true;
   languages.python.venv.enable = true;
   languages.python.venv.requirements = ''
-    maturin==1.8.3
+    maturin==1.13.1
   '';
 
   scripts.demangle.exec = ''
@@ -39,11 +41,14 @@ in {
     "workspace:lint".exec = "cargo clippy --workspace --keep-going -- -D warnings";
     "workspace:fix-lints".exec = "cargo clippy --workspace --keep-going --fix";
     "workspace:fmt".exec = "cargo fmt";
-    "pyext:develop".exec = "cd \"$DEVENV_ROOT/demangle-gnuv2-py\" && maturin develop";
+    "pyext:develop" = {
+      before = ["test:symbols"];
+      exec = "cd \"$DEVENV_ROOT/demangle-gnuv2-py\" && maturin develop";
+    };
     "test:symbols" = {
-      after = ["pyext:develop"];
       exec = ''
         set -euo pipefail
+        source "$DEVENV_STATE/venv/bin/activate"
         python test/test_demangle.py -Cj -o results.json | tee "$DEVENV_TASK_OUTPUT_FILE"
       '';
     };
@@ -56,6 +61,5 @@ in {
 
   git-hooks.hooks.alejandra.enable = true;
   git-hooks.hooks.rustfmt.enable = true;
-  # Not ready for the prime time yet
-  # git-hooks.hooks.clippy.enable = true;
+  git-hooks.hooks.clippy.enable = true;
 }

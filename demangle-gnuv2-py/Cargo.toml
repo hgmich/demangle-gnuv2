@@ -12,5 +12,5 @@ name = "demangle_gnuv2"
 crate-type = ["cdylib"]
 
 [dependencies]
-pyo3 = "0.24.2"
+pyo3 = { version = "0.28", features = ["py-clone"] }
 demangle-gnuv2 = { path = ".." }

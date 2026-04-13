@@ -1,13 +1,60 @@
 use pyo3::{exceptions, prelude::*};
 
-#[pyclass]
+#[pyclass(frozen, from_py_object)]
 #[derive(Debug, Clone)]
-struct DemangledType {
-    #[pyo3(get)]
-    name: String,
+enum DemangledType {
+    Void(),
+    Boolean(),
+    Int {
+        signed: bool,
+    },
+    Short {
+        signed: bool,
+    },
+    Char {
+        signed: Option<bool>,
+    },
+    WideChar {
+        signed: Option<bool>,
+    },
+    Long {
+        signed: bool,
+    },
+    LongLong {
+        signed: bool,
+    },
+    StdInt {
+        bitwidth: usize,
+        signed: bool,
+    },
+    Float(),
+    Double(),
+    LongDouble(),
+    Reference {
+        r#const: bool,
+        restrict: bool,
+        inner: Py<DemangledType>,
+    },
+    Pointer {
+        r#const: bool,
+        restrict: bool,
+        inner: Py<DemangledType>,
+    },
+    Volatile {
+        inner: Py<DemangledType>,
+    },
+    ClassOrStruct {
+        name: String,
+        templated: bool,
+    },
+    Function {
+        args: Vec<Py<DemangledType>>,
+        return_type: Option<Py<DemangledType>>,
+    },
+    VarArgs(),
 }
 
-#[pyclass]
+#[pyclass(frozen, from_py_object)]
 #[derive(Debug, Clone)]
 struct DemangledSymbol {
     #[pyo3(get)]
@@ -17,25 +64,84 @@ struct DemangledSymbol {
 }
 
 impl DemangledType {
-    fn from_rust(py: Python, demangled: &demangle_gnuv2::DemangledType) -> PyResult<Self> {
-        match demangled {
-            demangle_gnuv2::DemangledType::Void => Ok(Self {
-                name: "void".into(),
-            }),
+    fn from_rust(py: Python, demangled: &demangle_gnuv2::DemangledType) -> PyResult<Py<Self>> {
+        Ok(match demangled {
+            demangle_gnuv2::DemangledType::Void => Self::Void(),
+            demangle_gnuv2::DemangledType::Boolean => Self::Boolean(),
+            demangle_gnuv2::DemangledType::Int { signed } => Self::Int { signed: *signed },
+            demangle_gnuv2::DemangledType::Short { signed } => Self::Short { signed: *signed },
+            demangle_gnuv2::DemangledType::Char { signed } => Self::Char { signed: *signed },
+            demangle_gnuv2::DemangledType::WideChar { signed } => {
+                Self::WideChar { signed: *signed }
+            }
+            demangle_gnuv2::DemangledType::Long { signed } => Self::Long { signed: *signed },
+            demangle_gnuv2::DemangledType::LongLong { signed } => {
+                Self::LongLong { signed: *signed }
+            }
+            demangle_gnuv2::DemangledType::StdInt { bitwidth, signed } => Self::StdInt {
+                bitwidth: *bitwidth,
+                signed: *signed,
+            },
+            demangle_gnuv2::DemangledType::Float => Self::Float(),
+            demangle_gnuv2::DemangledType::Double => Self::Float(),
+            demangle_gnuv2::DemangledType::LongDouble => Self::LongDouble(),
+            demangle_gnuv2::DemangledType::Reference {
+                r#const,
+                restrict,
+                inner,
+            } => Self::Reference {
+                r#const: *r#const,
+                restrict: *restrict,
+                inner: DemangledType::from_rust(py, inner.as_ref())?,
+            },
+            demangle_gnuv2::DemangledType::Pointer {
+                r#const,
+                restrict,
+                inner,
+            } => Self::Pointer {
+                r#const: *r#const,
+                restrict: *restrict,
+                inner: DemangledType::from_rust(py, inner.as_ref())?,
+            },
+            demangle_gnuv2::DemangledType::Volatile { inner } => Self::Volatile {
+                inner: DemangledType::from_rust(py, inner.as_ref())?,
+            },
+            demangle_gnuv2::DemangledType::ClassOrStruct { name, templated } => {
+                Self::ClassOrStruct {
+                    name: name.clone(),
+                    templated: *templated,
+                }
+            }
+            demangle_gnuv2::DemangledType::Function { args, return_type } => {
+                let args = args
+                    .iter()
+                    .map(|arg| DemangledType::from_rust(py, arg))
+                    .collect::<PyResult<Vec<_>>>()?;
+
+                let return_type = return_type
+                    .as_ref()
+                    .map(|ty| DemangledType::from_rust(py, ty))
+                    .transpose()?;
+
+                Self::Function { args, return_type }
+            }
+            demangle_gnuv2::DemangledType::VarArgs => Self::VarArgs(),
         }
+        .into_pyobject(py)?
+        .unbind())
     }
 }
 
 /// What kind of symbol this is.
-#[pyclass]
+#[pyclass(frozen, from_py_object)]
 #[derive(Debug, Clone)]
 enum SymbolType {
     /// Symbol refers to the vtable of a specified class.
     VTable(),
     /// Symbol refers to a function entry point.
     Function {
-        args: Vec<DemangledType>,
-        return_type: DemangledType,
+        args: Vec<Py<DemangledType>>,
+        return_type: Option<Py<DemangledType>>,
     },
     /// Symbol refers to the static member of a container type.
     StaticMember(),
@@ -54,13 +160,19 @@ impl SymbolType {
         use demangle_gnuv2::SymbolKind;
         match sym {
             SymbolKind::VTable => Ok(Self::VTable()),
-            SymbolKind::Function { args, return_type } => Ok(Self::Function {
-                args: args
+            SymbolKind::Function { args, return_type } => {
+                let args = args
                     .iter()
                     .map(|arg| DemangledType::from_rust(py, arg))
-                    .collect::<PyResult<Vec<_>>>()?,
-                return_type: DemangledType::from_rust(py, &return_type)?,
-            }),
+                    .collect::<PyResult<Vec<_>>>()?;
+
+                let return_type = return_type
+                    .as_ref()
+                    .map(|ty| DemangledType::from_rust(py, ty))
+                    .transpose()?;
+
+                Ok(Self::Function { args, return_type })
+            }
             SymbolKind::StaticMember => Ok(Self::StaticMember()),
             SymbolKind::TypeInfo(ty_info) => Ok(Self::TypeInfo {
                 r#type: TypeInfoType::from_rust(py, ty_info)?,
@@ -68,17 +180,15 @@ impl SymbolType {
             SymbolKind::GlobalConstructor => Ok(Self::GlobalConstructor()),
             SymbolKind::GlobalDestructor => Ok(Self::GlobalDestructor()),
             SymbolKind::DllImportStub => Ok(Self::DllImportStub()),
-            other => {
-                return Err(PyErr::new::<exceptions::PyTypeError, _>(format!(
-                    "unknown symbol type {other:?}"
-                )));
-            }
+            other => Err(PyErr::new::<exceptions::PyTypeError, _>(format!(
+                "unknown symbol type {other:?}"
+            ))),
         }
     }
 }
 
 /// Specifies what variety of type info this is.
-#[pyclass(eq, eq_int)]
+#[pyclass(from_py_object, frozen, eq, eq_int)]
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum TypeInfoType {
     /// typeinfo is for a type node (class, struct, etc).
@@ -88,7 +198,7 @@ pub enum TypeInfoType {
 }
 
 impl TypeInfoType {
-    fn from_rust(py: Python, kind: demangle_gnuv2::TypeInfoKind) -> PyResult<Self> {
+    fn from_rust(_py: Python, kind: demangle_gnuv2::TypeInfoKind) -> PyResult<Self> {
         Ok(match kind {
             demangle_gnuv2::TypeInfoKind::Node => Self::Node,
             demangle_gnuv2::TypeInfoKind::Function => Self::Function,
