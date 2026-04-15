@@ -45,7 +45,7 @@ jobs:
           args: --release --out dist
           sccache: ${{ !startsWith(github.ref, 'refs/tags/') }}
           manylinux: auto
-          path: demangle-gnuv2-py
+          working-directory: demangle-gnuv2-py
       - name: Upload wheels
         uses: actions/upload-artifact@v6
         with:
@@ -74,7 +74,8 @@ jobs:
           args: --release --out dist
           sccache: ${{ !startsWith(github.ref, 'refs/tags/') }}
           manylinux: musllinux_1_2
-          path: demangle-gnuv2-py
+          working-directory: demangle-gnuv2-py
+
       - name: Upload wheels
         uses: actions/upload-artifact@v6
         with:
@@ -103,7 +104,8 @@ jobs:
           target: ${{ matrix.platform.target }}
           args: --release --out dist
           sccache: ${{ !startsWith(github.ref, 'refs/tags/') }}
-          path: demangle-gnuv2-py
+          working-directory: demangle-gnuv2-py
+
       - name: Upload wheels
         uses: actions/upload-artifact@v6
         with:
@@ -127,7 +129,8 @@ jobs:
           target: ${{ matrix.platform.target }}
           args: --release --out dist
           sccache: ${{ !startsWith(github.ref, 'refs/tags/') }}
-          path: demangle-gnuv2-py
+          working-directory: demangle-gnuv2-py
+
       - name: Upload wheels
         uses: actions/upload-artifact@v6
         with:
