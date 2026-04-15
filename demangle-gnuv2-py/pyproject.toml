@@ -4,6 +4,7 @@ build-backend = "maturin"
 
 [project]
 name = "demangle-gnuv2"
+readme = "README.md"
 license = "LGPL-2.0-or-later"
 requires-python = ">=3.10"
 classifiers = [
