@@ -382,6 +382,7 @@ pub enum DemangledType {
     Function {
         args: Vec<DemangledType>,
         return_type: Option<Box<DemangledType>>,
+        r#const: bool,
     },
     VarArgs,
 }
@@ -591,6 +592,7 @@ pub enum CxxType {
     Function {
         args: Vec<CxxType>,
         return_type: Option<Box<CxxType>>,
+        r#const: bool,
     },
     VarArgs,
 }
@@ -672,7 +674,7 @@ impl CxxType {
                     }
                 }
             }
-            CxxType::Function { args, return_type } => {
+            CxxType::Function { args, return_type, r#const } => {
                 let args = args
                     .iter()
                     .map(|cxxtype| cxxtype.to_demangled(btypes))
@@ -684,6 +686,7 @@ impl CxxType {
                         .map(|cxxtype| cxxtype.to_demangled(btypes))
                         .transpose()?
                         .map(Box::new),
+                    r#const: *r#const,
                 }
             }
             CxxType::VarArgs => DemangledType::VarArgs,
@@ -773,6 +776,7 @@ impl TryFrom<IncompleteCxxType> for CxxType {
             IncompleteCxxType::Function { fn_state } => CxxType::Function {
                 args: fn_state.arg_types,
                 return_type: fn_state.return_type.map(Box::new),
+                r#const: false,
             },
             IncompleteCxxType::VarArgs => CxxType::VarArgs,
         })
@@ -856,6 +860,7 @@ fn take_one_type(
             IncompleteCxxType::Function { fn_state } => CxxType::Function {
                 return_type: fn_state.return_type.map(Box::new),
                 args: fn_state.arg_types,
+                r#const: false,
             },
             IncompleteCxxType::ConstModifier => match c_type {
                 CxxType::Volatile { inner } => {
@@ -1591,7 +1596,7 @@ impl DemanglerState {
                     if style.edg() {
                         anyhow::bail!("TODO: implement EDG recursive demangling");
                     } else {
-                        ConsumeVal { mangled, .. } = self.do_type(mangled, &mut last_name)?;
+                        ConsumeVal { mangled, .. } = self.do_type(mangled, &mut last_name, false)?;
                         temp.extend(&last_name);
                     }
                 }
@@ -1709,7 +1714,7 @@ impl DemanglerState {
 
         debug_log_bytes(mangled, "mangled in template");
 
-        let mut last_cxxtype = CxxType::Void;
+        let mut last_cxxtype;
         for i in 0..r {
             log::debug!("demangle template: param {i}");
             if need_comma {
@@ -1720,7 +1725,7 @@ impl DemanglerState {
                 log::debug!("demangle_template: type parameter");
                 mangled = &mangled[1..];
 
-                ConsumeVal { value: last_cxxtype, mangled } = self.do_type(mangled, &mut temp)?;
+                ConsumeVal { value: _, mangled } = self.do_type(mangled, &mut temp, true)?;
 
                 tname.extend(&temp);
 
@@ -1737,7 +1742,7 @@ impl DemanglerState {
             } else {
                 // value parameter
                 let mut temp: Vec<u8> = vec![];
-                ConsumeVal { value: last_cxxtype, mangled } = self.do_type(mangled, &mut temp)?;
+                ConsumeVal { value: last_cxxtype, mangled } = self.do_type(mangled, &mut temp, true)?;
                 log::debug!("is_type = {is_type}");
                 // Change here is because we don't want to have to do a weird dance with Cell to reborrow
                 // tname mutably during this scope.
@@ -1783,6 +1788,7 @@ impl DemanglerState {
         &mut self,
         mut mangled: &'a [u8],
         result: &'_ mut Vec<u8>,
+        is_tmpl: bool,
     ) -> Result<ConsumeVal<'a, CxxType>> {
         let mut done = false;
         let mut decl: Vec<u8> = vec![];
@@ -1879,7 +1885,7 @@ impl DemanglerState {
                         }
                         Some(b'X') | Some(b'Y') => {
                             let mut temp = vec![];
-                            ConsumeVal { mangled, .. } = self.do_type(mangled, &mut temp)?;
+                            ConsumeVal { mangled, .. } = self.do_type(mangled, &mut temp, is_tmpl)?;
                             decl.prepend(&temp);
                         }
                         Some(b't') => {
@@ -1968,7 +1974,7 @@ impl DemanglerState {
         }
 
         if self.type_quals.into_bits() != 0 {
-            if self.type_quals.r#const() {
+            if self.type_quals.r#const() && !is_tmpl {
                 cxxtype_stack.insert(0, IncompleteCxxType::ConstModifier);
             }
             if self.type_quals.restrict() {
@@ -2574,7 +2580,7 @@ impl DemanglerState {
                         mangled = &mangled[1..];
                         // At this level, we don't care about the return type.
                         let mut tname = Vec::new();
-                        ConsumeVal { mangled, .. } = self.do_type(mangled, &mut tname)?;
+                        ConsumeVal { mangled, .. } = self.do_type(mangled, &mut tname, false)?;
                         drop(tname);
                     }
                 }
@@ -2623,7 +2629,7 @@ impl DemanglerState {
                         log::debug!("demangle signature: gnu");
                         let mut return_type: Vec<u8> = vec![];
                         mangled = &mangled[1..];
-                        ConsumeVal { mangled, .. } = self.do_type(mangled, &mut return_type)?;
+                        ConsumeVal { mangled, .. } = self.do_type(mangled, &mut return_type, false)?;
                         append_blank(&mut return_type);
 
                         declp.prepend(&return_type);
@@ -2941,7 +2947,7 @@ impl DemanglerState {
         ConsumeVal {
             mangled,
             value: cxxtype,
-        } = self.do_type(mangled, &mut prev_arg)?;
+        } = self.do_type(mangled, &mut prev_arg, false)?;
         self.previous_argument.extend(&prev_arg);
         self.previous_argument_type = Some(cxxtype.clone());
         result.extend(&self.previous_argument);

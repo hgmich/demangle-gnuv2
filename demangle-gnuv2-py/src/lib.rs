@@ -50,6 +50,7 @@ enum DemangledType {
     Function {
         args: Vec<Py<DemangledType>>,
         return_type: Option<Py<DemangledType>>,
+        r#const: bool,
     },
     VarArgs(),
 }
@@ -112,7 +113,7 @@ impl DemangledType {
                     templated: *templated,
                 }
             }
-            demangle_gnuv2::DemangledType::Function { args, return_type } => {
+            demangle_gnuv2::DemangledType::Function { args, return_type, r#const } => {
                 let args = args
                     .iter()
                     .map(|arg| DemangledType::from_rust(py, arg))
@@ -123,7 +124,7 @@ impl DemangledType {
                     .map(|ty| DemangledType::from_rust(py, ty))
                     .transpose()?;
 
-                Self::Function { args, return_type }
+                Self::Function { args, return_type, r#const: *r#const }
             }
             demangle_gnuv2::DemangledType::VarArgs => Self::VarArgs(),
         }
