@@ -402,6 +402,8 @@ pub enum SymbolKind {
         /// Return type of function.
         /// Not all GNUv2 mangling conventions include return type information.
         return_type: Option<DemangledType>,
+        /// Whether or not this function is declared to be const (i.e. member function which does not mutate its instance)
+        r#const: bool,
     },
     /// Symbol refers to the static member of a container type.
     StaticMember,
@@ -542,6 +544,7 @@ impl Default for BTypeStore {
 struct FunctionState {
     return_type: Option<CxxType>,
     arg_types: Vec<CxxType>,
+    type_quals: TypeQualifiers,
 }
 
 #[derive(Debug, Clone)]
@@ -1050,6 +1053,7 @@ impl DemanglerState {
                 .as_ref()
                 .map(|cxxtype| cxxtype.to_demangled(&self.btypes))
                 .transpose()?,
+            r#const: self.fn_state.type_quals.r#const(),
         })
     }
 
@@ -2525,10 +2529,11 @@ impl DemanglerState {
                 }
                 b'C' | b'V' | b'u' => {
                     log::debug!("demangle signature: ansi qualifiers");
-                    self.type_quals = TypeQualifiers::from_bits(
-                        self.type_quals.into_bits()
+                    self.fn_state.type_quals = TypeQualifiers::from_bits(
+                        self.fn_state.type_quals.into_bits()
                             | TypeQualifiers::from_code(mangled[0]).into_bits(),
                     );
+                    log::debug!("demangle signature: new type quals = {:?}", self.fn_state.type_quals);
 
                     // A qualified member function
                     if oldmangled.is_none() {
@@ -2695,6 +2700,8 @@ impl DemanglerState {
             }
         }
 
+        // self.fn_state.type_quals = self.type_quals;
+
         if success && !func_done && (style.auto() || style.gnu()) {
             ConsumeVal { mangled, .. } = self.demangle_args(mangled, declp)?;
         }
@@ -2703,9 +2710,9 @@ impl DemanglerState {
             if self.static_type {
                 declp.extend(b" static");
             }
-            if self.type_quals.into_bits() != 0 {
+            if self.fn_state.type_quals.into_bits() != 0 {
                 append_blank(declp);
-                declp.extend(self.type_quals.to_str().as_bytes())
+                declp.extend(self.fn_state.type_quals.to_str().as_bytes())
             }
         }
 

@@ -29,13 +29,14 @@ class SymbolEncoder(json.JSONEncoder):
         match type_:
             case demangle_gnuv2.SymbolType.VTable():
                 return {"kind": "vtable"}
-            case demangle_gnuv2.SymbolType.Function(qualified_name, args, return_type):
+            case demangle_gnuv2.SymbolType.Function(qualified_name, args, return_type, const):
                 # TODO: implement demangled_type
                 return {
                     "kind": "function",
                     "qualified_name": qualified_name,
                     "args": list(map(lambda ty: self.encode_demangled_type(ty), args)),
                     "return_type": self.encode_demangled_type(return_type) if return_type is not None else None,
+                    "const": const,
                 }
             case demangle_gnuv2.SymbolType.StaticMember():
                 return {"kind": "static_member"}

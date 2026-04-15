@@ -144,6 +144,7 @@ enum SymbolType {
         qualified_name: String,
         args: Vec<Py<DemangledType>>,
         return_type: Option<Py<DemangledType>>,
+        r#const: bool,
     },
     /// Symbol refers to the static member of a container type.
     StaticMember(),
@@ -162,7 +163,7 @@ impl SymbolType {
         use demangle_gnuv2::SymbolKind;
         match sym {
             SymbolKind::VTable => Ok(Self::VTable()),
-            SymbolKind::Function { qualified_name, args, return_type } => {
+            SymbolKind::Function { qualified_name, args, return_type, r#const } => {
                 let args = args
                     .iter()
                     .map(|arg| DemangledType::from_rust(py, arg))
@@ -173,7 +174,7 @@ impl SymbolType {
                     .map(|ty| DemangledType::from_rust(py, ty))
                     .transpose()?;
 
-                Ok(Self::Function { qualified_name, args, return_type })
+                Ok(Self::Function { qualified_name, args, return_type, r#const })
             }
             SymbolKind::StaticMember => Ok(Self::StaticMember()),
             SymbolKind::TypeInfo(ty_info) => Ok(Self::TypeInfo {
