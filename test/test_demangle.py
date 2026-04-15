@@ -21,7 +21,7 @@ class SymbolEncoder(json.JSONEncoder):
 
     def encode_demangled_symbol(self, sym: demangle_gnuv2.DemangledSymbol):
         return {
-            "qualified_name": sym.qualified_name,
+            "cxxdecl": sym.cxxdecl,
             "symbol_type": self.encode_symbol_type(sym.type)
         }
 
@@ -29,10 +29,11 @@ class SymbolEncoder(json.JSONEncoder):
         match type_:
             case demangle_gnuv2.SymbolType.VTable():
                 return {"kind": "vtable"}
-            case demangle_gnuv2.SymbolType.Function(args, return_type):
+            case demangle_gnuv2.SymbolType.Function(qualified_name, args, return_type):
                 # TODO: implement demangled_type
                 return {
                     "kind": "function",
+                    "qualified_name": qualified_name,
                     "args": list(map(lambda ty: self.encode_demangled_type(ty), args)),
                     "return_type": self.encode_demangled_type(return_type) if return_type is not None else None,
                 }
@@ -133,7 +134,7 @@ def main():
         result = {"mangled": mangled, "expected": demangled}
         try:
             sym = demangle_gnuv2.cplus_demangle_v2(mangled)
-            result["actual"] = sym.qualified_name
+            result["actual"] = sym.cxxdecl
             result["success"] = result["expected"] == result["actual"]
             if result["success"]:
                 counts["success"] += 1

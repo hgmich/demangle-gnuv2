@@ -58,9 +58,9 @@ enum DemangledType {
 #[derive(Debug, Clone)]
 struct DemangledSymbol {
     #[pyo3(get)]
-    qualified_name: String,
-    #[pyo3(get, name = "type")]
-    type_: SymbolType,
+    cxxdecl: String,
+    #[pyo3(get)]
+    r#type: SymbolType,
 }
 
 impl DemangledType {
@@ -140,6 +140,7 @@ enum SymbolType {
     VTable(),
     /// Symbol refers to a function entry point.
     Function {
+        qualified_name: String,
         args: Vec<Py<DemangledType>>,
         return_type: Option<Py<DemangledType>>,
     },
@@ -160,7 +161,7 @@ impl SymbolType {
         use demangle_gnuv2::SymbolKind;
         match sym {
             SymbolKind::VTable => Ok(Self::VTable()),
-            SymbolKind::Function { args, return_type } => {
+            SymbolKind::Function { qualified_name, args, return_type } => {
                 let args = args
                     .iter()
                     .map(|arg| DemangledType::from_rust(py, arg))
@@ -171,7 +172,7 @@ impl SymbolType {
                     .map(|ty| DemangledType::from_rust(py, ty))
                     .transpose()?;
 
-                Ok(Self::Function { args, return_type })
+                Ok(Self::Function { qualified_name, args, return_type })
             }
             SymbolKind::StaticMember => Ok(Self::StaticMember()),
             SymbolKind::TypeInfo(ty_info) => Ok(Self::TypeInfo {
@@ -228,8 +229,8 @@ impl DemangledSymbol {
         // TODO: Implement structured demangling
 
         Ok(DemangledSymbol {
-            qualified_name: demangled.qualified_name,
-            type_: SymbolType::from_rust(py, demangled.kind)?,
+            cxxdecl: demangled.cxxdecl,
+            r#type: SymbolType::from_rust(py, demangled.kind)?,
         })
     }
 }

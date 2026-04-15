@@ -392,6 +392,8 @@ pub enum SymbolKind {
     VTable,
     /// Symbol refers to a function entry point.
     Function {
+        /// Qualified name of the function.
+        qualified_name: String,
         /// Arguments to the function.
         args: Vec<DemangledType>,
         /// Return type of function.
@@ -420,9 +422,9 @@ pub enum TypeInfoKind {
 /// Information on a demangled symbol.
 #[derive(Debug, Clone)]
 pub struct DemangledSymbol {
-    /// The qualified name of the demangled symbol.
-    /// Includes namespaces, and class names for member functions.
-    pub qualified_name: String,
+    /// The full textual representation of the symbol after demangling.
+    /// Same as you would expect to get by demangling with c++filt.
+    pub cxxdecl: String,
 
     /// Structured information on the demangled symbol.
     pub kind: SymbolKind,
@@ -474,6 +476,7 @@ struct DemanglerState {
     symbol_kind: StateSymbolKind,
     type_quals: TypeQualifiers,
     fn_state: FunctionState,
+    decl_fn_qname_len: usize,
 }
 
 #[derive(Debug)]
@@ -591,6 +594,30 @@ pub enum CxxType {
     VarArgs,
 }
 impl CxxType {
+    fn is_integral_type(&self) -> bool {
+        match self {
+            CxxType::Int { .. } | CxxType::Short { .. } |
+            CxxType::Long { .. } |
+            CxxType::LongLong { .. } |
+            CxxType::StdInt { .. } => true,
+            _ => false
+        }
+    }
+
+    fn is_realnum_type(&self) -> bool {
+        match self {
+            CxxType::Float | CxxType::Double | CxxType::LongDouble { .. } => true,
+            _ => false
+        }
+    }
+
+    fn is_reference_type(&self) -> bool {
+        match self {
+            CxxType::Pointer {..} | CxxType::Reference { .. } => true,
+            _ => false
+        }
+    }
+
     fn to_demangled(&self, btypes: &BTypeStore) -> Result<DemangledType> {
         Ok(match self {
             CxxType::Void => DemangledType::Void,
@@ -929,26 +956,26 @@ pub fn cplus_demangle_v2(mangled: &[u8], opts: DemangleOpts) -> Result<Demangled
 
     let declp = state.internal_demangle(mangled)?;
 
-    let kind = state.extract_symbol_info()?;
+    let kind = state.extract_symbol_info(&declp)?;
 
-    let qualified_name_base = String::from_utf8(declp).map_err(|e| {
+    let cxxdecl_base = String::from_utf8(declp).map_err(|e| {
         log::error!("failed to decode declp: {e:?}");
         anyhow::anyhow!("failed to decode symbol from utf-8")
     })?;
 
-    let qualified_name = match kind {
+    let cxxdecl = match kind {
         SymbolKind::GlobalConstructor => {
-            format!("global constructors keyed to {qualified_name_base}")
+            format!("global constructors keyed to {cxxdecl_base}")
         }
         SymbolKind::GlobalDestructor => {
-            format!("global destructors keyed to {qualified_name_base}")
+            format!("global destructors keyed to {cxxdecl_base}")
         }
-        SymbolKind::DllImportStub => format!("import stub for {qualified_name_base}"),
-        _ => qualified_name_base,
+        SymbolKind::DllImportStub => format!("import stub for {cxxdecl_base}"),
+        _ => cxxdecl_base,
     };
 
     Ok(DemangledSymbol {
-        qualified_name,
+        cxxdecl,
         kind,
     })
 }
@@ -975,14 +1002,14 @@ struct ConsumeVal<'a, Inner> {
 
 impl DemanglerState {
     #[allow(unreachable_patterns)]
-    fn extract_symbol_info(&self) -> Result<SymbolKind> {
+    fn extract_symbol_info(&self, declp: &[u8]) -> Result<SymbolKind> {
         match &self.symbol_kind {
             StateSymbolKind::Unknown => anyhow::bail!("unknown symbol kind"),
             StateSymbolKind::VTable => Ok(SymbolKind::VTable),
             StateSymbolKind::StaticMember => Ok(SymbolKind::StaticMember),
             StateSymbolKind::TypeInfoNode => Ok(SymbolKind::TypeInfo(TypeInfoKind::Node)),
             StateSymbolKind::TypeInfoFunction => Ok(SymbolKind::TypeInfo(TypeInfoKind::Function)),
-            StateSymbolKind::Function => self.extract_function_info(),
+            StateSymbolKind::Function => self.extract_function_info(declp),
             StateSymbolKind::GlobalConstructor => Ok(SymbolKind::GlobalConstructor),
             StateSymbolKind::GlobalDestructor => Ok(SymbolKind::GlobalDestructor),
             StateSymbolKind::DllImportStub => Ok(SymbolKind::DllImportStub),
@@ -990,7 +1017,7 @@ impl DemanglerState {
         }
     }
 
-    fn extract_function_info(&self) -> Result<SymbolKind> {
+    fn extract_function_info(&self, declp: &[u8]) -> Result<SymbolKind> {
         for (i, ty) in self.raw_types.iter().enumerate() {
             debug_log_bytes(ty, &format!("type {i}"));
         }
@@ -1005,6 +1032,7 @@ impl DemanglerState {
 
         // TODO: implement properly
         Ok(SymbolKind::Function {
+            qualified_name: String::from_utf8_lossy(&declp[0..self.decl_fn_qname_len]).to_string(),
             args: self
                 .fn_state
                 .arg_types
@@ -1209,6 +1237,7 @@ impl DemanglerState {
             // function name.
             log::debug!("demangle_prefix: global function name");
             ConsumeVal { mangled, .. } = self.demangle_function_name(mangled, declp, scan)?;
+            debug_log_bytes(declp, "demangle_prefix: declp post demangle_function_name");
             self.symbol_kind = StateSymbolKind::Function;
         } else {
             // Doesn't look like a mangled name
@@ -1744,7 +1773,7 @@ impl DemanglerState {
         log::debug!("demangle_template: done");
 
         Ok(ConsumeVal {
-            value: ty_k,
+            value: bindex,
             mangled,
         })
     }
@@ -1870,6 +1899,7 @@ impl DemanglerState {
                     }
 
                     self.symbol_kind = StateSymbolKind::Function;
+                    debug_log_bytes(&decl, "do_type decl post StateSymbolKind::Function");
 
                     decl.prepend(b"(");
                     if member {
@@ -2623,6 +2653,7 @@ impl DemanglerState {
                 _ => {
                     log::debug!("demangle signature: outermost function");
                     self.symbol_kind = StateSymbolKind::Function;
+                    debug_log_bytes(declp, "demangle_signature declp pre-outermost");
                     if style.auto() || style.gnu() {
                         func_done = true;
                         ConsumeVal { mangled, .. } = self.demangle_args(mangled, declp)?;
@@ -2638,6 +2669,7 @@ impl DemanglerState {
 
             if success && expect_func {
                 func_done = true;
+                self.decl_fn_qname_len = declp.len();
                 if style.lucid() || style.arm() || style.edg() {
                     self.raw_types.clear();
                 }

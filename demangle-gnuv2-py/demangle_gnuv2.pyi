@@ -146,8 +146,9 @@ class SymbolType_VTable(SymbolType):
 
 
 class SymbolType_Function(SymbolType):
-    __match_args__ = ('args', 'return_type')
+    __match_args__ = ('qualified_name', 'args', 'return_type')
 
+    qualified_name: str
     args: list[DemangledType]
     return_type: DemangledType | None
 
@@ -175,7 +176,7 @@ class SymbolType_DllImportStub(SymbolType):
 
 
 class DemangledSymbol:
-    qualified_name: str
+    cxxdecl: str
     type: SymbolType
 
 
