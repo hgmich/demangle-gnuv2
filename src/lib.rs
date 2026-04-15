@@ -1,5 +1,7 @@
 #![deny(unused_must_use)]
 
+use std::borrow::Cow;
+
 use anyhow::{Context, Result};
 use bitfield_struct::bitfield;
 use memchr::memmem;
@@ -468,7 +470,6 @@ struct DemanglerState {
     temp_start: i32,
     dllimported: bool,
     tmpl_argvec: Vec<Vec<u8>>,
-    ntmpl_args: i32,
     forgetting_types: i32,
     previous_argument: Vec<u8>,
     previous_argument_type: Option<CxxType>,
@@ -1030,7 +1031,6 @@ impl DemanglerState {
             }
         }
 
-        // TODO: implement properly
         Ok(SymbolKind::Function {
             qualified_name: String::from_utf8_lossy(&declp[0..self.decl_fn_qname_len]).to_string(),
             args: self
@@ -1644,7 +1644,7 @@ impl DemanglerState {
         trawname: Option<&'_ mut Vec<u8>>,
         is_type: bool,
         remember: bool,
-    ) -> Result<ConsumeVal<'a, TypeKind>> {
+    ) -> Result<ConsumeVal<'a, Option<usize>>> {
         let mut mangled = &mangled[1..];
         let mut is_java_array = false;
         let mut need_comma = false;
@@ -1703,7 +1703,6 @@ impl DemanglerState {
             let mut v = vec![];
             v.resize_with(r, Vec::new);
             self.tmpl_argvec = v;
-            self.ntmpl_args = r as i32;
         }
 
         debug_log_bytes(&*tname, "tname");
@@ -2016,14 +2015,18 @@ impl DemanglerState {
 
                 ConsumeVal { mangled, .. } = consume_count_with_underscores(mangled)?;
 
-                if !self.tmpl_argvec.is_empty() {
-                    result.extend(&self.tmpl_argvec[idx]);
+                let tmpl_name = if !self.tmpl_argvec.is_empty() {
+                    Cow::Borrowed(&*self.tmpl_argvec[idx])
                 } else {
-                    let buf = format!("T{idx}");
-                    result.extend(buf.as_bytes());
-                }
+                    let buf = format!("T{idx}").into_bytes();
+                    buf.into()
+                };
+                result.extend(tmpl_name.iter());
 
-                anyhow::bail!("TODO: implement template param IncompleteCxxType");
+                // TODO: should we really abuse btypes for this?
+                let btype_idx = self.btypes.register();
+                self.btypes.remember(btype_idx, tmpl_name.as_ref(), BTypeKind::Class { templated: true }).context("failed to remember tmpl param as btype")?;
+                vec![IncompleteCxxType::BType { index: btype_idx }]
             }
             _ => {
                 let value;
@@ -2074,7 +2077,7 @@ impl DemanglerState {
         mut mangled: &'a [u8],
         result: &'_ mut Vec<u8>,
     ) -> Result<ConsumeVal<'a, Vec<IncompleteCxxType>>> {
-        let mut ctype_stack = vec![];
+        let mut cxxtype_stack = vec![];
 
         // Collect any applicable type qualifiers
         // TODO: refactor to collect qualifier info programmatically
@@ -2097,7 +2100,7 @@ impl DemanglerState {
                             b"" => panic!("got no qualifier when one was expected"),
                             ty => unreachable!("unexpected qualifier string {ty:?}"),
                         };
-                        ctype_stack.push(cty);
+                        cxxtype_stack.push(cty);
                     }
                 }
                 b'U' => {
@@ -2105,14 +2108,14 @@ impl DemanglerState {
                     mangled = &mangled[1..];
                     append_blank(result);
                     result.extend(b"unsigned");
-                    ctype_stack.push(IncompleteCxxType::UnsignedModifier);
+                    cxxtype_stack.push(IncompleteCxxType::UnsignedModifier);
                 }
                 b'S' => {
                     log::debug!("fundamental type: signed");
                     mangled = &mangled[1..];
                     append_blank(result);
                     result.extend(b"signed");
-                    ctype_stack.push(IncompleteCxxType::SignedModifier);
+                    cxxtype_stack.push(IncompleteCxxType::SignedModifier);
                 }
                 b'J' => {
                     log::debug!("fundamental type: complex");
@@ -2136,56 +2139,56 @@ impl DemanglerState {
                     mangled = &mangled[1..];
                     append_blank(result);
                     result.extend(b"void");
-                    ctype_stack.push(IncompleteCxxType::Void);
+                    cxxtype_stack.push(IncompleteCxxType::Void);
                 }
                 b'x' => {
                     log::debug!("fundamental type: long long");
                     mangled = &mangled[1..];
                     append_blank(result);
                     result.extend(b"long long");
-                    ctype_stack.push(IncompleteCxxType::LongLong { signed: true });
+                    cxxtype_stack.push(IncompleteCxxType::LongLong { signed: true });
                 }
                 b'l' => {
                     log::debug!("fundamental type: long");
                     mangled = &mangled[1..];
                     append_blank(result);
                     result.extend(b"long");
-                    ctype_stack.push(IncompleteCxxType::Long { signed: true });
+                    cxxtype_stack.push(IncompleteCxxType::Long { signed: true });
                 }
                 b'i' => {
                     log::debug!("fundamental type: int");
                     mangled = &mangled[1..];
                     append_blank(result);
                     result.extend(b"int");
-                    ctype_stack.push(IncompleteCxxType::Int { signed: true });
+                    cxxtype_stack.push(IncompleteCxxType::Int { signed: true });
                 }
                 b's' => {
                     log::debug!("fundamental type: short");
                     mangled = &mangled[1..];
                     append_blank(result);
                     result.extend(b"short");
-                    ctype_stack.push(IncompleteCxxType::Short { signed: true });
+                    cxxtype_stack.push(IncompleteCxxType::Short { signed: true });
                 }
                 b'b' => {
                     log::debug!("fundamental type: bool");
                     mangled = &mangled[1..];
                     append_blank(result);
                     result.extend(b"bool");
-                    ctype_stack.push(IncompleteCxxType::Boolean);
+                    cxxtype_stack.push(IncompleteCxxType::Boolean);
                 }
                 b'c' => {
                     log::debug!("fundamental type: char");
                     mangled = &mangled[1..];
                     append_blank(result);
                     result.extend(b"char");
-                    ctype_stack.push(IncompleteCxxType::Char { signed: None });
+                    cxxtype_stack.push(IncompleteCxxType::Char { signed: None });
                 }
                 b'w' => {
                     log::debug!("fundamental type: wchar_t");
                     mangled = &mangled[1..];
                     append_blank(result);
                     result.extend(b"wchar_t");
-                    ctype_stack.push(IncompleteCxxType::WideChar { signed: None });
+                    cxxtype_stack.push(IncompleteCxxType::WideChar { signed: None });
                 }
                 b'r' => {
                     log::debug!("fundamental type: long double");
@@ -2194,21 +2197,21 @@ impl DemanglerState {
                     result.extend(b"long double");
                     // ty_kind = TypeKind::Real;
 
-                    ctype_stack.push(IncompleteCxxType::LongDouble);
+                    cxxtype_stack.push(IncompleteCxxType::LongDouble);
                 }
                 b'd' => {
                     log::debug!("fundamental type: double");
                     mangled = &mangled[1..];
                     append_blank(result);
                     result.extend(b"double");
-                    ctype_stack.push(IncompleteCxxType::Double);
+                    cxxtype_stack.push(IncompleteCxxType::Double);
                 }
                 b'f' => {
                     log::debug!("fundamental type: float");
                     mangled = &mangled[1..];
                     append_blank(result);
                     result.extend(b"float");
-                    ctype_stack.push(IncompleteCxxType::Float);
+                    cxxtype_stack.push(IncompleteCxxType::Float);
                 }
                 b'G' | b'I' => {
                     log::debug!("fundamental type: stdint");
@@ -2246,7 +2249,7 @@ impl DemanglerState {
                     append_blank(result);
                     result.extend(format!("int{dec}_t").into_bytes());
 
-                    ctype_stack.push(IncompleteCxxType::StdInt {
+                    cxxtype_stack.push(IncompleteCxxType::StdInt {
                         bitwidth: dec,
                         signed: true,
                     });
@@ -2263,16 +2266,20 @@ impl DemanglerState {
                         .remember(bindex, &btype, BTypeKind::Class { templated: false })
                         .context("failed to remember btype")?;
 
-                    ctype_stack.push(IncompleteCxxType::BType { index: bindex });
+                    cxxtype_stack.push(IncompleteCxxType::BType { index: bindex });
                 }
                 b't' => {
                     log::debug!("fundamental type: template");
                     let mut btype = vec![];
-                    ConsumeVal { mangled, .. } =
+                    let bindex;
+                    ConsumeVal { mangled, value: bindex } =
                         self.demangle_template(mangled, &mut btype, None, true, true)?;
                     debug_log_bytes(&btype, "btype in demangle_fund_type template");
                     result.extend(&btype);
-                    anyhow::bail!("TODO: Return template btype");
+
+                    let bindex = bindex.context("no btype index for template name when one was requested")?;
+
+                    cxxtype_stack.push(IncompleteCxxType::BType { index: bindex });
                 }
                 c => {
                     let chr = char::from_u32(c as u32)
@@ -2285,7 +2292,7 @@ impl DemanglerState {
 
         log::debug!("demangle fund type: done");
         Ok(ConsumeVal {
-            value: ctype_stack,
+            value: cxxtype_stack,
             mangled,
         })
     }
