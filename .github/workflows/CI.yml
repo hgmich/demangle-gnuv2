@@ -56,11 +56,11 @@ jobs:
   windows:
     runs-on: ${{ matrix.platform.runner }}
     strategy:
-      python:
-        - version: "3.13"
-        - version: "3.14"
-        - version: "3.14t"
       matrix:
+        python:
+          - version: "3.13"
+          - version: "3.14"
+          - version: "3.14t"
         platform:
           - runner: windows-latest
             target: x86_64

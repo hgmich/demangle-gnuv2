@@ -27,7 +27,11 @@ Rust 1.85.0.
 
 ## Supported Python versions
 
-You must use Python 3.10 or newer. Prebuilt wheels are only supported for
-x86_64 and aarch64 on windows/macos/linux, for Python 3.10-3.14.
+You must use Python 3.10 or newer. Prebuilt wheels are only supported for the
+following platforms, architectures and Python versions:
+
+* Linux manylinux 2.28 - x86_64, aarch64 architectures; Python 3.10-3.14 (+ 3.14 free-threaded)
+* MacOS - x86_64, aarch64 architectures; Python 3.10-3.14 (+ 3.14 free-threaded)
+* Windows - x86_64, aarch64 architectures; Python 3.13-3.14 (+ 3.14 free-threaded)
 
 [rz-libdemangle-gh]: https://github.com/rizinorg/rz-libdemangle
