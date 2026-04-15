@@ -782,7 +782,7 @@ impl TryFrom<IncompleteCxxType> for CxxType {
 fn take_one_type(
     mut c_types: Vec<IncompleteCxxType>,
 ) -> std::result::Result<(CxxType, Vec<IncompleteCxxType>), anyhow::Error> {
-    let last_c_type = c_types.pop().context("empty FlatCType stack")?;
+    let last_c_type = c_types.pop().context("empty IncompleteCxxType stack")?;
     if c_types.is_empty() && !last_c_type.is_terminal() {
         anyhow::bail!("attempted to construct incomplete type stack");
     }
@@ -2066,7 +2066,7 @@ impl DemanglerState {
         Ok(ConsumeVal {
             value: cxxtype_stack
                 .try_into()
-                .context("failed to assemble final type from FlatCxxType stack")?,
+                .context("failed to assemble final type from IncompleteCxxType stack in do_type")?,
             mangled,
         })
     }
@@ -2122,7 +2122,7 @@ impl DemanglerState {
                     mangled = &mangled[1..];
                     append_blank(result);
                     result.extend(b"__complex");
-                    anyhow::bail!("TODO: add __complex modifier to FlatCType");
+                    anyhow::bail!("TODO: add __complex modifier to IncompleteCxxType");
                 }
                 _ => break,
             }
