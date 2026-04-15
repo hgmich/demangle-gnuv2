@@ -1709,6 +1709,7 @@ impl DemanglerState {
 
         debug_log_bytes(mangled, "mangled in template");
 
+        let mut last_cxxtype = CxxType::Void;
         for i in 0..r {
             log::debug!("demangle template: param {i}");
             if need_comma {
@@ -1719,7 +1720,7 @@ impl DemanglerState {
                 log::debug!("demangle_template: type parameter");
                 mangled = &mangled[1..];
 
-                ConsumeVal { value: _, mangled } = self.do_type(mangled, &mut temp)?;
+                ConsumeVal { value: last_cxxtype, mangled } = self.do_type(mangled, &mut temp)?;
 
                 tname.extend(&temp);
 
@@ -1736,7 +1737,7 @@ impl DemanglerState {
             } else {
                 // value parameter
                 let mut temp: Vec<u8> = vec![];
-                ConsumeVal { value: _, mangled } = self.do_type(mangled, &mut temp)?;
+                ConsumeVal { value: last_cxxtype, mangled } = self.do_type(mangled, &mut temp)?;
                 log::debug!("is_type = {is_type}");
                 // Change here is because we don't want to have to do a weird dance with Cell to reborrow
                 // tname mutably during this scope.
@@ -1744,13 +1745,13 @@ impl DemanglerState {
                 if !is_type {
                     let mut s = Vec::new();
                     ConsumeVal { mangled, .. } =
-                        self.demangle_template_value_parm(mangled, &mut s, ty_k)?;
+                        self.demangle_template_value_parm(mangled, &mut s, &last_cxxtype)?;
 
                     self.tmpl_argvec.push(s.clone());
                     tname.extend(&*s);
                 } else {
                     ConsumeVal { mangled, .. } =
-                        self.demangle_template_value_parm(mangled, tname, ty_k)?;
+                        self.demangle_template_value_parm(mangled, tname, &last_cxxtype)?;
                 }
 
                 debug_log_bytes(tname, "tname in demangle_template");
@@ -2957,18 +2958,18 @@ impl DemanglerState {
         &mut self,
         mut mangled: &'a [u8],
         s: &mut Vec<u8>,
-        ty_k: TypeKind,
+        cxxtype: &CxxType,
     ) -> Result<ConsumeVal<'a, ()>> {
-        log::debug!("debug_template_value_parm: start");
+        log::debug!("debug_template_value_parm: start {cxxtype:?}");
 
         if !mangled.is_empty() && mangled[0] == b'Y' {
             log::debug!("debug_template_value_parm: template parameter");
             anyhow::bail!("TODO: implement demangle_template_value_parm for template");
-        } else if ty_k == TypeKind::Integral {
+        } else if cxxtype.is_integral_type() {
             ConsumeVal { mangled, .. } = self.demangle_integral_value(mangled, s)?;
-        } else if ty_k == TypeKind::Char {
+        } else if let CxxType::Char { .. } = cxxtype {
             anyhow::bail!("TODO: implement demangle_template_value_parm for char");
-        } else if ty_k == TypeKind::Bool {
+        } else if let CxxType::Boolean = cxxtype {
             let value;
             ConsumeVal { mangled, value } = consume_count(mangled)?;
             let bool_val = match value {
@@ -2977,9 +2978,9 @@ impl DemanglerState {
                 i => anyhow::bail!("invalid boolean literal value {i}"),
             };
             s.extend(bool_val);
-        } else if ty_k == TypeKind::Real {
+        } else if cxxtype.is_realnum_type() {
             anyhow::bail!("TODO: implement demangle_template_value_parm for floats");
-        } else if [TypeKind::Pointer, TypeKind::Reference].contains(&ty_k) {
+        } else if cxxtype.is_reference_type() {
             if mangled[0] == b'Q' {
                 ConsumeVal { mangled, .. } = self.demangle_qualified(mangled, s, false, true)?;
             } else {
@@ -3019,7 +3020,7 @@ impl DemanglerState {
                 }
 
                 ConsumeVal { mangled, .. } =
-                    self.demangle_template_value_parm(mangled, s, TypeKind::Integral)?;
+                    self.demangle_template_value_parm(mangled, s, &CxxType::Int { signed: true })?;
             }
 
             if mangled.is_empty() || mangled[0] != b'W' {
