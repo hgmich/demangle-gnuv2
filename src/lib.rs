@@ -1507,7 +1507,7 @@ impl DemanglerState {
         result: &'_ mut Vec<u8>,
         isfuncname: bool,
         append: bool,
-    ) -> Result<ConsumeVal<'a, ()>> {
+    ) -> Result<ConsumeVal<'a, Vec<u8>>> {
         let style = self.opts.style();
         let mut temp: Vec<u8> = vec![];
         let mut last_name: Vec<u8> = vec![];
@@ -1642,7 +1642,7 @@ impl DemanglerState {
 
         log::debug!("demangle qualified: done");
 
-        Ok(ConsumeVal { mangled, value: () })
+        Ok(ConsumeVal { mangled, value: temp })
     }
 
     #[must_use]
@@ -1993,10 +1993,13 @@ impl DemanglerState {
         let inner_tys = match mangled[0] {
             b'Q' | b'K' => {
                 log::debug!("do_type: qualified type");
-                ConsumeVal { mangled, .. } =
+                let qual_name;
+                ConsumeVal { mangled, value: qual_name } =
                     self.demangle_qualified(mangled, result, false, true)?;
 
-                anyhow::bail!("TODO: implement qualified type incomplete type");
+                let btype_idx = self.btypes.register();
+                self.btypes.remember(btype_idx, qual_name.as_ref(), BTypeKind::Class { templated: true }).context("failed to remember qualified type as btype")?;
+                vec![IncompleteCxxType::BType { index: btype_idx }]
             }
             b'B' => {
                 log::debug!("do_type: backref");
