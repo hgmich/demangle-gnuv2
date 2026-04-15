@@ -45,11 +45,12 @@ jobs:
           args: --release --out dist
           sccache: ${{ !startsWith(github.ref, 'refs/tags/') }}
           manylinux: auto
+          path: demangle-gnuv2-py
       - name: Upload wheels
         uses: actions/upload-artifact@v6
         with:
           name: wheels-linux-${{ matrix.platform.target }}
-          path: dist
+          path: demangle-gnuv2-py/dist
 
   musllinux:
     runs-on: ${{ matrix.platform.runner }}
@@ -73,11 +74,12 @@ jobs:
           args: --release --out dist
           sccache: ${{ !startsWith(github.ref, 'refs/tags/') }}
           manylinux: musllinux_1_2
+          path: demangle-gnuv2-py
       - name: Upload wheels
         uses: actions/upload-artifact@v6
         with:
           name: wheels-musllinux-${{ matrix.platform.target }}
-          path: dist
+          path: demangle-gnuv2-py/dist
 
   windows:
     runs-on: ${{ matrix.platform.runner }}
@@ -101,11 +103,12 @@ jobs:
           target: ${{ matrix.platform.target }}
           args: --release --out dist
           sccache: ${{ !startsWith(github.ref, 'refs/tags/') }}
+          path: demangle-gnuv2-py
       - name: Upload wheels
         uses: actions/upload-artifact@v6
         with:
           name: wheels-windows-${{ matrix.platform.target }}
-          path: dist
+          path: demangle-gnuv2-py/dist
 
   macos:
     runs-on: ${{ matrix.platform.runner }}
@@ -124,11 +127,12 @@ jobs:
           target: ${{ matrix.platform.target }}
           args: --release --out dist
           sccache: ${{ !startsWith(github.ref, 'refs/tags/') }}
+          path: demangle-gnuv2-py
       - name: Upload wheels
         uses: actions/upload-artifact@v6
         with:
           name: wheels-macos-${{ matrix.platform.target }}
-          path: dist
+          path: demangle-gnuv2-py/dist
 
   release:
     name: Release
