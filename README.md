@@ -25,4 +25,9 @@ The MSRV will be set according to the current version of Rust that ships with
 the current Debian Linux "stable" release. As of writing, this is
 Rust 1.85.0.
 
+## Supported Python versions
+
+You must use Python 3.10 or newer. Prebuilt wheels are only supported for
+x86_64 and aarch64 on windows/macos/linux, for Python 3.10-3.14.
+
 [rz-libdemangle-gh]: https://github.com/rizinorg/rz-libdemangle
