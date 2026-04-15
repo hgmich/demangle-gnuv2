@@ -63,8 +63,8 @@ jobs:
           - version: "3.14t"
         platform:
           - runner: windows-latest
-            target: x86_64
-            python_arch: x86_64
+            target: x64
+            python_arch: x64
           - runner: windows-11-arm
             target: aarch64
             python_arch: arm64

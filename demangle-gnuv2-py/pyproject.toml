@@ -20,4 +20,4 @@ features = ["pyo3/extension-module"]
 [tool.maturin.generate-ci.github]
 linux = { manylinux = "2_28", targets = ["x86_64", "aarch64"] }
 macos = { targets = ["x86_64", "aarch64"] }
-windows = { targets = ["x86_64", "aarch64"] }
+windows = { targets = ["x64", "aarch64"] }
