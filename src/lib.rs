@@ -602,25 +602,26 @@ pub enum CxxType {
 impl CxxType {
     fn is_integral_type(&self) -> bool {
         match self {
-            CxxType::Int { .. } | CxxType::Short { .. } |
-            CxxType::Long { .. } |
-            CxxType::LongLong { .. } |
-            CxxType::StdInt { .. } => true,
-            _ => false
+            CxxType::Int { .. }
+            | CxxType::Short { .. }
+            | CxxType::Long { .. }
+            | CxxType::LongLong { .. }
+            | CxxType::StdInt { .. } => true,
+            _ => false,
         }
     }
 
     fn is_realnum_type(&self) -> bool {
         match self {
-            CxxType::Float | CxxType::Double | CxxType::LongDouble { .. } => true,
-            _ => false
+            CxxType::Float | CxxType::Double | CxxType::LongDouble => true,
+            _ => false,
         }
     }
 
     fn is_reference_type(&self) -> bool {
         match self {
-            CxxType::Pointer {..} | CxxType::Reference { .. } => true,
-            _ => false
+            CxxType::Pointer { .. } | CxxType::Reference { .. } => true,
+            _ => false,
         }
     }
 
@@ -677,7 +678,11 @@ impl CxxType {
                     }
                 }
             }
-            CxxType::Function { args, return_type, r#const } => {
+            CxxType::Function {
+                args,
+                return_type,
+                r#const,
+            } => {
                 let args = args
                     .iter()
                     .map(|cxxtype| cxxtype.to_demangled(btypes))
@@ -983,10 +988,7 @@ pub fn cplus_demangle_v2(mangled: &[u8], opts: DemangleOpts) -> Result<Demangled
         _ => cxxdecl_base,
     };
 
-    Ok(DemangledSymbol {
-        cxxdecl,
-        kind,
-    })
+    Ok(DemangledSymbol { cxxdecl, kind })
 }
 
 /// Internal enum used to determine which case was previously hit in DemanglerState::gnu_special
@@ -1600,7 +1602,8 @@ impl DemanglerState {
                     if style.edg() {
                         anyhow::bail!("TODO: implement EDG recursive demangling");
                     } else {
-                        ConsumeVal { mangled, .. } = self.do_type(mangled, &mut last_name, false)?;
+                        ConsumeVal { mangled, .. } =
+                            self.do_type(mangled, &mut last_name, false)?;
                         temp.extend(&last_name);
                     }
                 }
@@ -1642,7 +1645,10 @@ impl DemanglerState {
 
         log::debug!("demangle qualified: done");
 
-        Ok(ConsumeVal { mangled, value: temp })
+        Ok(ConsumeVal {
+            mangled,
+            value: temp,
+        })
     }
 
     #[must_use]
@@ -1657,7 +1663,6 @@ impl DemanglerState {
         let mut mangled = &mangled[1..];
         let mut is_java_array = false;
         let mut need_comma = false;
-        let ty_k = TypeKind::None;
         let mut bindex = None;
 
         log::debug!("demangle template");
@@ -1746,7 +1751,10 @@ impl DemanglerState {
             } else {
                 // value parameter
                 let mut temp: Vec<u8> = vec![];
-                ConsumeVal { value: last_cxxtype, mangled } = self.do_type(mangled, &mut temp, true)?;
+                ConsumeVal {
+                    value: last_cxxtype,
+                    mangled,
+                } = self.do_type(mangled, &mut temp, true)?;
                 log::debug!("is_type = {is_type}");
                 // Change here is because we don't want to have to do a weird dance with Cell to reborrow
                 // tname mutably during this scope.
@@ -1889,7 +1897,8 @@ impl DemanglerState {
                         }
                         Some(b'X') | Some(b'Y') => {
                             let mut temp = vec![];
-                            ConsumeVal { mangled, .. } = self.do_type(mangled, &mut temp, is_tmpl)?;
+                            ConsumeVal { mangled, .. } =
+                                self.do_type(mangled, &mut temp, is_tmpl)?;
                             decl.prepend(&temp);
                         }
                         Some(b't') => {
@@ -1994,11 +2003,19 @@ impl DemanglerState {
             b'Q' | b'K' => {
                 log::debug!("do_type: qualified type");
                 let qual_name;
-                ConsumeVal { mangled, value: qual_name } =
-                    self.demangle_qualified(mangled, result, false, true)?;
+                ConsumeVal {
+                    mangled,
+                    value: qual_name,
+                } = self.demangle_qualified(mangled, result, false, true)?;
 
                 let btype_idx = self.btypes.register();
-                self.btypes.remember(btype_idx, qual_name.as_ref(), BTypeKind::Class { templated: true }).context("failed to remember qualified type as btype")?;
+                self.btypes
+                    .remember(
+                        btype_idx,
+                        qual_name.as_ref(),
+                        BTypeKind::Class { templated: true },
+                    )
+                    .context("failed to remember qualified type as btype")?;
                 vec![IncompleteCxxType::BType { index: btype_idx }]
             }
             b'B' => {
@@ -2039,7 +2056,13 @@ impl DemanglerState {
 
                 // TODO: should we really abuse btypes for this?
                 let btype_idx = self.btypes.register();
-                self.btypes.remember(btype_idx, tmpl_name.as_ref(), BTypeKind::Class { templated: true }).context("failed to remember tmpl param as btype")?;
+                self.btypes
+                    .remember(
+                        btype_idx,
+                        tmpl_name.as_ref(),
+                        BTypeKind::Class { templated: true },
+                    )
+                    .context("failed to remember tmpl param as btype")?;
                 vec![IncompleteCxxType::BType { index: btype_idx }]
             }
             _ => {
@@ -2286,12 +2309,15 @@ impl DemanglerState {
                     log::debug!("fundamental type: template");
                     let mut btype = vec![];
                     let bindex;
-                    ConsumeVal { mangled, value: bindex } =
-                        self.demangle_template(mangled, &mut btype, None, true, true)?;
+                    ConsumeVal {
+                        mangled,
+                        value: bindex,
+                    } = self.demangle_template(mangled, &mut btype, None, true, true)?;
                     debug_log_bytes(&btype, "btype in demangle_fund_type template");
                     result.extend(&btype);
 
-                    let bindex = bindex.context("no btype index for template name when one was requested")?;
+                    let bindex = bindex
+                        .context("no btype index for template name when one was requested")?;
 
                     cxxtype_stack.push(IncompleteCxxType::BType { index: bindex });
                 }
@@ -2536,7 +2562,10 @@ impl DemanglerState {
                         self.fn_state.type_quals.into_bits()
                             | TypeQualifiers::from_code(mangled[0]).into_bits(),
                     );
-                    log::debug!("demangle signature: new type quals = {:?}", self.fn_state.type_quals);
+                    log::debug!(
+                        "demangle signature: new type quals = {:?}",
+                        self.fn_state.type_quals
+                    );
 
                     // A qualified member function
                     if oldmangled.is_none() {
@@ -2637,7 +2666,8 @@ impl DemanglerState {
                         log::debug!("demangle signature: gnu");
                         let mut return_type: Vec<u8> = vec![];
                         mangled = &mangled[1..];
-                        ConsumeVal { mangled, .. } = self.do_type(mangled, &mut return_type, false)?;
+                        ConsumeVal { mangled, .. } =
+                            self.do_type(mangled, &mut return_type, false)?;
                         append_blank(&mut return_type);
 
                         declp.prepend(&return_type);
@@ -2771,11 +2801,11 @@ impl DemanglerState {
                     // count but it's impossible to demangle that case properly
                     // anyway. Eg if we already have 12 types is T12Pc "(..., type1,
                     // Pc, ...)"  or "(..., type12, char *, ...)"
-                    ConsumeVal { mangled, value: t } = consume_count(mangled).inspect_err(|e| {
+                    ConsumeVal { mangled, value: t } = consume_count(mangled).inspect_err(|_e| {
                         log::debug!("demangle args: fail (couldn't consume count - hp/arm/edg)");
                     })?;
                 } else {
-                    ConsumeVal { mangled, value: t } = get_count(mangled).inspect_err(|e| {
+                    ConsumeVal { mangled, value: t } = get_count(mangled).inspect_err(|_e| {
                         log::debug!("demangle args: fail (couldn't consume count)");
                     })?;
                 }
@@ -3092,7 +3122,7 @@ impl DemanglerState {
         self.fn_state = FunctionState::default();
 
         // Actually demangle the args
-        ConsumeVal { mangled, .. } = self.demangle_args(mangled, declp).inspect_err(|e| {
+        ConsumeVal { mangled, .. } = self.demangle_args(mangled, declp).inspect_err(|_e| {
             log::debug!("demangle nested args: done (success=0)");
         })?;
 

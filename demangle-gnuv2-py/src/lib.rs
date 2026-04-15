@@ -113,7 +113,11 @@ impl DemangledType {
                     templated: *templated,
                 }
             }
-            demangle_gnuv2::DemangledType::Function { args, return_type, r#const } => {
+            demangle_gnuv2::DemangledType::Function {
+                args,
+                return_type,
+                r#const,
+            } => {
                 let args = args
                     .iter()
                     .map(|arg| DemangledType::from_rust(py, arg))
@@ -124,7 +128,11 @@ impl DemangledType {
                     .map(|ty| DemangledType::from_rust(py, ty))
                     .transpose()?;
 
-                Self::Function { args, return_type, r#const: *r#const }
+                Self::Function {
+                    args,
+                    return_type,
+                    r#const: *r#const,
+                }
             }
             demangle_gnuv2::DemangledType::VarArgs => Self::VarArgs(),
         }
@@ -163,7 +171,12 @@ impl SymbolType {
         use demangle_gnuv2::SymbolKind;
         match sym {
             SymbolKind::VTable => Ok(Self::VTable()),
-            SymbolKind::Function { qualified_name, args, return_type, r#const } => {
+            SymbolKind::Function {
+                qualified_name,
+                args,
+                return_type,
+                r#const,
+            } => {
                 let args = args
                     .iter()
                     .map(|arg| DemangledType::from_rust(py, arg))
@@ -174,7 +187,12 @@ impl SymbolType {
                     .map(|ty| DemangledType::from_rust(py, ty))
                     .transpose()?;
 
-                Ok(Self::Function { qualified_name, args, return_type, r#const })
+                Ok(Self::Function {
+                    qualified_name,
+                    args,
+                    return_type,
+                    r#const,
+                })
             }
             SymbolKind::StaticMember => Ok(Self::StaticMember()),
             SymbolKind::TypeInfo(ty_info) => Ok(Self::TypeInfo {
