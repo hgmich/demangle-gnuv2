@@ -14,12 +14,15 @@ of `libiberty` as included in [rz-libdemangle][rz-libdemangle-gh]. As such:
 - The work is a clear derivative work and as such, must be licensed under the
   LGPL (2.0 or newer, per the license terms of this version of libiberty).
 
-**NOTE:** Currently under development and not fully usable.
+**NOTE:** Currently under development and not fully usable. The initial
+development is "goal-oriented" for a specific project, focusing on
+minimum-viable for a specific projects; full functionality and refactoring will
+be goals later on.
 
 ## Minimum Supported Rust Version policy
 
 The MSRV will be set according to the current version of Rust that ships with
-the current Debian Linux "oldstable" release. As of writing, this is
-Rust 1.78.0.
+the current Debian Linux "stable" release. As of writing, this is
+Rust 1.85.0.
 
 [rz-libdemangle-gh]: https://github.com/rizinorg/rz-libdemangle
