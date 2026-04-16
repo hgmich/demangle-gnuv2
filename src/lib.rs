@@ -1446,8 +1446,10 @@ impl DemanglerState {
                     anyhow::bail!("failed to get method name for virtual thunk");
                 }
 
-                declp.extend(format!("virtual function thunk (delta:-{delta}) for ").as_bytes());
+                let thunk_preamble = format!("virtual function thunk (delta:-{delta}) for ");
+                declp.extend(thunk_preamble.as_bytes());
                 declp.extend(&method);
+                self.decl_fn_qname_len += thunk_preamble.as_bytes().len(); // hack: "resize" the qname segment
                 mangled = &mangled[mangled.len()..];
 
                 mangled
