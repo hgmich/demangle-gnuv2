@@ -1254,6 +1254,7 @@ impl DemanglerState {
             log::debug!("demangle_prefix: global function name");
             ConsumeVal { mangled, .. } = self.demangle_function_name(mangled, declp, scan)?;
             debug_log_bytes(declp, "demangle_prefix: declp post demangle_function_name");
+            self.decl_fn_qname_len = declp.len();
             self.symbol_kind = StateSymbolKind::Function;
         } else {
             // Doesn't look like a mangled name
