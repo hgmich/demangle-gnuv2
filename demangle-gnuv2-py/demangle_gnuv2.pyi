@@ -24,7 +24,6 @@ class DemangledType(metaclass=ABCMeta):
     Volatile: typing.ClassVar[type['DemangledType_Volatile']]
     ClassOrStruct: typing.ClassVar[type['DemangledType_ClassOrStruct']]
     Function: typing.ClassVar[type['DemangledType_Function']]
-    VarArgs: typing.ClassVar[type['DemangledType_VarArgs']]
 
 
 class DemangledType_Void(DemangledType):
@@ -98,7 +97,6 @@ class DemangledType_Reference(DemangledType):
     inner: DemangledType
 
 
-
 class DemangledType_Pointer(DemangledType):
     __match_args__ = ('const', 'restrict', 'inner')
 
@@ -121,15 +119,12 @@ class DemangledType_ClassOrStruct(DemangledType):
 
 
 class DemangledType_Function(DemangledType):
-    __match_args__ = ('args', 'return_type', 'const')
+    __match_args__ = ('args', 'return_type', 'const', 'has_varargs')
 
     args: list[DemangledType]
     return_type: DemangledType | None
     const: bool
-
-
-class DemangledType_VarArgs(DemangledType):
-    __match_args__ = ()
+    has_varargs: bool
 
 
 class SymbolType(metaclass=ABCMeta):
@@ -147,12 +142,13 @@ class SymbolType_VTable(SymbolType):
 
 
 class SymbolType_Function(SymbolType):
-    __match_args__ = ('qualified_name', 'args', 'return_type', 'const')
+    __match_args__ = ('qualified_name', 'args', 'return_type', 'const', 'has_varargs')
 
     qualified_name: str
     args: list[DemangledType]
     return_type: DemangledType | None
     const: bool
+    has_varargs: bool
 
 
 class SymbolType_StaticMember(SymbolType):

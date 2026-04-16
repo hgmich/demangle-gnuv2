@@ -29,7 +29,7 @@ class SymbolEncoder(json.JSONEncoder):
         match type_:
             case demangle_gnuv2.SymbolType.VTable():
                 return {"kind": "vtable"}
-            case demangle_gnuv2.SymbolType.Function(qualified_name, args, return_type, const):
+            case demangle_gnuv2.SymbolType.Function(qualified_name, args, return_type, const, has_varargs):
                 # TODO: implement demangled_type
                 return {
                     "kind": "function",
@@ -37,6 +37,7 @@ class SymbolEncoder(json.JSONEncoder):
                     "args": list(map(lambda ty: self.encode_demangled_type(ty), args)),
                     "return_type": self.encode_demangled_type(return_type) if return_type is not None else None,
                     "const": const,
+                    "has_varargs": has_varargs,
                 }
             case demangle_gnuv2.SymbolType.StaticMember():
                 return {"kind": "static_member"}
@@ -95,10 +96,13 @@ class SymbolEncoder(json.JSONEncoder):
                 return {"type": "volatile", "inner": self.encode_demangled_type(inner)}
             case demangle_gnuv2.DemangledType.ClassOrStruct(name, templated):
                 return {"type": "class_or_struct", "name": name, "templated": templated}
-            case demangle_gnuv2.DemangledType.Function(args, return_type):
-                return {"type": "function", "args": list(map(lambda ty: self.encode_demangled_type(ty), args)), "return_type": self.encode_demangled_type(return_type) if return_type is not None else None}
-            case demangle_gnuv2.DemangledType.VarArgs():
-                return {"type": "var_args"}
+            case demangle_gnuv2.DemangledType.Function(args, return_type, has_varargs):
+                return {
+                    "type": "function",
+                    "args": list(map(lambda ty: self.encode_demangled_type(ty), args)),
+                    "return_type": self.encode_demangled_type(return_type) if return_type is not None else None,
+                    "has_varargs": has_varargs,
+                }
             case unknown:
                  raise NotImplementedError(f"encode not implemented for DemangledType variant {type(unknown)}")
 

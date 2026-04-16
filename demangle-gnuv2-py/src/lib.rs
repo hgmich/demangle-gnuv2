@@ -51,6 +51,7 @@ enum DemangledType {
         args: Vec<Py<DemangledType>>,
         return_type: Option<Py<DemangledType>>,
         r#const: bool,
+        has_varargs: bool,
     },
     VarArgs(),
 }
@@ -117,6 +118,7 @@ impl DemangledType {
                 args,
                 return_type,
                 r#const,
+                has_varargs,
             } => {
                 let args = args
                     .iter()
@@ -132,9 +134,9 @@ impl DemangledType {
                     args,
                     return_type,
                     r#const: *r#const,
+                    has_varargs: *has_varargs,
                 }
             }
-            demangle_gnuv2::DemangledType::VarArgs => Self::VarArgs(),
         }
         .into_pyobject(py)?
         .unbind())
@@ -153,6 +155,7 @@ enum SymbolType {
         args: Vec<Py<DemangledType>>,
         return_type: Option<Py<DemangledType>>,
         r#const: bool,
+        has_varargs: bool,
     },
     /// Symbol refers to the static member of a container type.
     StaticMember(),
@@ -176,6 +179,7 @@ impl SymbolType {
                 args,
                 return_type,
                 r#const,
+                has_varargs,
             } => {
                 let args = args
                     .iter()
@@ -192,6 +196,7 @@ impl SymbolType {
                     args,
                     return_type,
                     r#const,
+                    has_varargs,
                 })
             }
             SymbolKind::StaticMember => Ok(Self::StaticMember()),

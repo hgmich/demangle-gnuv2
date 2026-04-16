@@ -383,8 +383,8 @@ pub enum DemangledType {
         args: Vec<DemangledType>,
         return_type: Option<Box<DemangledType>>,
         r#const: bool,
+        has_varargs: bool,
     },
-    VarArgs,
 }
 
 /// What kind of symbol this is.
@@ -404,6 +404,8 @@ pub enum SymbolKind {
         return_type: Option<DemangledType>,
         /// Whether or not this function is declared to be const (i.e. member function which does not mutate its instance)
         r#const: bool,
+        /// Whether or not this function takes a variable number of additional arguments.
+        has_varargs: bool,
     },
     /// Symbol refers to the static member of a container type.
     StaticMember,
@@ -545,6 +547,7 @@ struct FunctionState {
     return_type: Option<CxxType>,
     arg_types: Vec<CxxType>,
     type_quals: TypeQualifiers,
+    has_varargs: bool,
 }
 
 #[derive(Debug, Clone)]
@@ -596,8 +599,8 @@ pub enum CxxType {
         args: Vec<CxxType>,
         return_type: Option<Box<CxxType>>,
         r#const: bool,
+        has_varargs: bool,
     },
-    VarArgs,
 }
 impl CxxType {
     fn is_integral_type(&self) -> bool {
@@ -682,6 +685,7 @@ impl CxxType {
                 args,
                 return_type,
                 r#const,
+                has_varargs,
             } => {
                 let args = args
                     .iter()
@@ -695,9 +699,9 @@ impl CxxType {
                         .transpose()?
                         .map(Box::new),
                     r#const: *r#const,
+                    has_varargs: *has_varargs,
                 }
             }
-            CxxType::VarArgs => DemangledType::VarArgs,
         })
     }
 }
@@ -725,7 +729,6 @@ enum IncompleteCxxType {
     SignedModifier,
     BType { index: usize },
     Function { fn_state: FunctionState },
-    VarArgs,
 }
 
 impl IncompleteCxxType {
@@ -785,8 +788,8 @@ impl TryFrom<IncompleteCxxType> for CxxType {
                 args: fn_state.arg_types,
                 return_type: fn_state.return_type.map(Box::new),
                 r#const: false,
+                has_varargs: fn_state.has_varargs,
             },
-            IncompleteCxxType::VarArgs => CxxType::VarArgs,
         })
     }
 }
@@ -869,6 +872,7 @@ fn take_one_type(
                 return_type: fn_state.return_type.map(Box::new),
                 args: fn_state.arg_types,
                 r#const: false,
+                has_varargs: fn_state.has_varargs,
             },
             IncompleteCxxType::ConstModifier => match c_type {
                 CxxType::Volatile { inner } => {
@@ -1056,6 +1060,7 @@ impl DemanglerState {
                 .map(|cxxtype| cxxtype.to_demangled(&self.btypes))
                 .transpose()?,
             r#const: self.fn_state.type_quals.r#const(),
+            has_varargs: self.fn_state.has_varargs,
         })
     }
 
@@ -2863,7 +2868,7 @@ impl DemanglerState {
                     declp.extend(b", ");
                 }
                 declp.extend(b"...");
-                self.fn_state.arg_types.push(CxxType::VarArgs);
+                self.fn_state.has_varargs = true;
             }
         }
 
