@@ -93,7 +93,7 @@ class DemangledType_Reference(DemangledType):
     __match_args__ = ('const', 'restrict', 'inner')
 
     const: bool
-    volatile: bool
+    restrict: bool
     inner: DemangledType
 
 
@@ -101,7 +101,7 @@ class DemangledType_Pointer(DemangledType):
     __match_args__ = ('const', 'restrict', 'inner')
 
     const: bool
-    volatile: bool
+    restrict: bool
     inner: DemangledType
 
 
