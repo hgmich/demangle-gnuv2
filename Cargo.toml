@@ -20,7 +20,7 @@ members = ["demangle-gnuv2-py"]
 
 [workspace.package]
 edition = "2024"
-version = "0.0.1"
+version = "0.0.2"
 authors = ["Michael Gaver-Holmes <i.am@ceph3.us>"]
 license = "LGPL-2.0+"
 rust-version = "1.85"
