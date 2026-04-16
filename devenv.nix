@@ -27,6 +27,7 @@ in {
   languages.rust.enable = true;
   languages.rust.channel = "stable";
   languages.python.enable = true;
+  languages.python.package = pkgs.python312;
   languages.python.venv.enable = true;
   languages.python.venv.requirements = ''
     maturin==1.13.1
