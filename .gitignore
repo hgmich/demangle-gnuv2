@@ -84,6 +84,6 @@ devenv.local.nix
 # pre-commit
 .pre-commit-config.yaml
 
-results.json
+results*.json
 
 pyo3/

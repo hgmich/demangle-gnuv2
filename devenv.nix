@@ -43,21 +43,28 @@ in {
     "workspace:fix-lints".exec = "cargo clippy --workspace --keep-going --fix";
     "workspace:fmt".exec = "cargo fmt";
     "pyext:develop" = {
-      before = ["test:symbols"];
+      before = ["test:nb-symbols" "test:lc2e-symbols"];
       exec = "cd \"$DEVENV_ROOT/demangle-gnuv2-py\" && maturin develop";
     };
-    "test:symbols" = {
+    "test:nb-symbols" = {
       exec = ''
         set -euo pipefail
         source "$DEVENV_STATE/venv/bin/activate"
-        python test/test_demangle.py -Cj -o results.json | tee "$DEVENV_TASK_OUTPUT_FILE"
+        python test/test_demangle.py -i test/c2e-netbabel-syms.json -Cj -o results-netbabel.json | tee "$DEVENV_TASK_OUTPUT_FILE"
+      '';
+    };
+    "test:lc2e-symbols" = {
+      exec = ''
+        set -euo pipefail
+        source "$DEVENV_STATE/venv/bin/activate"
+        python test/test_demangle.py -Cj -i test/c2e-libc2e-syms.json -o results-libc2e.json | tee "$DEVENV_TASK_OUTPUT_FILE"
       '';
     };
   };
 
   enterTest = ''
-    echo "Running tests"
-    cargo test --workspace
+    devenv tasks run -m all test:nb-symbols
+    devenv tasks run -m all test:lc2e-symbols
   '';
 
   git-hooks.hooks.alejandra.enable = true;
