@@ -3,7 +3,7 @@
 #
 #    maturin generate-ci github -m demangle-gnuv2-py/Cargo.toml
 #
-name: CI
+name: Release
 
 on:
   push:
