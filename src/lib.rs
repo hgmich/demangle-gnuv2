@@ -2809,9 +2809,12 @@ impl DemanglerState {
                     // count but it's impossible to demangle that case properly
                     // anyway. Eg if we already have 12 types is T12Pc "(..., type1,
                     // Pc, ...)"  or "(..., type12, char *, ...)"
-                    ConsumeVal { mangled, value: t } = consume_count(mangled).inspect_err(|_e| {
-                        log::debug!("demangle args: fail (couldn't consume count - hp/arm/edg)");
-                    })?;
+                    ConsumeVal { mangled, value: t } =
+                        consume_count(mangled).inspect_err(|_e| {
+                            log::debug!(
+                                "demangle args: fail (couldn't consume count - hp/arm/edg)"
+                            );
+                        })?;
                 } else {
                     ConsumeVal { mangled, value: t } = get_count(mangled).inspect_err(|_e| {
                         log::debug!("demangle args: fail (couldn't consume count)");
