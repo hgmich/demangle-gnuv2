@@ -22,7 +22,7 @@
 in {
   env.JJ_PRE_PUSH_CHECKER = "prek";
 
-  packages = [pkgs.git pkgs.gh pkgs.alejandra pkgs.rustup checkPanicReasonsScript checkFailuresScript];
+  packages = [pkgs.git pkgs.gh pkgs.alejandra pkgs.rustup checkPanicReasonsScript checkFailuresScript pkgs.ruff];
 
   languages.rust.enable = true;
   languages.rust.channel = "stable";

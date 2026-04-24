@@ -9,7 +9,7 @@ import demangle_gnuv2
 
 class PathOrFileAction(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
-        print('%r %r %r' % (namespace, values, option_string))
+        print(f"{namespace!r} {values!r} {option_string!r}")
         setattr(namespace, self.dest, values)
 
 
@@ -22,20 +22,24 @@ class SymbolEncoder(json.JSONEncoder):
     def encode_demangled_symbol(self, sym: demangle_gnuv2.DemangledSymbol):
         return {
             "cxxdecl": sym.cxxdecl,
-            "symbol_type": self.encode_symbol_type(sym.type)
+            "symbol_type": self.encode_symbol_type(sym.type),
         }
 
     def encode_symbol_type(self, type_: demangle_gnuv2.SymbolType):
         match type_:
             case demangle_gnuv2.SymbolType.VTable():
                 return {"kind": "vtable"}
-            case demangle_gnuv2.SymbolType.Function(qualified_name, args, return_type, const, has_varargs):
+            case demangle_gnuv2.SymbolType.Function(
+                qualified_name, args, return_type, const, has_varargs
+            ):
                 # TODO: implement demangled_type
                 return {
                     "kind": "function",
                     "qualified_name": qualified_name,
-                    "args": list(map(lambda ty: self.encode_demangled_type(ty), args)),
-                    "return_type": self.encode_demangled_type(return_type) if return_type is not None else None,
+                    "args": [self.encode_demangled_type(ty) for ty in args],
+                    "return_type": self.encode_demangled_type(return_type)
+                    if return_type is not None
+                    else None,
                     "const": const,
                     "has_varargs": has_varargs,
                 }
@@ -51,7 +55,9 @@ class SymbolEncoder(json.JSONEncoder):
             case demangle_gnuv2.SymbolType.DllImportStub():
                 return {"kind": "dllimport_stub"}
             case unknown:
-                raise NotImplementedError(f"encode not implemented for SymbolType variant {type(unknown)}")
+                raise NotImplementedError(
+                    f"encode not implemented for SymbolType variant {type(unknown)}"
+                )
 
     def encode_type_info(self, inner: demangle_gnuv2.TypeInfoType):
         match inner:
@@ -60,7 +66,9 @@ class SymbolEncoder(json.JSONEncoder):
             case demangle_gnuv2.TypeInfoType.Function:
                 return {"type": "function"}
             case unknown:
-                raise NotImplementedError(f"encode not implemented for TypeInfoType variant {type(unknown)}")
+                raise NotImplementedError(
+                    f"encode not implemented for TypeInfoType variant {type(unknown)}"
+                )
 
     def encode_demangled_type(self, type_: demangle_gnuv2.DemangledType):
         match type_:
@@ -89,9 +97,19 @@ class SymbolEncoder(json.JSONEncoder):
             case demangle_gnuv2.DemangledType.LongDouble():
                 return {"type": "long_double"}
             case demangle_gnuv2.DemangledType.Reference(const, restrict, inner):
-                return {"type": "ref", "const": const, "restrict": restrict, "inner": self.encode_demangled_type(inner)}
+                return {
+                    "type": "ref",
+                    "const": const,
+                    "restrict": restrict,
+                    "inner": self.encode_demangled_type(inner),
+                }
             case demangle_gnuv2.DemangledType.Pointer(const, restrict, inner):
-                return {"type": "ptr", "const": const, "restrict": restrict, "inner": self.encode_demangled_type(inner)}
+                return {
+                    "type": "ptr",
+                    "const": const,
+                    "restrict": restrict,
+                    "inner": self.encode_demangled_type(inner),
+                }
             case demangle_gnuv2.DemangledType.Volatile(inner):
                 return {"type": "volatile", "inner": self.encode_demangled_type(inner)}
             case demangle_gnuv2.DemangledType.ClassOrStruct(name, templated):
@@ -99,12 +117,17 @@ class SymbolEncoder(json.JSONEncoder):
             case demangle_gnuv2.DemangledType.Function(args, return_type, has_varargs):
                 return {
                     "type": "function",
-                    "args": list(map(lambda ty: self.encode_demangled_type(ty), args)),
-                    "return_type": self.encode_demangled_type(return_type) if return_type is not None else None,
+                    "args": [self.encode_demangled_type(ty) for ty in args],
+                    "return_type": self.encode_demangled_type(return_type)
+                    if return_type is not None
+                    else None,
                     "has_varargs": has_varargs,
                 }
             case unknown:
-                 raise NotImplementedError(f"encode not implemented for DemangledType variant {type(unknown)}")
+                raise NotImplementedError(
+                    f"encode not implemented for DemangledType variant {type(unknown)}"
+                )
+
 
 def main():
     script_path = pathlib.Path(sys.argv[0]).resolve()
@@ -113,12 +136,36 @@ def main():
 
     parser = argparse.ArgumentParser(
         prog=script_path.stem,
-        description='Test the demangling against a set of fixtures')
+        description="Test the demangling against a set of fixtures",
+    )
 
-    parser.add_argument('-i', '--input', type=argparse.FileType('r'), default=str(test_fixtures_path), help="file containing JSON test cases")
-    parser.add_argument('-o', '--output', type=argparse.FileType('w+'), help="file to write detailed test suite info to")
-    parser.add_argument('-j', '--json', default=False, action='store_true', help="output suite results in JSON format")
-    parser.add_argument('-C', '--check', default=False, action='store_true', help="exit with error code if any tests fail")
+    parser.add_argument(
+        "-i",
+        "--input",
+        type=argparse.FileType("r"),
+        default=str(test_fixtures_path),
+        help="file containing JSON test cases",
+    )
+    parser.add_argument(
+        "-o",
+        "--output",
+        type=argparse.FileType("w+"),
+        help="file to write detailed test suite info to",
+    )
+    parser.add_argument(
+        "-j",
+        "--json",
+        default=False,
+        action="store_true",
+        help="output suite results in JSON format",
+    )
+    parser.add_argument(
+        "-C",
+        "--check",
+        default=False,
+        action="store_true",
+        help="exit with error code if any tests fail",
+    )
 
     args = parser.parse_args()
 
@@ -126,16 +173,16 @@ def main():
 
     results = []
     counts = {
-        'success': 0,
-        'mismatch': 0,
-        'fail': 0,
-        'panic': 0,
-        'unknown': 0,
+        "success": 0,
+        "mismatch": 0,
+        "fail": 0,
+        "panic": 0,
+        "unknown": 0,
     }
 
     for test_case in test_fixtures:
-        mangled = test_case['mangled']
-        demangled = test_case['demangled']
+        mangled = test_case["mangled"]
+        demangled = test_case["demangled"]
         result = {"mangled": mangled, "expected": demangled}
         try:
             sym = demangle_gnuv2.cplus_demangle_v2(mangled)
@@ -147,8 +194,8 @@ def main():
                 counts["mismatch"] += 1
                 result["fail_reason"] = "MISMATCH"
             result["symbol_info"] = sym
-        except:
-            # PanicError isn't exposed from module so we can't catch it regularly
+        # PanicError isn't exposed from module so we can't catch it regularly
+        except Exception as _:  # noqa: BLE001
             exc, e1, e2 = sys.exc_info()
             result["actual"] = None
             result["success"] = False
