@@ -24,6 +24,7 @@ jobs:
       run: devenv test
 
     - uses: actions/upload-artifact@v7
+      if: always()
       with:
          name: demangler-report
          path: reports-*.json
