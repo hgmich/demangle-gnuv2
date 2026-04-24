@@ -236,7 +236,7 @@ impl OperatorKind {
             OperatorKind::ArrayNew => b" new []",
             OperatorKind::ArrayDelete => b" delete []",
             OperatorKind::Assignment => b"=",
-            OperatorKind::NonEquality => b"!",
+            OperatorKind::NonEquality => b"!=",
             OperatorKind::Equality => b"==",
             OperatorKind::GreaterEqual => b">=",
             OperatorKind::GreaterThan => b">",
