@@ -27,5 +27,5 @@ jobs:
       if: always()
       with:
          name: demangler-report
-         path: reports-*.json
+         path: results-*.json
          if-no-files-found: error
