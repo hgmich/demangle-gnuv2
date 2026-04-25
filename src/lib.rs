@@ -2877,14 +2877,14 @@ impl DemanglerState {
             }
         }
 
-        while !mangled.is_empty() {
+        while !mangled.is_empty() || self.nrepeats > 0 {
             let b = mangled[0];
             if (b == b'_' || b == b'e') && self.nrepeats <= 0 {
                 break;
             }
 
             if b == b'N' || b == b'T' {
-                log::debug!("demangle args: type parameter");
+                debug_log_bytes(mangled, "demangle args: type parameter with mangled");
                 temptype = *mangled
                     .first()
                     .context("missing character following arg prefix")?;
@@ -2947,6 +2947,7 @@ impl DemanglerState {
                     arg.clear();
                     need_comma = true;
                 }
+                log::debug!("demangle args: done with backrefs");
             } else {
                 log::debug!("demangle args: non-parameterised type");
                 if need_comma && self.opts.params() {
@@ -3111,9 +3112,10 @@ impl DemanglerState {
         result.extend(&self.previous_argument);
         self.fn_state.arg_types.push(cxxtype);
 
-        let idx = memmem::find(start, mangled).context("failed to find arg start string")?;
+        let idx = memmem::rfind(start, mangled).context("failed to find arg start string")?;
         self.remember_type(&start[..idx]);
 
+        debug_log_bytes(mangled, "mangled post do_arg");
         log::debug!("do arg: end (success)");
 
         Ok(ConsumeVal { mangled, value: () })
@@ -3382,11 +3384,11 @@ fn get_count(mangled: &[u8]) -> Result<ConsumeVal<'_, usize>> {
         value: count,
         mangled: mangled_post_count,
     } = consume_count(mangled)?;
-    if !mangled_post_count.is_empty() && mangled_post_count[0] == b'_' {
+    if count > 9 && !mangled_post_count.is_empty() && mangled_post_count[0] == b'_' {
         // Treat count like consume_count if followed by _
         Ok(ConsumeVal {
             value: count,
-            mangled: mangled_post_count,
+            mangled: &mangled_post_count[1..],
         })
     } else {
         // Only count first digit otherwise
