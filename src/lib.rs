@@ -2596,10 +2596,19 @@ impl DemanglerState {
                 // operator
                 log::debug!("demangle function name: alt operator");
 
-                let operator = OperatorKind::from_symbol_op(&declp[2..], self.opts)?;
-                declp.clear();
-                declp.extend(b"operator");
-                declp.extend(operator.overload_name());
+                let operator = OperatorKind::from_symbol_op(&declp[2..], self.opts);
+                match operator {
+                    Ok(op) => {
+                        declp.clear();
+                        declp.extend(b"operator");
+                        declp.extend(op.overload_name());
+                    }
+                    Err(e) => {
+                        log::debug!(
+                            "demangle function name: couldn't get matching operator: {e:?}"
+                        );
+                    }
+                }
             } else if declp[2] == b'a' && declp.len() == 6 {
                 // assignment
                 log::debug!("demangle function name: alt assignment");
