@@ -1078,7 +1078,10 @@ impl DemanglerState {
 
         let mut qualified_path = self.qname_segments.clone();
         qualified_path.reverse();
-        let qualified_path = qualified_path.into_iter().map(|bs| String::from_utf8_lossy(&bs).to_string()).collect();
+        let qualified_path = qualified_path
+            .into_iter()
+            .map(|bs| String::from_utf8_lossy(&bs).to_string())
+            .collect();
 
         Ok(SymbolKind::Function {
             qualified_name: String::from_utf8_lossy(&declp[0..self.decl_fn_qname_len]).to_string(),
