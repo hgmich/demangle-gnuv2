@@ -1191,102 +1191,112 @@ impl DemanglerState {
             }
         }
 
-        let scan_idx =
-            memmem::find(mangled, b"__").context("failed to locate underscore prefix")?;
-        let scan = &mangled[scan_idx..];
+        let scan_idx = memmem::find(mangled, b"__");
+        if let Some(scan_idx) = scan_idx {
+            let scan = &mangled[scan_idx..];
 
-        if self.static_type {
-            if !scan[0].is_ascii_digit() && scan[0] != b't' {
+            if self.static_type {
+                if !scan[0].is_ascii_digit() && scan[0] != b't' {
+                    success = false;
+                }
+            } else if scan_idx == 0
+                && scan.len() > 2
+                && (scan[2].is_ascii_digit()
+                    || (scan[2] == b'Q')
+                    || (scan[2] == b't')
+                    || (scan[2] == b'K')
+                    || (scan[2] == b'H'))
+            {
+                log::debug!("demangle prefix: prefix found");
+                // The ARM says nothing about the mangling of local variables.
+                // But cfront mangles local variables by prepending __<nesting_level>
+                // to them. As an extension to ARM demangling we handle this case.
+                if style.lucid() || style.arm() || style.hp() && scan[2].is_ascii_digit() {
+                    log::debug!("demangle prefix: cfront local variable");
+                    mangled = &scan[2..];
+                    ConsumeVal { mangled, .. } = consume_count(mangled)?;
+                    declp.extend(mangled);
+                    mangled = &mangled[mangled.len()..];
+                } else {
+                    log::debug!("demangle prefix: gnu style constructor");
+                    self.symbol_kind = StateSymbolKind::Function;
+                    // A GNU style constructor starts with __[0-9Qt].  But cfront uses
+                    // names like __Q2_3foo3bar for nested type names.  So don't accept
+                    // this style of constructor for cfront demangling.  A GNU
+                    // style member-template constructor starts with 'H'
+                    if !(style.lucid() || style.arm() || style.hp() || style.edg()) {
+                        self.constructor += 1;
+                    }
+                    mangled = &scan[2..];
+                }
+            } else if style.arm() && scan.len() > 3 && scan[2..4] == b"pt"[..] {
+                log::debug!("demangle prefix: cfront parameterized type");
+                // Cfront style parameterised type
+                ConsumeVal { mangled, .. } =
+                    self.demangle_arm_hp_template(mangled, mangled.len(), declp)?;
+            } else if style.edg()
+                && scan.len() > 3
+                && ((scan[2..4] == b"pt"[..])
+                    || (scan[2..4] == b"tm"[..])
+                    || (scan[2..4] == b"ps"[..]))
+            {
+                log::debug!("demangle prefix: edg parameterized type");
+                // EDG-style parameterized type
+                ConsumeVal { mangled, .. } =
+                    self.demangle_arm_hp_template(mangled, mangled.len(), declp)?;
+            } else if scan_idx == 0
+                && scan.len() > 2
+                && !scan[2].is_ascii_digit()
+                && scan[2] != b't'
+            {
+                log::debug!("demangle prefix: arm name");
+                // mangled name that starts with "__"
+                if !(style.arm() || style.lucid() || style.hp() || style.edg())
+                    && arm_special(mangled, declp).is_err()
+                {
+                    log::debug!("Not arm special");
+                    let mut scan = scan;
+                    while !scan.is_empty() && scan[0] != b'_' {
+                        scan = &scan[1..];
+                    }
+                    let scan_idx =
+                        memmem::find(scan, b"__").context("failed to locate underscore prefix")?;
+                    scan = &scan[scan_idx..];
+
+                    log::debug!("demangle prefix: function name");
+                    self.symbol_kind = StateSymbolKind::Function;
+
+                    // Look for the LAST occurrence of __, allowing names to
+                    // have the '__' sequence embedded in them.
+                    if !(style.arm() || style.hp()) {
+                        let scan_idx = memmem::rfind(scan, b"__")
+                            .context("failed to locate underscore suffix")?;
+                        scan = &scan[scan_idx..];
+                    }
+
+                    if scan.len() <= 2 {
+                        anyhow::bail!("malformed symbol: no name following __prefix__");
+                    }
+
+                    ConsumeVal { mangled, .. } =
+                        self.demangle_function_name(mangled, declp, scan)?;
+                }
+            } else if scan.len() > 2 {
+                // Mangled name does not start with "__" but does have one somewhere
+                // in there with non empty stuff after it.  Looks like a global
+                // function name.
+                log::debug!("demangle prefix: global function name");
+                ConsumeVal { mangled, .. } = self.demangle_function_name(mangled, declp, scan)?;
+                debug_log_bytes(declp, "demangle prefix: declp post demangle_function_name");
+                self.decl_fn_qname_len = declp.len();
+                self.symbol_kind = StateSymbolKind::Function;
+            } else {
+                log::debug!("demangle prefix: fail");
+                log::debug!("demangle prefix: end\t(success=0)");
+                // Doesn't look like a mangled name
                 success = false;
             }
-        } else if scan_idx == 0
-            && scan.len() > 2
-            && (scan[2].is_ascii_digit()
-                || (scan[2] == b'Q')
-                || (scan[2] == b't')
-                || (scan[2] == b'K')
-                || (scan[2] == b'H'))
-        {
-            log::debug!("demangle prefix: prefix found");
-            // The ARM says nothing about the mangling of local variables.
-            // But cfront mangles local variables by prepending __<nesting_level>
-            // to them. As an extension to ARM demangling we handle this case.
-            if style.lucid() || style.arm() || style.hp() && scan[2].is_ascii_digit() {
-                log::debug!("demangle prefix: cfront local variable");
-                mangled = &scan[2..];
-                ConsumeVal { mangled, .. } = consume_count(mangled)?;
-                declp.extend(mangled);
-                mangled = &mangled[mangled.len()..];
-            } else {
-                log::debug!("demangle prefix: gnu style constructor");
-                self.symbol_kind = StateSymbolKind::Function;
-                // A GNU style constructor starts with __[0-9Qt].  But cfront uses
-                // names like __Q2_3foo3bar for nested type names.  So don't accept
-                // this style of constructor for cfront demangling.  A GNU
-                // style member-template constructor starts with 'H'
-                if !(style.lucid() || style.arm() || style.hp() || style.edg()) {
-                    self.constructor += 1;
-                }
-                mangled = &scan[2..];
-            }
-        } else if style.arm() && scan.len() > 3 && scan[2..4] == b"pt"[..] {
-            log::debug!("demangle prefix: cfront parameterized type");
-            // Cfront style parameterised type
-            ConsumeVal { mangled, .. } =
-                self.demangle_arm_hp_template(mangled, mangled.len(), declp)?;
-        } else if style.edg()
-            && scan.len() > 3
-            && ((scan[2..4] == b"pt"[..]) || (scan[2..4] == b"tm"[..]) || (scan[2..4] == b"ps"[..]))
-        {
-            log::debug!("demangle prefix: edg parameterized type");
-            // EDG-style parameterized type
-            ConsumeVal { mangled, .. } =
-                self.demangle_arm_hp_template(mangled, mangled.len(), declp)?;
-        } else if scan_idx == 0 && scan.len() > 2 && !scan[2].is_ascii_digit() && scan[2] != b't' {
-            log::debug!("demangle prefix: arm name");
-            // mangled name that starts with "__"
-            if !(style.arm() || style.lucid() || style.hp() || style.edg())
-                && arm_special(mangled, declp).is_err()
-            {
-                log::debug!("Not arm special");
-                let mut scan = scan;
-                while !scan.is_empty() && scan[0] != b'_' {
-                    scan = &scan[1..];
-                }
-                let scan_idx =
-                    memmem::find(scan, b"__").context("failed to locate underscore prefix")?;
-                scan = &scan[scan_idx..];
-
-                log::debug!("demangle prefix: function name");
-                self.symbol_kind = StateSymbolKind::Function;
-
-                // Look for the LAST occurrence of __, allowing names to
-                // have the '__' sequence embedded in them.
-                if !(style.arm() || style.hp()) {
-                    let scan_idx =
-                        memmem::rfind(scan, b"__").context("failed to locate underscore suffix")?;
-                    scan = &scan[scan_idx..];
-                }
-
-                if scan.len() <= 2 {
-                    anyhow::bail!("malformed symbol: no name following __prefix__");
-                }
-
-                ConsumeVal { mangled, .. } = self.demangle_function_name(mangled, declp, scan)?;
-            }
-        } else if scan.len() > 2 {
-            // Mangled name does not start with "__" but does have one somewhere
-            // in there with non empty stuff after it.  Looks like a global
-            // function name.
-            log::debug!("demangle prefix: global function name");
-            ConsumeVal { mangled, .. } = self.demangle_function_name(mangled, declp, scan)?;
-            debug_log_bytes(declp, "demangle prefix: declp post demangle_function_name");
-            self.decl_fn_qname_len = declp.len();
-            self.symbol_kind = StateSymbolKind::Function;
         } else {
-            log::debug!("demangle prefix: fail");
-            log::debug!("demangle prefix: end\t(success=0)");
-            // Doesn't look like a mangled name
             success = false;
         }
 
