@@ -110,6 +110,12 @@ class SymbolEncoder(json.JSONEncoder):
                     "restrict": restrict,
                     "inner": self.encode_demangled_type(inner),
                 }
+            case demangle_gnuv2.DemangledType.Array(length, inner):
+                return {
+                    "type": "array",
+                    "length": length,
+                    "inner": self.encode_demangled_type(inner),
+                }
             case demangle_gnuv2.DemangledType.Volatile(inner):
                 return {"type": "volatile", "inner": self.encode_demangled_type(inner)}
             case demangle_gnuv2.DemangledType.ClassOrStruct(name, templated):

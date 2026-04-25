@@ -40,6 +40,10 @@ enum DemangledType {
         restrict: bool,
         inner: Py<DemangledType>,
     },
+    Array {
+        length: Option<u64>,
+        inner: Py<DemangledType>,
+    },
     Volatile {
         inner: Py<DemangledType>,
     },
@@ -103,6 +107,10 @@ impl DemangledType {
             } => Self::Pointer {
                 r#const: *r#const,
                 restrict: *restrict,
+                inner: DemangledType::from_rust(py, inner.as_ref())?,
+            },
+            demangle_gnuv2::DemangledType::Array { length, inner } => Self::Array {
+                length: *length,
                 inner: DemangledType::from_rust(py, inner.as_ref())?,
             },
             demangle_gnuv2::DemangledType::Volatile { inner } => Self::Volatile {

@@ -372,6 +372,10 @@ pub enum DemangledType {
         restrict: bool,
         inner: Box<DemangledType>,
     },
+    Array {
+        length: Option<u64>,
+        inner: Box<DemangledType>,
+    },
     Volatile {
         inner: Box<DemangledType>,
     },
@@ -460,6 +464,14 @@ enum StateSymbolKind {
     GlobalConstructor,
     GlobalDestructor,
     DllImportStub,
+}
+
+#[derive(Debug, Clone)]
+enum TemplateValue {
+    SignedInteger(i64),
+    UnsignedInteger(u64),
+    Boolean(bool),
+    NamedType(Vec<u8>),
 }
 
 // TODO: remove and rename internal state fields as appropriate
@@ -589,6 +601,10 @@ pub enum CxxType {
         restrict: bool,
         inner: Box<CxxType>,
     },
+    Array {
+        length: Option<u64>,
+        inner: Box<CxxType>,
+    },
     Volatile {
         inner: Box<CxxType>,
     },
@@ -663,6 +679,10 @@ impl CxxType {
                 restrict: *restrict,
                 inner: Box::new(inner.to_demangled(btypes)?),
             },
+            CxxType::Array { length, inner } => DemangledType::Array {
+                length: *length,
+                inner: Box::new(inner.to_demangled(btypes)?),
+            },
             CxxType::Volatile { inner } => DemangledType::Volatile {
                 inner: Box::new(inner.to_demangled(btypes)?),
             },
@@ -722,6 +742,7 @@ enum IncompleteCxxType {
     LongDouble,
     Reference,
     Pointer,
+    Array { len: Option<u64> },
     ConstModifier,
     VolatileModifier,
     RestrictModifier,
@@ -768,6 +789,9 @@ impl TryFrom<IncompleteCxxType> for CxxType {
             }
             IncompleteCxxType::Pointer => {
                 anyhow::bail!("pointer cannot exist in non-terminal position")
+            }
+            IncompleteCxxType::Array { .. } => {
+                anyhow::bail!("array cannot exist in non-terminal position")
             }
             IncompleteCxxType::ConstModifier => {
                 anyhow::bail!("const modifier is incomplete C type")
@@ -866,6 +890,10 @@ fn take_one_type(
             IncompleteCxxType::Pointer => CxxType::Pointer {
                 r#const: false,
                 restrict: false,
+                inner: Box::new(c_type),
+            },
+            IncompleteCxxType::Array { len } => CxxType::Array {
+                length: len,
                 inner: Box::new(c_type),
             },
             IncompleteCxxType::Function { fn_state } => CxxType::Function {
@@ -1851,7 +1879,36 @@ impl DemanglerState {
                         decl.push(b')');
                     }
                     decl.push(b'[');
-                    anyhow::bail!("TODO: finish implementing array type");
+
+                    let mut ty = IncompleteCxxType::Array { len: None };
+
+                    if mangled[0] != b'_' {
+                        let value;
+                        ConsumeVal { mangled, value } = self.demangle_template_value_parm(
+                            mangled,
+                            &mut decl,
+                            &CxxType::Int { signed: false },
+                        )?;
+                        match value {
+                            Some(TemplateValue::UnsignedInteger(len)) => {
+                                ty = IncompleteCxxType::Array { len: Some(len) };
+                            }
+                            Some(val) => anyhow::bail!(
+                                "got unexpected {val:?} as template value for array size (expected unsigned integer)"
+                            ),
+                            None => {
+                                anyhow::bail!("count expected for array size but none was found")
+                            }
+                        }
+                    }
+
+                    if mangled[0] == b'_' {
+                        mangled = &mangled[1..];
+                    }
+
+                    cxxtype_stack.push(ty);
+
+                    decl.push(b']');
                 }
                 b'T' => {
                     log::debug!("do type: backref");
@@ -3049,30 +3106,36 @@ impl DemanglerState {
         mut mangled: &'a [u8],
         s: &mut Vec<u8>,
         cxxtype: &CxxType,
-    ) -> Result<ConsumeVal<'a, ()>> {
+    ) -> Result<ConsumeVal<'a, Option<TemplateValue>>> {
         log::debug!("debug template value parm: start {cxxtype:?}");
+        let mut tmpl_val = None;
 
         if !mangled.is_empty() && mangled[0] == b'Y' {
             log::debug!("debug template value parm: template parameter");
             anyhow::bail!("TODO: implement demangle_template_value_parm for template");
         } else if cxxtype.is_integral_type() {
-            ConsumeVal { mangled, .. } = self.demangle_integral_value(mangled, s)?;
+            ConsumeVal {
+                mangled,
+                value: tmpl_val,
+            } = self.demangle_integral_value(mangled, s, false)?;
         } else if let CxxType::Char { .. } = cxxtype {
             anyhow::bail!("TODO: implement demangle_template_value_parm for char");
         } else if let CxxType::Boolean = cxxtype {
             let value;
             ConsumeVal { mangled, value } = consume_count(mangled)?;
-            let bool_val = match value {
-                0 => &b"false"[..],
-                1 => &b"true"[..],
+            let bool_str;
+            (bool_str, tmpl_val) = match value {
+                0 => (&b"false"[..], Some(TemplateValue::Boolean(false))),
+                1 => (&b"true"[..], Some(TemplateValue::Boolean(true))),
                 i => anyhow::bail!("invalid boolean literal value {i}"),
             };
-            s.extend(bool_val);
+            s.extend(bool_str);
         } else if cxxtype.is_realnum_type() {
             anyhow::bail!("TODO: implement demangle_template_value_parm for floats");
         } else if cxxtype.is_reference_type() {
             if mangled[0] == b'Q' {
                 ConsumeVal { mangled, .. } = self.demangle_qualified(mangled, s, false, true)?;
+                tmpl_val = Some(TemplateValue::NamedType(s.clone()))
             } else {
                 anyhow::bail!("TODO: implement demangle_template_value_parm for unqualified types");
             }
@@ -3080,7 +3143,10 @@ impl DemanglerState {
 
         log::debug!("debug template value parm: done");
 
-        Ok(ConsumeVal { mangled, value: () })
+        Ok(ConsumeVal {
+            mangled,
+            value: tmpl_val,
+        })
     }
 
     #[must_use]
@@ -3088,7 +3154,10 @@ impl DemanglerState {
         &mut self,
         mut mangled: &'a [u8],
         s: &mut Vec<u8>,
-    ) -> Result<ConsumeVal<'a, ()>> {
+        signed: bool,
+    ) -> Result<ConsumeVal<'a, Option<TemplateValue>>> {
+        let mut value;
+        let mut int_s = Vec::new();
         log::debug!("demangle integral value: begin");
 
         if mangled.is_empty() {
@@ -3101,6 +3170,7 @@ impl DemanglerState {
             let mut need_operator = false;
             s.push(b'(');
             mangled = &mangled[1..];
+            value = None;
 
             while !mangled.is_empty() && mangled[0] != b'W' {
                 if need_operator {
@@ -3109,8 +3179,12 @@ impl DemanglerState {
                     need_operator = true;
                 }
 
-                ConsumeVal { mangled, .. } =
-                    self.demangle_template_value_parm(mangled, s, &CxxType::Int { signed: true })?;
+                ConsumeVal { mangled, value } = self.demangle_template_value_parm(
+                    mangled,
+                    &mut int_s,
+                    &CxxType::Int { signed: true },
+                )?;
+                s.extend_from_slice(&int_s);
             }
 
             if mangled.is_empty() || mangled[0] != b'W' {
@@ -3121,25 +3195,50 @@ impl DemanglerState {
             }
         } else if b"QK".contains(&mangled[0]) {
             ConsumeVal { mangled, .. } = self.demangle_qualified(mangled, s, false, true)?;
+            value = Some(TemplateValue::NamedType(s.clone()));
         } else {
             let mut have_digit = false;
 
             if mangled[0] == b'm' {
-                s.push(b'-');
+                int_s.push(b'-');
             }
 
             while !mangled.is_empty() && mangled[0].is_ascii_digit() {
-                s.push(mangled[0]);
+                int_s.push(mangled[0]);
                 mangled = &mangled[1..];
                 have_digit = true;
             }
+
+            s.extend_from_slice(&int_s);
+
+            value = Some(if signed {
+                let int_s =
+                    str::from_utf8(&*int_s).context("failed to interpret integral as utf-8")?;
+                let n: i64 = int_s.parse().with_context(|| {
+                    format!(
+                        "failed to parse integral string '{}' as signed integer",
+                        int_s
+                    )
+                })?;
+                TemplateValue::SignedInteger(n)
+            } else {
+                let int_s =
+                    str::from_utf8(&*int_s).context("failed to interpret integral as utf-8")?;
+                let n: u64 = int_s.parse().with_context(|| {
+                    format!(
+                        "failed to parse integral string '{}' as signed integer",
+                        int_s
+                    )
+                })?;
+                TemplateValue::UnsignedInteger(n)
+            });
 
             if !have_digit {
                 anyhow::bail!("malformed integral value, no digits");
             }
         }
 
-        Ok(ConsumeVal { mangled, value: () })
+        Ok(ConsumeVal { mangled, value })
     }
 
     #[must_use]

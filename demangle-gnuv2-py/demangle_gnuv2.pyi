@@ -20,6 +20,7 @@ class DemangledType(metaclass=ABCMeta):
     LongDouble: typing.ClassVar[type[DemangledType_LongDouble]]
     Reference: typing.ClassVar[type[DemangledType_Reference]]
     Pointer: typing.ClassVar[type[DemangledType_Pointer]]
+    Array: typing.ClassVar[type[DemangledType_Array]]
     Volatile: typing.ClassVar[type[DemangledType_Volatile]]
     ClassOrStruct: typing.ClassVar[type[DemangledType_ClassOrStruct]]
     Function: typing.ClassVar[type[DemangledType_Function]]
@@ -87,6 +88,12 @@ class DemangledType_Pointer(DemangledType):
 
     const: bool
     restrict: bool
+    inner: DemangledType
+
+class DemangledType_Array(DemangledType):
+    __match_args__ = ("length", "inner")
+
+    length: int | None
     inner: DemangledType
 
 class DemangledType_Volatile(DemangledType):
