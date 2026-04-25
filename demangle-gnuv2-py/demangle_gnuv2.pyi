@@ -128,9 +128,10 @@ class SymbolType_VTable(SymbolType):
     __match_args__ = ()
 
 class SymbolType_Function(SymbolType):
-    __match_args__ = ("qualified_name", "args", "return_type", "const", "has_varargs")
+    __match_args__ = ("qualified_name", "qualified_path", "args", "return_type", "const", "has_varargs")
 
     qualified_name: str
+    qualified_path: list[str]
     args: list[DemangledType]
     return_type: DemangledType | None
     const: bool

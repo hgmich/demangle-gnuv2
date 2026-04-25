@@ -201,7 +201,7 @@ def main():
                 result["fail_reason"] = "MISMATCH"
             result["symbol_info"] = sym
         # PanicError isn't exposed from module so we can't catch it regularly
-        except Exception as _:  # noqa: BLE001
+        except:  # noqa: E722
             exc, e1, _e2 = sys.exc_info()
             result["actual"] = None
             result["success"] = False

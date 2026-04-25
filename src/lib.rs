@@ -401,6 +401,8 @@ pub enum SymbolKind {
     Function {
         /// Qualified name of the function.
         qualified_name: String,
+        /// Qualified name of the string, as individual paths.
+        qualified_path: Vec<String>,
         /// Arguments to the function.
         args: Vec<DemangledType>,
         /// Return type of function.
@@ -481,6 +483,7 @@ struct DemanglerState {
     btypes: BTypeStore,
     raw_types: Vec<Vec<u8>>,
     ktypes: Vec<Vec<u8>>,
+    qname_segments: Vec<Vec<u8>>,
     constructor: i32,
     destructor: i32,
     static_type: bool,
@@ -1073,8 +1076,13 @@ impl DemanglerState {
             }
         }
 
+        let mut qualified_path = self.qname_segments.clone();
+        qualified_path.reverse();
+        let qualified_path = qualified_path.into_iter().map(|bs| String::from_utf8_lossy(&bs).to_string()).collect();
+
         Ok(SymbolKind::Function {
             qualified_name: String::from_utf8_lossy(&declp[0..self.decl_fn_qname_len]).to_string(),
+            qualified_path,
             args: self
                 .fn_state
                 .arg_types
@@ -1288,6 +1296,7 @@ impl DemanglerState {
                 log::debug!("demangle prefix: global function name");
                 ConsumeVal { mangled, .. } = self.demangle_function_name(mangled, declp, scan)?;
                 debug_log_bytes(declp, "demangle prefix: declp post demangle_function_name");
+                self.qname_segments.push(declp.clone());
                 self.decl_fn_qname_len = declp.len();
                 self.symbol_kind = StateSymbolKind::Function;
             } else {
@@ -1611,8 +1620,12 @@ impl DemanglerState {
             }
         }
 
+        // Insert qualifiers backwards after the current tail
+        let qual_insert = self.qname_segments.len();
+
         for i in (0..qualifier_count).rev() {
             let mut remember_k = true;
+            debug_log_bytes(&last_name, "last qualifier component");
             last_name.clear();
 
             if !mangled.is_empty() && mangled[0] == b'_' {
@@ -1662,6 +1675,8 @@ impl DemanglerState {
                 self.ktypes.push(temp.clone());
             }
 
+            self.qname_segments.insert(qual_insert, last_name.clone());
+
             if i > 0 {
                 temp.extend(self.scope_str());
             }
@@ -1674,11 +1689,14 @@ impl DemanglerState {
         // We do this here because this is the most convenient place, where
         // we already have a pointer to the name and the length of the name.
         if isfuncname {
+            let mut name = Vec::new();
             temp.extend(self.scope_str());
             if (self.destructor & 1) > 0 {
-                temp.push(b'~');
+                name.push(b'~');
             }
-            temp.extend(&last_name);
+            name.extend(&last_name);
+            self.qname_segments.push(name.clone());
+            temp.extend(name);
         }
 
         // Now either prepend the temp buffer to the result, or append it,
@@ -1690,6 +1708,10 @@ impl DemanglerState {
                 temp.extend(self.scope_str());
             }
             result.prepend(&temp);
+        }
+
+        for (i, seg) in self.qname_segments.iter().enumerate() {
+            debug_log_bytes(seg, &format!("demangle qualified: segment {i}"));
         }
 
         log::debug!("demangle qualified: done");

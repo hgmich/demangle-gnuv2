@@ -160,6 +160,7 @@ enum SymbolType {
     /// Symbol refers to a function entry point.
     Function {
         qualified_name: String,
+        qualified_path: Vec<String>,
         args: Vec<Py<DemangledType>>,
         return_type: Option<Py<DemangledType>>,
         r#const: bool,
@@ -184,6 +185,7 @@ impl SymbolType {
             SymbolKind::VTable => Ok(Self::VTable()),
             SymbolKind::Function {
                 qualified_name,
+                qualified_path,
                 args,
                 return_type,
                 r#const,
@@ -201,6 +203,7 @@ impl SymbolType {
 
                 Ok(Self::Function {
                     qualified_name,
+                    qualified_path,
                     args,
                     return_type,
                     r#const,
