@@ -2512,7 +2512,13 @@ impl DemanglerState {
         } else if declp.len() >= 4 && declp[0..4] == b"__op"[..] {
             // ansi type conversion operator
             log::debug!("demangle function name: ansi type conversion operator");
-            anyhow::bail!("TODO: implement ansi type conversion operator demangle");
+            let tem = &declp[4..];
+            let mut typ = Vec::new();
+            ConsumeVal { .. } = self.do_type(tem, &mut typ, false)?;
+
+            declp.clear();
+            declp.extend_from_slice(b"operator ");
+            declp.extend(typ);
         } else if declp.len() >= 4
             && declp[0..2] == b"__"[..]
             && declp[2].is_ascii_lowercase()
