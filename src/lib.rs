@@ -2640,11 +2640,11 @@ impl DemanglerState {
             match mangled[0] {
                 b'Q' => {
                     log::debug!("demangle signature: qualified");
-                    oldmangled = Some(mangled);
+                    let oldmangled = mangled;
 
                     ConsumeVal { mangled, .. } =
                         self.demangle_qualified(mangled, declp, true, false)?;
-                    // self.types.push(value);
+                    self.remember_type(&(oldmangled[..oldmangled.len() - mangled.len()]));
                     if style.auto() || style.gnu() {
                         expect_func = true;
                     }
