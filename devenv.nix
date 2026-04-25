@@ -10,14 +10,16 @@
     sort="${pkgs.coreutils}/bin/sort"
     uniq="${pkgs.coreutils}/bin/uniq"
 
-    "$jq" '.results[] | select(.success == false) | select(.fail_reason == "PANIC") | select(.exc_info | test("^not yet implemented")) | .exc_info' < results.json | $sort | $uniq -c
+    [ -f "results-netbabel.json" ] && "$jq" '.results[] | select(.success == false) | select(.fail_reason == "PANIC") | select(.exc_info | test("^not yet implemented")) | .exc_info' < results-netbabel.json | $sort | $uniq -c
+    [ -f "results-libc2e.json" ] && "$jq" '.results[] | select(.success == false) | select(.fail_reason == "PANIC") | select(.exc_info | test("^not yet implemented")) | .exc_info' < results-libc2e.json | $sort | $uniq -c
   '';
   checkFailuresScript = pkgs.writeShellScriptBin "failed-syms" ''
     jq="${pkgs.jq}/bin/jq"
     sort="${pkgs.coreutils}/bin/sort"
     uniq="${pkgs.coreutils}/bin/uniq"
 
-    "$jq" '.results[] | select(.success == false)' < results.json
+    [ -f "results-netbabel.json" ] && "$jq" '.results[] | select(.success == false)' < results-netbabel.json
+    [ -f "results-libc2e.json" ] && "$jq" '.results[] | select(.success == false)' < results-libc2e.json
   '';
 in {
   env.JJ_PRE_PUSH_CHECKER = "prek";
